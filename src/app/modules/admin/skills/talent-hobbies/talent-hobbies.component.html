@@ -98,18 +98,19 @@
                 <div class="mt-5"></div>
 
                 <div class="form-group">
-                    <mat-form-field class="fuse-mat-no-subscript w-200">
+                    <mat-form-field class="fuse-mat-no-subscript w-100">
                       <mat-label>Description</mat-label>
                       <mat-icon
                           class="icon-size-5"
                           [svgIcon]="'heroicons_solid:annotation'"
                           matPrefix></mat-icon>
-                          <input type="text"
+                          <textarea type="text"
                           id="description" 
                           class="form-control" 
                           #name="ngModel"
                           [(ngModel)]="model.description" name="description"
                           matInput>
+                        </textarea>
                   </mat-form-field>
                   </div>
   
