@@ -1,6 +1,6 @@
 {
   "projects": {
-    "default": "skillresults-application",
+    "default": "skillresults-test01",
     "testing": "skillresults-test01"
   },
   "targets": {
