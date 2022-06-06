@@ -9,7 +9,6 @@ import { AngularFireDatabase, AngularFireList, AngularFireObject, AngularFireAct
 })
 export class TalentHobbiesComponent implements OnInit {
 
-
   powers = ['Really Smart', 'Super Flexible',
     'Super Hot', 'Weather Changer', 'Solves Crimes'];
 
@@ -17,15 +16,13 @@ export class TalentHobbiesComponent implements OnInit {
 
   submitted = false;
 
-  onSubmit() { this.submitted = true; }
+  constructor(public db: AngularFireDatabase) { }
 
-  newHero() {
+  onSubmit(): void { this.submitted = true; }
+
+  newHero(): void {
     this.model = new Hero(42, '', '');
   }
-
-
-
-  constructor(public db: AngularFireDatabase) { }
 
   ngOnInit(): void {
   }
