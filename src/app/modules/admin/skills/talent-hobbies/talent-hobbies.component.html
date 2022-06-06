@@ -1,45 +1,189 @@
-<div class="absolute inset-0 flex flex-col min-w-0 overflow-y-auto" cdkScrollable>
+<div
+    class="absolute inset-0 flex flex-col min-w-0 overflow-y-auto"
+    cdkScrollable>
 
-            <!-- Header -->
-    <div class="flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between p-6 pb-22 sm:pt-3 sm:pb-20 sm:px-10 bg-default dark:bg-transparent">
+    <!-- Header -->
+    <div class="flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between p-6 pb-22 sm:pt-12 sm:pb-28 sm:px-10 bg-default dark:bg-transparent">
         <div class="flex-1 min-w-0">
             <!-- Breadcrumbs -->
             <div>
                 <div class="hidden sm:flex flex-wrap items-center font-medium">
                     <div>
-                        <a class="whitespace-nowrap text-primary-500">Skills</a>
+                        <a class="whitespace-nowrap text-primary-500">Users</a>
                     </div>
                     <div class="flex items-center ml-1 whitespace-nowrap">
-                        <mat-icon class="icon-size-5 text-secondary" [svgIcon]="'heroicons_solid:chevron-right'"></mat-icon>
-                        <a class="ml-1 text-primary-500">Talents & Hobbies</a>
+                        <mat-icon
+                            class="icon-size-5 text-secondary"
+                            [svgIcon]="'heroicons_solid:chevron-right'"></mat-icon>
+                        <a class="ml-1 text-primary-500">Talents</a>
                     </div>
                     <div class="flex items-center ml-1 whitespace-nowrap">
-                        <mat-icon class="icon-size-5 text-secondary" [svgIcon]="'heroicons_solid:chevron-right'"></mat-icon>
+                        <mat-icon
+                            class="icon-size-5 text-secondary"
+                            [svgIcon]="'heroicons_solid:chevron-right'"></mat-icon>
                         <span class="ml-1 text-secondary">Overview</span>
                     </div>
                 </div>
-
+                <div class="flex sm:hidden">
+                    <a
+                        class="inline-flex items-center -ml-1.5 text-secondary font-medium"
+                        [routerLink]="'./..'">
+                        <mat-icon
+                            class="icon-size-5 text-secondary"
+                            [svgIcon]="'heroicons_solid:chevron-left'"></mat-icon>
+                        <span class="ml-1">Back</span>
+                    </a>
+                </div>
             </div>
             <!-- Title -->
             <div class="mt-2">
-                <h2 class="text-3xl md:text-3xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate">
+                <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate">
                     Talents & Hobbies
                 </h2>
             </div>
         </div>
+        <!-- Actions -->
+        <div class="flex shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
+            <button mat-stroked-button>
+                <mat-icon
+                    class="icon-size-5 mr-2"
+                    [svgIcon]="'heroicons_solid:pencil-alt'"></mat-icon>
+                Edit
+            </button>
+            <button
+                class="ml-3"
+                mat-flat-button
+                [color]="'primary'">
+                <mat-icon
+                    class="icon-size-5 mr-2"
+                    [svgIcon]="'heroicons_solid:link'"></mat-icon>
+                View
+            </button>
+        </div>
     </div>
 
-
     <!-- Main -->
-    <div class="flex-auto -mt-16 p-6 sm:p-10 shadow bg-card">
+    <div class="flex-auto -mt-16 p-6 sm:p-10 rounded-t-2xl shadow bg-card">
 
         <!-- CONTENT GOES HERE -->
-        <div class="h-400 min-h-400 max-h-400 border-2 border-dashed border-gray-300 rounded-2xl"></div>
-        
+        <div class="h-400 min-h-400 max-h-400 border-2 border-dashed border-gray-300 rounded-2xl">
 
+
+
+            <div class="container">
+                <div [hidden]="submitted">
+
+                  <form (ngSubmit)="onSubmit()" #heroForm="ngForm">
+                    <div class="form-group">
+                      <mat-form-field class="fuse-mat-no-subscript w-full">
+                        <mat-label>Name</mat-label>
+                        <mat-icon
+                            class="icon-size-5"
+                            [svgIcon]="'heroicons_solid:academic-cap'"
+                            matPrefix></mat-icon>
+
+                            <input type="text" class="form-control" id="name"
+                            required
+                            [(ngModel)]="model.name" name="name"
+                            #name="ngModel" matInput>
+
+                    </mat-form-field>
+
+                      <div [hidden]="name.valid || name.pristine" class="alert alert-danger">
+                        <span style="color:red;">Name is required</span>
+                      </div>
+                    </div>
+              
+                    <div class="form-group">
+
+                        <mat-form-field class="fuse-mat-no-subscript w-full">
+                            <mat-label>Alter Ego</mat-label>
+                            <mat-icon
+                                class="icon-size-5"
+                                [svgIcon]="'heroicons_solid:academic-cap'"
+                                matPrefix></mat-icon>
+    
+                                <input type="text" class="form-control" id="alterEgo"
+                                [(ngModel)]="model.alterEgo" name="alterEgo" matInput>
+    
+                        </mat-form-field>
+                        
+                    </div>
+              
+                    <div class="form-group">
+
+
+                        <mat-form-field appearance="fill">
+                            <mat-label>Hero Power</mat-label>
+                            <mat-select id="power" required [(ngModel)]="model.power" name="power" #power="ngModel">
+                              <mat-option *ngFor="let pow of powers" [value]="pow">
+                                  {{pow}}
+                              </mat-option>
+                            </mat-select>
+                          </mat-form-field>
+
+
+                      <div [hidden]="power.valid || power.pristine">
+                        Power is required
+                      </div>
+
+                    </div>
+
+                    <button type="button" class="btn btn-default" (click)="newHero(); heroForm.reset()">New Hero</button>
+
+                        <!-- Actions -->
+                        <div class="flex items-center justify-end">
+                            <button  
+                                [disabled]="!heroForm.form.valid" 
+                                class="ml-4"
+                                mat-flat-button
+                                type="submit"
+                                [color]="'primary'">
+                                Submit Hero
+                            </button>
+
+                        </div>
+
+
+                    <!-- #region Form Status -->
+                    <div class="fg">
+                        <b>Form Status Flags:</b>
+                        {{ heroForm.status }},
+                        {{ heroForm.touched ? 'touched' : 'untouched'}},
+                        {{ heroForm.dirty ? 'dirty' : 'pristine'}}
+                    </div>
+
+                    <!-- endregion -->
+
+                  </form>
+                </div>
+              
+                <div [hidden]="!submitted">
+                  <h2>You submitted the following:</h2>
+                  <div class="row">
+                    <div class="col-xs-3">Name</div>
+                    <div class="col-xs-9">{{ model.name }}</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-xs-3">Alter Ego</div>
+                    <div class="col-xs-9">{{ model.alterEgo }}</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-xs-3">Power</div>
+                    <div class="col-xs-9">{{ model.power }}</div>
+                  </div>
+                  <br>
+                  <button type="button" class="btn btn-primary" (click)="submitted=false">Edit</button>
+                </div>
+              </div>
+       
+
+
+
+
+
+        </div>
 
     </div>
 
 </div>
-
-
