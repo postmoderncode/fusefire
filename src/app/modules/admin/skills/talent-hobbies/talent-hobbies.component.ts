@@ -12,7 +12,7 @@ export class TalentHobbiesComponent implements OnInit {
   listRef: AngularFireList<any>;
   sublistRef: AngularFireList<any>;
   items: Observable<any[]>;
-  model = new Talent('');
+  model = new Talent('', '');
 
   constructor(public db: AngularFireDatabase) {
 
@@ -30,13 +30,14 @@ export class TalentHobbiesComponent implements OnInit {
 
     //Cast model to variable for formReset
     const mname: string = this.model.name;
+    const mdescription: string = this.model.description;
 
     //Define Promise
-    const promiseUpdateskill = this.listRef.push({ name: mname });
+    const promiseUpdateskill = this.listRef.push({ name: mname, description: mdescription });
 
     //Call Promise
     promiseUpdateskill
-      .then(_ => this.sublistRef.push({ name: mname }))
+      .then(_ => this.sublistRef.push({ name: mname, description: mdescription }))
       .catch(err => console.log(err, 'Error Submitting Talent!'));
 
   }
@@ -49,6 +50,7 @@ export class Talent {
 
   constructor(
     public name: string,
+    public description: string
 
   ) { }
 
