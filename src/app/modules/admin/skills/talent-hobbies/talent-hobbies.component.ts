@@ -11,8 +11,6 @@ export class TalentHobbiesComponent implements OnInit {
 
   listRef: AngularFireList<any>;
   sublistRef: AngularFireList<any>;
-  itemRef: AngularFireObject<any>;
-  subitemRef: AngularFireObject<any>;
 
   model = new Talent('');
 
@@ -20,34 +18,26 @@ export class TalentHobbiesComponent implements OnInit {
 
   onSubmit(): void {
 
-
     //Placeholder variable to make sure dynamic paths are possible
     const fbkey: string = 'cQT4PtEZEAczJoAcbghuCtt7vDP2';
 
-    //Reference for single update
-    //this.itemRef = this.db.object('/users/' + fbkey + '/talents');
+    this.listRef = this.db.list('/users/' + fbkey + '/talents');
+    this.sublistRef = this.db.list('/talents/' + fbkey);
 
-    //Reference for second update
-    this.subitemRef = this.db.object('/talents/' + fbkey);
+    //Cast model to variable for formReset
+    const mname: string = this.model.name;
 
     //Define Promise
-    const promiseUpdateskill = this.listRef.push({ name: this.model.name });
+    const promiseUpdateskill = this.listRef.push({ name: mname });
 
     //Call Promise
     promiseUpdateskill
-      .then(_ => this.sublistRef.push({ name: this.model.name }))
+      .then(_ => this.sublistRef.push({ name: mname }))
       .catch(err => console.log(err, 'Error Submitting Talent!'));
 
   }
 
-  ngOnInit(): void {
-
-    //Reference for list
-    this.listRef = this.db.list('/users/cQT4PtEZEAczJoAcbghuCtt7vDP2/talents');
-    //Reference for list
-    this.sublistRef = this.db.list('/talents/cQT4PtEZEAczJoAcbghuCtt7vDP2');
-
-  }
+  ngOnInit(): void { }
 
 }
 
