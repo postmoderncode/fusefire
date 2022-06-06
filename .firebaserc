@@ -1,4 +1,8 @@
 {
+  "projects": {
+    "default": "skillresults-application",
+    "testing": "skillresults-test01"
+  },
   "targets": {
     "skillresults-application": {
       "hosting": {
@@ -7,8 +11,5 @@
         ]
       }
     }
-  },
-  "projects": {
-    "default": "skillresults-application"
   }
 }

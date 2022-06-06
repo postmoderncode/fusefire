@@ -11,9 +11,9 @@ export class TalentHobbiesComponent implements OnInit {
 
 
   powers = ['Really Smart', 'Super Flexible',
-    'Super Hot', 'Weather Changer'];
+    'Super Hot', 'Weather Changer', 'Solves Crimes'];
 
-  model = new Hero(18, 'Dr IQ', this.powers[0], 'Chuck Overstreet');
+  model = new Hero(18, 'Ghetto Detective', this.powers[0], 'Pooky Watson');
 
   submitted = false;
 

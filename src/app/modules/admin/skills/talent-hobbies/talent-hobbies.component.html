@@ -75,11 +75,11 @@
 
                   <form (ngSubmit)="onSubmit()" #heroForm="ngForm">
                     <div class="form-group">
-                      <mat-form-field class="fuse-mat-no-subscript w-full">
+                      <mat-form-field class="fuse-mat-no-subscript w-100">
                         <mat-label>Name</mat-label>
                         <mat-icon
                             class="icon-size-5"
-                            [svgIcon]="'heroicons_solid:academic-cap'"
+                            [svgIcon]="'heroicons_solid:shield-check'"
                             matPrefix></mat-icon>
 
                             <input type="text" class="form-control" id="name"
@@ -93,14 +93,17 @@
                         <span style="color:red;">Name is required</span>
                       </div>
                     </div>
+
+                    <!-- Spacer -->
+                    <div class="mt-5"></div>
               
                     <div class="form-group">
 
-                        <mat-form-field class="fuse-mat-no-subscript w-full">
+                        <mat-form-field class="fuse-mat-no-subscript w-100">
                             <mat-label>Alter Ego</mat-label>
                             <mat-icon
                                 class="icon-size-5"
-                                [svgIcon]="'heroicons_solid:academic-cap'"
+                                [svgIcon]="'heroicons_solid:briefcase'"
                                 matPrefix></mat-icon>
     
                                 <input type="text" class="form-control" id="alterEgo"
@@ -109,11 +112,14 @@
                         </mat-form-field>
                         
                     </div>
+
+                    <!-- Spacer -->
+                    <div class="mt-5"></div>
               
                     <div class="form-group">
 
 
-                        <mat-form-field appearance="fill">
+                        <mat-form-field appearance="fill" style="width:400px;">
                             <mat-label>Hero Power</mat-label>
                             <mat-select id="power" required [(ngModel)]="model.power" name="power" #power="ngModel">
                               <mat-option *ngFor="let pow of powers" [value]="pow">
@@ -129,10 +135,11 @@
 
                     </div>
 
-                    <button type="button" class="btn btn-default" (click)="newHero(); heroForm.reset()">New Hero</button>
+                    <!-- Spacer -->
+                    <div class="mt-5"></div>
 
                         <!-- Actions -->
-                        <div class="flex items-center justify-end">
+                        <div class="flex shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
                             <button  
                                 [disabled]="!heroForm.form.valid" 
                                 class="ml-4"
@@ -142,11 +149,21 @@
                                 Submit Hero
                             </button>
 
+                            <button  
+                                (click)="newHero(); heroForm.reset()"
+                                class="ml-4"
+                                mat-stroked-button
+                                type="button"
+                                [color]="'primary'">
+                                New Hero
+                            </button>
                         </div>
 
+                    <!-- Spacer -->
+                    <div class="mt-5"></div>
 
                     <!-- #region Form Status -->
-                    <div class="fg">
+                    <div>
                         <b>Form Status Flags:</b>
                         {{ heroForm.status }},
                         {{ heroForm.touched ? 'touched' : 'untouched'}},
@@ -159,21 +176,40 @@
                 </div>
               
                 <div [hidden]="!submitted">
-                  <h2>You submitted the following:</h2>
-                  <div class="row">
-                    <div class="col-xs-3">Name</div>
-                    <div class="col-xs-9">{{ model.name }}</div>
-                  </div>
-                  <div class="row">
-                    <div class="col-xs-3">Alter Ego</div>
-                    <div class="col-xs-9">{{ model.alterEgo }}</div>
-                  </div>
-                  <div class="row">
-                    <div class="col-xs-3">Power</div>
-                    <div class="col-xs-9">{{ model.power }}</div>
-                  </div>
-                  <br>
-                  <button type="button" class="btn btn-primary" (click)="submitted=false">Edit</button>
+
+                    <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate">
+                        Submitted Hero
+                    </h2>
+
+                    <table class="table-auto" style="width:600px;border: 1px solid black;">
+                    <thead>
+                        <tr>
+                        <th style="border: 1px solid black;">Name</th>
+                        <th style="border: 1px solid black;">Alter Ego</th>
+                        <th style="border: 1px solid black;">Super Power</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                        <td style="border: 1px solid black;">{{ model.name }}</td>
+                        <td style="border: 1px solid black;">{{ model.alterEgo }}</td>
+                        <td style="border: 1px solid black;">{{ model.power }}</td>
+                        </tr>
+                    </tbody>
+                    </table>
+                    
+                    <!-- Spacer -->
+                    <div class="mt-5"></div>
+                    
+                    <button  
+                    (click)="submitted=false"
+                    class="ml-4"
+                    mat-stroked-button
+                    type="button"
+                    [color]="'primary'">
+                    Edit
+                    </button>
+
                 </div>
               </div>
        
