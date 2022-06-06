@@ -11,6 +11,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatTableModule } from '@angular/material/table';
 import { FuseAlertModule } from '@fuse/components/alert';
 import { SharedModule } from 'app/shared/shared.module';
 
@@ -36,6 +37,7 @@ const talenthobbiesRoutes: Route[] = [
     MatSidenavModule,
     MatSlideToggleModule,
     MatTabsModule,
+    MatTableModule,
     FuseAlertModule,
     SharedModule,
     RouterModule.forChild(talenthobbiesRoutes)

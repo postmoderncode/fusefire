@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { AngularFireDatabase, AngularFireList, AngularFireObject } from '@angular/fire/compat/database';
+import { AngularFireDatabase, AngularFireList } from '@angular/fire/compat/database';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -9,10 +9,11 @@ import { Observable } from 'rxjs';
 })
 export class TalentHobbiesComponent implements OnInit {
 
+  model = new Talent('', '');
   listRef: AngularFireList<any>;
   sublistRef: AngularFireList<any>;
   items: Observable<any[]>;
-  model = new Talent('', '');
+  displayedColumns = ['name', 'description'];
 
   constructor(public db: AngularFireDatabase) {
 
