@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { AngularFireDatabase, AngularFireList, AngularFireObject } from '@angular/fire/compat/database';
 import { FormControl, FormGroup } from '@angular/forms';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-talents',
@@ -11,9 +10,9 @@ import { Observable } from 'rxjs';
 export class TalentHobbiesComponent implements OnInit {
 
   listRef: AngularFireList<any>;
+  sublistRef: AngularFireList<any>;
   itemRef: AngularFireObject<any>;
   subitemRef: AngularFireObject<any>;
-  obskill: Observable<any>;
 
   model = new Talent('');
 
@@ -23,7 +22,7 @@ export class TalentHobbiesComponent implements OnInit {
 
 
     //Placeholder variable to make sure dynamic paths are possible
-    const fbkey: string = "cQT4PtEZEAczJoAcbghuCtt7vDP2";
+    const fbkey: string = 'cQT4PtEZEAczJoAcbghuCtt7vDP2';
 
     //Reference for single update
     //this.itemRef = this.db.object('/users/' + fbkey + '/talents');
@@ -32,16 +31,12 @@ export class TalentHobbiesComponent implements OnInit {
     this.subitemRef = this.db.object('/talents/' + fbkey);
 
     //Define Promise
-    const promise_updateskill = this.listRef.push({ name: this.model.name });
+    const promiseUpdateskill = this.listRef.push({ name: this.model.name });
 
     //Call Promise
-    promise_updateskill
-      .then(_ => //Update 2nd List
-        this.subitemRef.update({ name: this.model.name })
-      )
-      .catch(err => //Handle Error
-        console.log(err, 'Error Submitting Talent!')
-      );
+    promiseUpdateskill
+      .then(_ => this.sublistRef.push({ name: this.model.name }))
+      .catch(err => console.log(err, 'Error Submitting Talent!'));
 
   }
 
@@ -49,25 +44,8 @@ export class TalentHobbiesComponent implements OnInit {
 
     //Reference for list
     this.listRef = this.db.list('/users/cQT4PtEZEAczJoAcbghuCtt7vDP2/talents');
-    //Observable for list
-    this.obskill = this.listRef.valueChanges();
-
-    //Log changes to Console
-    //db.list<any>('users').valueChanges().subscribe(console.log);
-
-    // Push item to List
-    //this.listRef.push({ name: data.skillname, rating: data.skillrating });
-
-    // Set item (Destructive Update)
-    //this.itemRef.set({ name: data.skillname, rating: data.skillrating });
-
-    // Update item (Non-Destructive Update)
-    //this.itemRef.update({ name: data.skillname, rating: data.skillrating });
-
-    // Delete item
-    //this.itemRef.remove(); 
-
-
+    //Reference for list
+    this.sublistRef = this.db.list('/talents/cQT4PtEZEAczJoAcbghuCtt7vDP2');
 
   }
 
