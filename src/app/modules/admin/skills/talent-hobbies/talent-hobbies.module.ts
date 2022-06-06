@@ -21,7 +21,6 @@ const talenthobbiesRoutes: Route[] = [
   }
 ];
 
-
 @NgModule({
   declarations: [
     TalentHobbiesComponent
