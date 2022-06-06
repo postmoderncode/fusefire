@@ -100,23 +100,32 @@
                 <!-- Spacer -->
                 <div class="mt-5"></div>
 
-
-                        <!-- Actions -->
-                        <div class="flex shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
-                            <button  
-                                (click)="onSubmit(); talentForm.resetForm()"
-                                [disabled]="!talentForm.form.valid" 
-                                class="ml-4"
-                                mat-flat-button
-                                type="button"
-                                [color]="'primary'">
-                                Submit Talent
-                            </button>
-                        </div>
+                <!-- Actions -->
+                <div class="flex shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
+                    <button  
+                        (click)="onSubmit(); talentForm.resetForm()"
+                        [disabled]="!talentForm.form.valid" 
+                        class="ml-4"
+                        mat-flat-button
+                        type="button"
+                        [color]="'primary'">
+                        Submit Talent
+                    </button>
+                </div>
 
             </form>
 
+            <!-- Spacer -->
+            <div class="mt-5"></div>
 
+            <!-- List -->
+            <table class="table-auto" style="width:400px;border: 1px solid gray;">
+                <tbody>
+                    <tr *ngFor="let item of items | async">
+                    <td style="border: 1px solid gray;">{{ item.name }}</td>
+                    </tr>
+                </tbody>
+            </table>
 
         </div>
 

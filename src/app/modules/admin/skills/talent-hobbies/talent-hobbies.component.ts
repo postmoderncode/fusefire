@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { AngularFireDatabase, AngularFireList, AngularFireObject } from '@angular/fire/compat/database';
-import { FormControl, FormGroup } from '@angular/forms';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-talents',
@@ -11,10 +11,14 @@ export class TalentHobbiesComponent implements OnInit {
 
   listRef: AngularFireList<any>;
   sublistRef: AngularFireList<any>;
-
+  items: Observable<any[]>;
   model = new Talent('');
 
-  constructor(public db: AngularFireDatabase) { }
+  constructor(public db: AngularFireDatabase) {
+
+    this.items = db.list('/users/cQT4PtEZEAczJoAcbghuCtt7vDP2/talents').valueChanges();
+
+  }
 
   onSubmit(): void {
 
