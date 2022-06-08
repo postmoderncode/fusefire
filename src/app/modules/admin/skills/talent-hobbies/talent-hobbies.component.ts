@@ -35,11 +35,11 @@ export class TalentHobbiesComponent implements OnInit {
     const mdescription: string = this.model.description;
 
     //Define Promise
-    const promiseUpdateskill = this.listRef.push({ name: mname, description: mdescription, created: Date.now() });
+    const promiseUpdateskill = this.listRef.push({ name: mname, description: mdescription, created: Math.floor(Date.now()), modified: Math.floor(Date.now()) });
 
     //Call Promise
     promiseUpdateskill
-      .then(_ => this.sublistRef.push({ name: mname, description: mdescription }))
+      .then(_ => this.sublistRef.push({ name: mname, description: mdescription, created: Math.floor(Date.now()), modified: Math.floor(Date.now()) }))
       .then(_ => this.showaddtalent = false)
       .catch(err => console.log(err, 'Error Submitting Talent!'));
 
