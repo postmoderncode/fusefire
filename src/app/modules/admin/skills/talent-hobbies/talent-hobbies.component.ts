@@ -13,7 +13,7 @@ export class TalentHobbiesComponent implements OnInit {
   listRef: AngularFireList<any>;
   sublistRef: AngularFireList<any>;
   items: Observable<any[]>;
-  displayedColumns = ['name', 'description', 'created', 'delete', 'edit'];
+  displayedColumns = ['name', 'description', 'created', 'actions'];
   showaddtalent = false;
 
   constructor(public db: AngularFireDatabase,) {
