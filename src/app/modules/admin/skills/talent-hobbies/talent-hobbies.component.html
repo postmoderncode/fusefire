@@ -15,6 +15,16 @@
         <!-- Actions -->
         <div class="flex shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
 
+            <div [hidden]="!showaddtalent">
+                <button  
+                    (click)="onHideAdd(); talentForm.resetForm()"
+                    class="ml-4"
+                    mat-stroked-button
+                    type="button"
+                    [color]="'primary'">
+                    Cancel
+                </button>
+            </div>
             <button  
                 (click)="onShowAdd();"
                 [disabled]="showaddtalent"
@@ -115,7 +125,7 @@
             </div>
 
             <!-- List -->
-            <table mat-table [dataSource]="items" class="mat-elevation-z8 w-full">
+            <table mat-table [dataSource]="items" class="mat-elevation-z8 w-full" [hidden]="showaddtalent">
                 <!-- Name Column -->
                 <ng-container matColumnDef="name">
                     <th mat-header-cell *matHeaderCellDef> Name </th>
@@ -163,42 +173,51 @@
             <!-- Spacer -->
             <div class="mt-10"></div>
 
-            <!-- Talent Card -->
-            <div class="flex shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
-                <div *ngFor="let item of items | async">
-                    <!-- Card #38 -->
-                    <fuse-card class="flex flex-col max-w-80 w-full p-8 filter-info">
-                        <div class="text-2xl font-semibold leading-tight">{{item.payload.val().name}}</div>
-                        <div class="mt-4">
-                            {{item.payload.val().description}}
-                        </div>
-                        <hr class="w-full border-t my-6">
-                        <div class="flex flex-col">
+            <div [hidden]="showaddtalent">
+                <h2 class="text-3xl md:text-3xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate">
+                Card View
+                </h2>  
 
-                            <div class="flex items-center mt-4">
-                                <mat-icon
-                                    matTooltip="created"
-                                    class="icon-size-5 mr-3"
-                                    [svgIcon]="'heroicons_solid:calendar'"></mat-icon>
-                                <span class="leading-none">{{item.payload.val().created | date: 'MM/dd/yy h:mm a'}}</span>
+                <!-- Talent Card -->
+                <div class="flex shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
+          
+                    <div *ngFor="let item of items | async">
+                        <!-- Card #38 -->
+                        <fuse-card class="flex flex-col max-w-80 w-full p-8 filter-info">
+                            <div class="text-2xl font-semibold leading-tight">{{item.payload.val().name}}</div>
+                            <div class="mt-4">
+                                {{item.payload.val().description}}
                             </div>
-                        </div>
-                        <div class="italic mt-3 text-sm">{{item.key}}</div>
-                        <div class="flex shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
+                            <hr class="w-full border-t my-6">
+                            <div class="flex flex-col">
 
-                            <button mat-mini-fab color="warn" matTooltip="delete" class="px-6 mt-8 mr-2">
-                                <mat-icon>delete</mat-icon>
-                            </button>
-                            
-                            <button mat-mini-fab color="primary" matTooltip="edit" class="px-6 mt-8">
-                                <mat-icon>edit</mat-icon>
-                            </button>
-                        </div>
-                        
-                        
-                    </fuse-card>
+                                <div class="flex items-center mt-4">
+                                    <mat-icon
+                                        matTooltip="created"
+                                        class="icon-size-5 mr-3"
+                                        [svgIcon]="'heroicons_solid:calendar'"></mat-icon>
+                                    <span class="leading-none">{{item.payload.val().created | date: 'MM/dd/yy h:mm a'}}</span>
+                                </div>
+                            </div>
+                            <div class="italic mt-3 text-sm">{{item.key}}</div>
+                            <div class="flex shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
+
+                                <button mat-mini-fab color="warn" matTooltip="delete" class="px-6 mt-8 mr-2">
+                                    <mat-icon>delete</mat-icon>
+                                </button>
+                                
+                                <button mat-mini-fab color="primary" matTooltip="edit" class="px-6 mt-8">
+                                    <mat-icon>edit</mat-icon>
+                                </button>
+                            </div>
+                                                 
+                        </fuse-card>
+                    </div>
+
                 </div>
+
             </div>
+
         </div>
 
     </div>
