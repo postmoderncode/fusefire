@@ -10,7 +10,7 @@ import { Observable } from 'rxjs';
 })
 export class TalentHobbiesComponent implements OnInit {
 
-  model = new Talent('', '', '', '');
+  model = new Talent('', '', '', '', '');
   listRef: AngularFireList<any>;
   item: Observable<any>;
   items: Observable<any[]>;
@@ -70,20 +70,19 @@ export class TalentHobbiesComponent implements OnInit {
 
     this.item = this.db.object('/users/' + this.fbkey + '/talents/' + key).valueChanges();
     this.item.subscribe(item => {
-      this.model = new Talent(item.name, item.description, item.created, item.modified);
+      this.model = new Talent(item.key, item.name, item.description, item.created, item.modified);
     });
     console.log(key + 'has been selected to edit');
-
   }
 
   onHideEditForm(): void {
     this.showedittalent = false;
+    this.model = new Talent('', '', '', '', '');
   }
 
   ngOnInit(): void {
     this.items = this.db.list('/users/cQT4PtEZEAczJoAcbghuCtt7vDP2/talents').snapshotChanges();
   }
-
 
 }
 
@@ -91,6 +90,7 @@ export class TalentHobbiesComponent implements OnInit {
 export class Talent {
 
   constructor(
+    public key: string,
     public name: string,
     public description: string,
     public created: string,

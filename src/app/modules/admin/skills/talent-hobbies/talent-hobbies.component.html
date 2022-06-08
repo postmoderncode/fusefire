@@ -131,7 +131,7 @@
                     Edit Talent or Hobby
                 </h2>
 
-                <form (ngSubmit)="onEdit('key')" #edittalentForm="ngForm">
+                <form (ngSubmit)="onEdit(model.key)" #edittalentForm="ngForm">
                     <div class="form-group">
                     <mat-form-field class="fuse-mat-no-subscript w-full">
                         <mat-label>Talent Name</mat-label>
@@ -172,7 +172,13 @@
                             </textarea>
                     </mat-form-field>
                     </div>
-    
+
+                    <div class="float-right text-right mt-3">
+                    created:{{model.created | date: 'MM/dd/yy h:mm a'}}
+                    <br />
+                    modified:{{model.modified | date: 'MM/dd/yy h:mm a'}}
+                    </div>
+
                     <!-- Spacer -->
                     <div class="mt-5"></div>
 
@@ -180,7 +186,7 @@
                     <div class="flex shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
 
                         <button  
-                            (click)="onHideEditForm()"
+                            (click)="onHideEditForm(); edittalentForm.resetForm()"
                             class="ml-4"
                             mat-stroked-button
                             type="button"
@@ -189,7 +195,7 @@
                         </button>
 
                         <button  
-                            (click)="onSubmit()"
+                            (click)="onEdit(model.key)"
                             [disabled]="!edittalentForm.form.valid" 
                             class="ml-4"
                             mat-flat-button
