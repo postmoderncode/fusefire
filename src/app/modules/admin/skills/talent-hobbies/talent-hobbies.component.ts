@@ -15,6 +15,7 @@ export class TalentHobbiesComponent implements OnInit {
   items: Observable<any[]>;
   displayedColumns = ['name', 'description', 'created', 'delete', 'edit'];
   showaddtalent = false;
+  showedittalent = false;
 
   //Placeholder variable to make sure dynamic paths are possible
   fbkey: string = 'cQT4PtEZEAczJoAcbghuCtt7vDP2';
@@ -54,11 +55,21 @@ export class TalentHobbiesComponent implements OnInit {
   }
 
   onShowAddForm(): void {
+    this.showedittalent = false;
     this.showaddtalent = true;
   }
 
   onHideAddForm(): void {
     this.showaddtalent = false;
+  }
+
+  onShowEditForm(): void {
+    this.showaddtalent = false;
+    this.showedittalent = true;
+  }
+
+  onHideEditForm(): void {
+    this.showedittalent = false;
   }
 
   ngOnInit(): void {
