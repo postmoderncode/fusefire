@@ -47,6 +47,7 @@
 
             <button  
                 (click)="onShowAdd();"
+                [disabled]="showaddtalent"
                 class="ml-4"
                 mat-flat-button
                 type="button"
@@ -63,13 +64,13 @@
         <div class="h-400 min-h-400 max-h-400">
 
             <div [hidden]="!showaddtalent">
-                <h2 class="text-3xl md:text-4xl font-bold tracking-tight leading-7 sm:leading-10 truncate mb-10">
+                <h2 class="text-3xl md:text-4xl font-bold tracking-tight leading-7 sm:leading-10 truncate mb-5">
                     Add Talent
                 </h2>
 
                 <form (ngSubmit)="onSubmit()" #talentForm="ngForm">
                     <div class="form-group">
-                    <mat-form-field class="fuse-mat-no-subscript w-100">
+                    <mat-form-field class="fuse-mat-no-subscript w-full">
                         <mat-label>Talent Name</mat-label>
                         <mat-icon
                             class="icon-size-5"
@@ -93,7 +94,7 @@
                     <div class="mt-5"></div>
 
                     <div class="form-group">
-                        <mat-form-field class="fuse-mat-no-subscript w-100">
+                        <mat-form-field class="fuse-mat-no-subscript w-full">
                         <mat-label>Description</mat-label>
                         <mat-icon
                             class="icon-size-5"
@@ -144,7 +145,7 @@
             <div class="mt-10"></div>
 
             <!-- List -->
-            <table mat-table [dataSource]="items" class="mat-elevation-z8" style="min-width:500px;">
+            <table mat-table [dataSource]="items" class="mat-elevation-z8 w-full">
                 <!-- Name Column -->
                 <ng-container matColumnDef="name">
                     <th mat-header-cell *matHeaderCellDef> Name </th>
