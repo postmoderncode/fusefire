@@ -67,6 +67,7 @@ export class TalentHobbiesComponent implements OnInit {
 
 }
 
+// Empty Talent class
 export class Talent {
 
   constructor(
