@@ -44,20 +44,14 @@
         </div>
         <!-- Actions -->
         <div class="flex shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
-            <button mat-stroked-button>
-                <mat-icon
-                    class="icon-size-5 mr-2"
-                    [svgIcon]="'heroicons_solid:pencil-alt'"></mat-icon>
-                Edit
-            </button>
-            <button
-                class="ml-3"
+
+            <button  
+                (click)="onShowAdd();"
+                class="ml-4"
                 mat-flat-button
+                type="button"
                 [color]="'primary'">
-                <mat-icon
-                    class="icon-size-5 mr-2"
-                    [svgIcon]="'heroicons_solid:link'"></mat-icon>
-                View
+                Add Talent
             </button>
         </div>
     </div>
@@ -66,71 +60,85 @@
     <div class="flex-auto -mt-16 p-6 sm:p-10 rounded-t-2xl shadow bg-card">
 
         <!-- CONTENT GOES HERE -->
-        <div class="h-400 min-h-400 max-h-400 border-2 border-dashed border-gray-300 rounded-2xl">
+        <div class="h-400 min-h-400 max-h-400">
 
-            <h2 class="text-3xl md:text-4xl font-bold tracking-tight leading-7 sm:leading-10 truncate mb-10">
-                Add Talent
-            </h2>
+            <div [hidden]="!showaddtalent">
+                <h2 class="text-3xl md:text-4xl font-bold tracking-tight leading-7 sm:leading-10 truncate mb-10">
+                    Add Talent
+                </h2>
 
-            <form (ngSubmit)="onSubmit()" #talentForm="ngForm">
-                <div class="form-group">
-                  <mat-form-field class="fuse-mat-no-subscript w-100">
-                    <mat-label>Talent Name</mat-label>
-                    <mat-icon
-                        class="icon-size-5"
-                        [svgIcon]="'heroicons_solid:shield-check'"
-                        matPrefix></mat-icon>
-                        <input type="text"
-                        id="name" 
-                        class="form-control" 
-                        #name="ngModel"
-                        [(ngModel)]="model.name" name="name"
-                        required
-                        matInput>
-                </mat-form-field>
-
-                  <div [hidden]="name.valid || name.pristine" class="alert alert-danger">
-                    <span style="color:red;">Name is required</span>
-                  </div>
-                </div>
-
-                <!-- Spacer -->
-                <div class="mt-5"></div>
-
-                <div class="form-group">
+                <form (ngSubmit)="onSubmit()" #talentForm="ngForm">
+                    <div class="form-group">
                     <mat-form-field class="fuse-mat-no-subscript w-100">
-                      <mat-label>Description</mat-label>
-                      <mat-icon
-                          class="icon-size-5"
-                          [svgIcon]="'heroicons_solid:annotation'"
-                          matPrefix></mat-icon>
-                          <textarea type="text"
-                          id="description" 
-                          class="form-control" 
-                          #name="ngModel"
-                          [(ngModel)]="model.description" name="description"
-                          matInput>
-                        </textarea>
-                  </mat-form-field>
-                  </div>
-  
-                  <!-- Spacer -->
-                  <div class="mt-5"></div>
+                        <mat-label>Talent Name</mat-label>
+                        <mat-icon
+                            class="icon-size-5"
+                            [svgIcon]="'heroicons_solid:shield-check'"
+                            matPrefix></mat-icon>
+                            <input type="text"
+                            id="name" 
+                            class="form-control" 
+                            #name="ngModel"
+                            [(ngModel)]="model.name" name="name"
+                            required
+                            matInput>
+                    </mat-form-field>
 
-                <!-- Actions -->
-                <div class="flex shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
-                    <button  
-                        (click)="onSubmit(); talentForm.resetForm()"
-                        [disabled]="!talentForm.form.valid" 
-                        class="ml-4"
-                        mat-flat-button
-                        type="button"
-                        [color]="'primary'">
-                        Submit Talent
-                    </button>
-                </div>
+                    <div [hidden]="name.valid || name.pristine" class="alert alert-danger">
+                        <span style="color:red;">Name is required</span>
+                    </div>
+                    </div>
 
-            </form>
+                    <!-- Spacer -->
+                    <div class="mt-5"></div>
+
+                    <div class="form-group">
+                        <mat-form-field class="fuse-mat-no-subscript w-100">
+                        <mat-label>Description</mat-label>
+                        <mat-icon
+                            class="icon-size-5"
+                            [svgIcon]="'heroicons_solid:annotation'"
+                            matPrefix></mat-icon>
+                            <textarea type="text"
+                            id="description" 
+                            class="form-control" 
+                            #name="ngModel"
+                            [(ngModel)]="model.description" name="description"
+                            matInput>
+                            </textarea>
+                    </mat-form-field>
+                    </div>
+    
+                    <!-- Spacer -->
+                    <div class="mt-5"></div>
+
+                    <!-- Actions -->
+                    <div class="flex shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
+
+                        <button  
+                            (click)="onHideAdd(); talentForm.resetForm()"
+                            class="ml-4"
+                            mat-stroked-button
+                            type="button"
+                            [color]="'primary'">
+                            Cancel
+                        </button>
+
+                        <button  
+                            (click)="onSubmit(); talentForm.resetForm()"
+                            [disabled]="!talentForm.form.valid" 
+                            class="ml-4"
+                            mat-flat-button
+                            type="button"
+                            [color]="'primary'">
+                            Submit Talent
+                        </button>
+        
+                    </div>
+
+                </form>
+
+            </div>
 
             <!-- Spacer -->
             <div class="mt-10"></div>

@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { AngularFireDatabase, AngularFireList } from '@angular/fire/compat/database';
+import { AngularFireDatabase, AngularFireList, AngularFireObject } from '@angular/fire/compat/database';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -14,6 +14,7 @@ export class TalentHobbiesComponent implements OnInit {
   sublistRef: AngularFireList<any>;
   items: Observable<any[]>;
   displayedColumns = ['name', 'description'];
+  showaddtalent = false;
 
   constructor(public db: AngularFireDatabase) {
 
@@ -39,8 +40,17 @@ export class TalentHobbiesComponent implements OnInit {
     //Call Promise
     promiseUpdateskill
       .then(_ => this.sublistRef.push({ name: mname, description: mdescription }))
+      .then(_ => this.showaddtalent = false)
       .catch(err => console.log(err, 'Error Submitting Talent!'));
 
+  }
+
+  onShowAdd(): void {
+    this.showaddtalent = true;
+  }
+
+  onHideAdd(): void {
+    this.showaddtalent = false;
   }
 
   ngOnInit(): void { }
