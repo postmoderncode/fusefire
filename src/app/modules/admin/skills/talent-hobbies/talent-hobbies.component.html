@@ -119,32 +119,39 @@
                 <!-- Name Column -->
                 <ng-container matColumnDef="name">
                     <th mat-header-cell *matHeaderCellDef> Name </th>
-                    <td mat-cell *matCellDef="let item"> {{item.name}} </td>
+                    <td mat-cell *matCellDef="let item"> {{item.payload.val().name}} </td>
                 </ng-container>
 
                 <!-- Description Column -->
                 <ng-container matColumnDef="description">
                     <th mat-header-cell *matHeaderCellDef> Desription </th>
-                    <td mat-cell *matCellDef="let item"> {{item.description}} </td>
+                    <td mat-cell *matCellDef="let item"> {{item.payload.val().description}} </td>
                 </ng-container>
 
                 <!-- Created Column -->
                 <ng-container matColumnDef="created">
                     <th mat-header-cell *matHeaderCellDef> Created </th>
-                    <td mat-cell *matCellDef="let item"> {{item.created | date: 'MM/dd/yy h:mm a'}} </td>
+                    <td mat-cell *matCellDef="let item"> {{item.payload.val().created | date: 'MM/dd/yy h:mm a'}} </td>
                 </ng-container>
 
-                <ng-container matColumnDef="actions">
+                <ng-container matColumnDef="delete">
                     <th mat-header-cell  *matHeaderCellDef > </th>
                     <td mat-cell *matCellDef="let row" >
 
-                    <button mat-mini-fab color="warn" aria-label="Example icon button with a menu icon">
+                    <button mat-mini-fab color="warn" matTooltip="delete">
                         <mat-icon>delete</mat-icon>
                       </button>
-                    &nbsp;
-                      <button mat-mini-fab color="primary" aria-label="Example icon button with a menu icon">
-                        <mat-icon>edit</mat-icon>
-                      </button>
+
+                    </td>
+                  </ng-container>
+
+                <ng-container matColumnDef="edit">
+                    <th mat-header-cell  *matHeaderCellDef > </th>
+                    <td mat-cell *matCellDef="let row" >
+
+                        <button mat-mini-fab color="primary" matTooltip="edit">
+                            <mat-icon>edit</mat-icon>
+                          </button>
 
                     </td>
                   </ng-container>
@@ -153,6 +160,45 @@
                 <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
             </table>
 
+            <!-- Spacer -->
+            <div class="mt-10"></div>
+
+            <!-- Talent Card -->
+            <div class="flex shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
+                <div *ngFor="let item of items | async">
+                    <!-- Card #38 -->
+                    <fuse-card class="flex flex-col max-w-80 w-full p-8 filter-info">
+                        <div class="text-2xl font-semibold leading-tight">{{item.payload.val().name}}</div>
+                        <div class="mt-4">
+                            {{item.payload.val().description}}
+                        </div>
+                        <hr class="w-full border-t my-6">
+                        <div class="flex flex-col">
+
+                            <div class="flex items-center mt-4">
+                                <mat-icon
+                                    matTooltip="created"
+                                    class="icon-size-5 mr-3"
+                                    [svgIcon]="'heroicons_solid:calendar'"></mat-icon>
+                                <span class="leading-none">{{item.payload.val().created | date: 'MM/dd/yy h:mm a'}}</span>
+                            </div>
+                        </div>
+                        {{item.key}}
+                        <div class="flex shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
+
+                            <button mat-mini-fab color="warn" matTooltip="delete" class="px-6 mt-8 mr-3">
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                            
+                            <button mat-mini-fab color="primary" matTooltip="edit" class="px-6 mt-8">
+                                <mat-icon>edit</mat-icon>
+                            </button>
+                        </div>
+                        
+                        
+                    </fuse-card>
+                </div>
+            </div>
         </div>
 
     </div>

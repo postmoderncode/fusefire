@@ -15,6 +15,8 @@ import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { FuseAlertModule } from '@fuse/components/alert';
 import { SharedModule } from 'app/shared/shared.module';
+import { FuseCardModule } from '@fuse/components/card';
+
 
 const talenthobbiesRoutes: Route[] = [
   {
@@ -41,6 +43,7 @@ const talenthobbiesRoutes: Route[] = [
     MatTableModule,
     MatTooltipModule,
     FuseAlertModule,
+    FuseCardModule,
     SharedModule,
     RouterModule.forChild(talenthobbiesRoutes)
   ]
