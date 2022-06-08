@@ -131,7 +131,7 @@
                     Edit Talent or Hobby
                 </h2>
 
-                <form (ngSubmit)="onEdit('s')" #talentForm="ngForm">
+                <form (ngSubmit)="onEdit('key')" #edittalentForm="ngForm">
                     <div class="form-group">
                     <mat-form-field class="fuse-mat-no-subscript w-full">
                         <mat-label>Talent Name</mat-label>
@@ -190,12 +190,12 @@
 
                         <button  
                             (click)="onSubmit()"
-                            [disabled]="!talentForm.form.valid" 
+                            [disabled]="!edittalentForm.form.valid" 
                             class="ml-4"
                             mat-flat-button
                             type="button"
                             [color]="'primary'">
-                            Submit Talent
+                            Accept Edits
                         </button>
         
                     </div>
@@ -242,7 +242,7 @@
                 <ng-container matColumnDef="edit">
                     <th mat-header-cell  *matHeaderCellDef > </th>
                     <td mat-cell *matCellDef="let item" >
-                        <button mat-mini-fab color="basic" matTooltip="edit" (click)="onShowEditForm()">
+                        <button mat-mini-fab color="basic" matTooltip="edit" (click)="onShowEditForm(item.key)">
                             <mat-icon>edit</mat-icon>
                         </button>
                     </td>
@@ -291,7 +291,7 @@
                                         <mat-icon>delete</mat-icon>
                                     </button>
                                     
-                                    <button mat-mini-fab color="basic" matTooltip="edit" class="mt-8" (click)="onShowEditForm()">
+                                    <button mat-mini-fab color="basic" matTooltip="edit" class="mt-8" (click)="onShowEditForm(item.key)">
                                         <mat-icon>edit</mat-icon>
                                     </button>
                                 </div>

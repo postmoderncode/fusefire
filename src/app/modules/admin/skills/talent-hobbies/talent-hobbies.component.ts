@@ -12,6 +12,7 @@ export class TalentHobbiesComponent implements OnInit {
 
   model = new Talent('', '', '', '');
   listRef: AngularFireList<any>;
+  item: Observable<any>;
   items: Observable<any[]>;
   displayedColumns = ['name', 'description', 'created', 'delete', 'edit'];
   showaddtalent = false;
@@ -63,9 +64,15 @@ export class TalentHobbiesComponent implements OnInit {
     this.showaddtalent = false;
   }
 
-  onShowEditForm(): void {
+  onShowEditForm(key): void {
     this.showaddtalent = false;
     this.showedittalent = true;
+
+    //get selected item
+    console.log(key + 'has been selected to edit');
+    this.item = this.db.object('/users/' + this.fbkey + '/talents/' + key).valueChanges();
+    this.model = new Talent('', '', '', '');
+
   }
 
   onHideEditForm(): void {
