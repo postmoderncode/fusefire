@@ -12,6 +12,7 @@ export class TalentHobbiesComponent implements OnInit {
   model = new Talent('', '');
   listRef: AngularFireList<any>;
   sublistRef: AngularFireList<any>;
+  updateitemRef: AngularFireObject<any>;
   items: Observable<any[]>;
   displayedColumns = ['name', 'description', 'created', 'delete', 'edit'];
   showaddtalent = false;
@@ -45,11 +46,19 @@ export class TalentHobbiesComponent implements OnInit {
 
   }
 
-  onShowAdd(): void {
+  onEdit(key): void {
+    console.log(key + ' edited');
+  }
+
+  onDelete(key): void {
+    console.log(key + ' deleted');
+  }
+
+  onShowAddForm(): void {
     this.showaddtalent = true;
   }
 
-  onHideAdd(): void {
+  onHideAddForm(): void {
     this.showaddtalent = false;
   }
 
