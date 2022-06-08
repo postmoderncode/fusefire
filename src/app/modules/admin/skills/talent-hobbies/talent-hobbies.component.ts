@@ -32,10 +32,10 @@ export class TalentHobbiesComponent implements OnInit {
     const mdescription: string = this.model.description;
 
     //Define Promise
-    const promiseUpdateskill = this.listRef.push({ name: mname, description: mdescription, created: Math.floor(Date.now()), modified: Math.floor(Date.now()) });
+    const promiseAddTalent = this.listRef.push({ name: mname, description: mdescription, created: Math.floor(Date.now()), modified: Math.floor(Date.now()) });
 
     //Call Promise
-    promiseUpdateskill
+    promiseAddTalent
       .then(_ => this.db.object('/talents/' + this.fbkey + '/' + _.key).update({ name: mname, description: mdescription, created: Math.floor(Date.now()), modified: Math.floor(Date.now()) }))
       .then(_ => this.showaddtalent = false)
       .catch(err => console.log(err, 'Error Submitting Talent!'));
@@ -68,10 +68,11 @@ export class TalentHobbiesComponent implements OnInit {
     this.showaddtalent = false;
     this.showedittalent = true;
 
-    //get selected item
-    console.log(key + 'has been selected to edit');
     this.item = this.db.object('/users/' + this.fbkey + '/talents/' + key).valueChanges();
-    this.model = new Talent('', '', '', '');
+    this.item.subscribe(item => {
+      this.model = new Talent(item.name, item.description, item.created, item.modified);
+    });
+    console.log(key + 'has been selected to edit');
 
   }
 
@@ -82,6 +83,7 @@ export class TalentHobbiesComponent implements OnInit {
   ngOnInit(): void {
     this.items = this.db.list('/users/cQT4PtEZEAczJoAcbghuCtt7vDP2/talents').snapshotChanges();
   }
+
 
 }
 
