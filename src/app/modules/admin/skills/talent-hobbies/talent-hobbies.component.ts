@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { AngularFireDatabase, AngularFireList, AngularFireObject } from '@angular/fire/compat/database';
+import _ from 'lodash';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -11,11 +12,14 @@ export class TalentHobbiesComponent implements OnInit {
 
   model = new Talent('', '');
   listRef: AngularFireList<any>;
-  sublistRef: AngularFireList<any>;
-  updateitemRef: AngularFireObject<any>;
+  sublistRef: AngularFireObject<any>;
+  itemRef: AngularFireObject<any>;
+  subitemRef: AngularFireObject<any>;
   items: Observable<any[]>;
   displayedColumns = ['name', 'description', 'created', 'delete', 'edit'];
   showaddtalent = false;
+  //Placeholder variable to make sure dynamic paths are possible
+  fbkey: string = 'cQT4PtEZEAczJoAcbghuCtt7vDP2';
 
   constructor(public db: AngularFireDatabase,) {
 
@@ -25,11 +29,8 @@ export class TalentHobbiesComponent implements OnInit {
 
   onSubmit(): void {
 
-    //Placeholder variable to make sure dynamic paths are possible
-    const fbkey: string = 'cQT4PtEZEAczJoAcbghuCtt7vDP2';
-
-    this.listRef = this.db.list('/users/' + fbkey + '/talents');
-    this.sublistRef = this.db.list('/talents/' + fbkey);
+    this.listRef = this.db.list('/users/' + this.fbkey + '/talents');
+    this.sublistRef = this.db.object('/talents/' + this.fbkey);
 
     //Cast model to variable for formReset
     const mname: string = this.model.name;
@@ -38,9 +39,11 @@ export class TalentHobbiesComponent implements OnInit {
     //Define Promise
     const promiseUpdateskill = this.listRef.push({ name: mname, description: mdescription, created: Math.floor(Date.now()), modified: Math.floor(Date.now()) });
 
+    //this.db.object('/talents/' + this.fbkey + _.key).update({ name: mname, description: mdescription, created: Math.floor(Date.now()), modified: Math.floor(Date.now()) });
+
     //Call Promise
     promiseUpdateskill
-      .then(_ => this.sublistRef.push({ name: mname, description: mdescription, created: Math.floor(Date.now()), modified: Math.floor(Date.now()) }))
+      .then(_ => this.db.object('/talents/' + this.fbkey + '/' + _.key).update({ name: mname, description: mdescription, created: Math.floor(Date.now()), modified: Math.floor(Date.now()) }))
       .then(_ => this.showaddtalent = false)
       .catch(err => console.log(err, 'Error Submitting Talent!'));
 
@@ -48,10 +51,18 @@ export class TalentHobbiesComponent implements OnInit {
 
   onEdit(key): void {
     console.log(key + ' edited');
+    this.itemRef = this.db.object('/users/' + this.fbkey + '/talents/' + key);
+
   }
 
   onDelete(key): void {
+
+    this.itemRef = this.db.object('/users/' + this.fbkey + '/talents/' + key);
+    this.subitemRef = this.db.object('/talents/' + this.fbkey + '/' + key);
+    this.itemRef.remove();
+    this.subitemRef.remove();
     console.log(key + ' deleted');
+    console.log('/talents/' + this.fbkey + '/' + key);
   }
 
   onShowAddForm(): void {
