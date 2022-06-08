@@ -13,7 +13,7 @@ export class TalentHobbiesComponent implements OnInit {
   listRef: AngularFireList<any>;
   sublistRef: AngularFireList<any>;
   items: Observable<any[]>;
-  displayedColumns = ['name', 'description', 'delete', 'edit'];
+  displayedColumns = ['name', 'description', 'created', 'delete', 'edit'];
   showaddtalent = false;
 
   constructor(public db: AngularFireDatabase,) {
@@ -35,7 +35,7 @@ export class TalentHobbiesComponent implements OnInit {
     const mdescription: string = this.model.description;
 
     //Define Promise
-    const promiseUpdateskill = this.listRef.push({ name: mname, description: mdescription });
+    const promiseUpdateskill = this.listRef.push({ name: mname, description: mdescription, created: Date.now() });
 
     //Call Promise
     promiseUpdateskill
