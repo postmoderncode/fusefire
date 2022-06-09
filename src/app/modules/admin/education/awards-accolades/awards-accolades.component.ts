@@ -46,7 +46,7 @@ export class AwardsAccoladesComponent implements OnInit {
 
     //Define Promise
     const promiseAddItem = this.listRef
-    .push({ name: mname, description: mdescription, created: mdatenow, modified: mdatenow, user: this.fbuserid, awardedby: mawardedby, awardedon: mawardedon });
+      .push({ name: mname, description: mdescription, created: mdatenow, modified: mdatenow, user: this.fbuserid, awardedby: mawardedby, awardedon: mawardedon });
 
     //Call Promise
     promiseAddItem
@@ -125,7 +125,7 @@ export class AwardsAccoladesComponent implements OnInit {
 
   onDateChange(event: MatDatepickerInputEvent<any>, control: AbstractControl): void {
 
-    this.model.awardedon = ((event.value.valueOf() / 1000).toString());
+    this.model.awardedon = ((event.value.valueOf()).toString());
   }
 
   ngOnInit(): void {

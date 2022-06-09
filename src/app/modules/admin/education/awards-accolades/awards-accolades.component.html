@@ -24,7 +24,7 @@
                 </button>
             </div>
             <button  
-                (click)="onShowAddForm();"
+                (click)="onShowAddForm(); addItemForm.resetForm(); editItemForm.resetForm();"
                 [disabled]="showadditem"
                 class="ml-4"
                 mat-flat-button
@@ -231,16 +231,16 @@
     
                     <!-- Spacer -->
                     <div class="mt-5"></div>
-
+                    
                     <div class="form-group">
                     <mat-form-field appearance="fill">
-                        <mat-label>Date Awarded</mat-label>
+                        <mat-label>Awarded {{model.awardedon| date: 'MM/dd/yyyy'}}</mat-label>
                         <input matInput [matDatepicker]="editpicker" 
                         (dateChange)="onDateChange($event, editpicker)"
                         name="awardedon"  
                         id="awardedon"
                         class="form-control">
-                        <mat-hint>{{model.awardedon| date: 'MM/dd/yy h:mm a'}}</mat-hint>
+                        <mat-hint>MM/DD/YYYY</mat-hint>
                         <mat-datepicker-toggle matSuffix [for]="editpicker"></mat-datepicker-toggle>
                         <mat-datepicker #editpicker startView="year"></mat-datepicker>
                       </mat-form-field>
