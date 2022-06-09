@@ -15,7 +15,7 @@
 
             <div [hidden]="!showaddtalent">
                 <button  
-                    (click)="onHideAddForm(); talentForm.resetForm()"
+                    (click)="onHideAddForm(); talentForm.resetForm(); edittalentForm.resetForm();"
                     class="ml-4"
                     mat-stroked-button
                     type="button"
@@ -96,7 +96,7 @@
                     <div class="flex shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
 
                         <button  
-                            (click)="onHideAddForm(); talentForm.resetForm()"
+                            (click)="onHideAddForm(); talentForm.resetForm(); edittalentForm.resetForm();"
                             class="ml-4"
                             mat-stroked-button
                             type="button"
@@ -105,7 +105,7 @@
                         </button>
 
                         <button  
-                            (click)="onSubmit(); talentForm.resetForm()"
+                            (click)="onSubmit(); talentForm.resetForm(); edittalentForm.resetForm();"
                             [disabled]="!talentForm.form.valid" 
                             class="ml-4"
                             mat-flat-button
@@ -122,8 +122,6 @@
                 <div class="mt-10"></div>
 
             </div>
-
-
 
             <!-- Edit Form -->
             <div [hidden]="!showedittalent">
@@ -186,7 +184,7 @@
                     <div class="flex shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
 
                         <button  
-                            (click)="onHideEditForm(); edittalentForm.resetForm()"
+                            (click)="onHideEditForm(); edittalentForm.resetForm(); talentForm.resetForm()"
                             class="ml-4"
                             mat-stroked-button
                             type="button"
@@ -195,7 +193,7 @@
                         </button>
 
                         <button  
-                            (click)="onEdit(model.key)"
+                            (click)="onEdit(model.key); edittalentForm.resetForm(); talentForm.resetForm()"
                             [disabled]="!edittalentForm.form.valid" 
                             class="ml-4"
                             mat-flat-button
