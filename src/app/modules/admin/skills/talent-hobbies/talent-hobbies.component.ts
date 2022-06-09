@@ -18,19 +18,19 @@ export class TalentHobbiesComponent implements OnInit {
   listRef: AngularFireList<any>;
   item: Observable<any>;
   items: Observable<any[]>;
-  showaddtalent = false;
-  showedittalent = false;
-
-  //Placeholder variable to make sure dynamic paths are possible
-  //fbkey: string = 'cQT4PtEZEAczJoAcbghuCtt7vDP2';
+  showadditem = false;
+  showedititem = false;
   fbuserid: string = localStorage.getItem('fbuserid');
-
   configForm: FormGroup;
 
   /**
    * Constructor
    */
-  constructor(private _formBuilder: FormBuilder, private _fuseConfirmationService: FuseConfirmationService, public db: AngularFireDatabase,) { }
+  constructor(
+    private _formBuilder: FormBuilder,
+    private _fuseConfirmationService: FuseConfirmationService,
+    public db: AngularFireDatabase
+  ) { }
 
   onSubmit(): void {
 
@@ -41,13 +41,13 @@ export class TalentHobbiesComponent implements OnInit {
     const mdescription: string = this.model.description;
 
     //Define Promise
-    const promiseAddTalent = this.listRef.push({ name: mname, description: mdescription, created: Math.floor(Date.now()), modified: Math.floor(Date.now()), user: this.fbuserid });
+    const promiseAddItem = this.listRef.push({ name: mname, description: mdescription, created: Math.floor(Date.now()), modified: Math.floor(Date.now()), user: this.fbuserid });
 
     //Call Promise
-    promiseAddTalent
+    promiseAddItem
       .then(_ => this.db.object('/talents/' + this.fbuserid + '/' + _.key)
-      .update({ name: mname, description: mdescription, created: Math.floor(Date.now()), modified: Math.floor(Date.now()), user: this.fbuserid }))
-      .then(_ => this.showaddtalent = false)
+        .update({ name: mname, description: mdescription, created: Math.floor(Date.now()), modified: Math.floor(Date.now()), user: this.fbuserid }))
+      .then(_ => this.showadditem = false)
       .catch(err => console.log(err, 'Error Submitting Talent!'));
 
   }
@@ -59,10 +59,10 @@ export class TalentHobbiesComponent implements OnInit {
     const mdescription: string = this.model.description;
 
     this.db.object('/users/' + this.fbuserid + '/talents' + '/' + key)
-    .update({ name: mname, description: mdescription, created: Math.floor(Date.now()), modified: Math.floor(Date.now()), user: this.fbuserid });
+      .update({ name: mname, description: mdescription, created: Math.floor(Date.now()), modified: Math.floor(Date.now()), user: this.fbuserid });
     this.db.object('/talents/' + this.fbuserid + '/' + key)
-    .update({ name: mname, description: mdescription, created: Math.floor(Date.now()), modified: Math.floor(Date.now()), user: this.fbuserid });
-    this.showedittalent = false;
+      .update({ name: mname, description: mdescription, created: Math.floor(Date.now()), modified: Math.floor(Date.now()), user: this.fbuserid });
+    this.showedititem = false;
     console.log(key + ' edited');
   }
 
@@ -74,17 +74,17 @@ export class TalentHobbiesComponent implements OnInit {
   }
 
   onShowAddForm(): void {
-    this.showedittalent = false;
-    this.showaddtalent = true;
+    this.showedititem = false;
+    this.showadditem = true;
   }
 
   onHideAddForm(): void {
-    this.showaddtalent = false;
+    this.showadditem = false;
   }
 
   onShowEditForm(key): void {
-    this.showaddtalent = false;
-    this.showedittalent = true;
+    this.showadditem = false;
+    this.showedititem = true;
 
     //Define Observable
     this.item = this.db.object('/users/' + this.fbuserid + '/talents/' + key).valueChanges();
@@ -98,13 +98,25 @@ export class TalentHobbiesComponent implements OnInit {
   }
 
   onHideEditForm(): void {
-    this.showedittalent = false;
+    this.showedititem = false;
     this.model = new Talent('', '', '', '', '', '');
+  }
+
+  openConfirmationDialog(key): void {
+    // Open the dialog and save the reference of it
+    const dialogRef = this._fuseConfirmationService.open(this.configForm.value);
+
+    // Subscribe to afterClosed from the dialog reference
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result === 'confirmed') {
+        this.onDelete(key);
+      }
+    });
   }
 
   ngOnInit(): void {
 
-    this.items = this.db.list('/users/cQT4PtEZEAczJoAcbghuCtt7vDP2/talents').snapshotChanges();
+    this.items = this.db.list('/users/' + this.fbuserid + '/talents').snapshotChanges();
 
     this.configForm = this._formBuilder.group({
       title: 'Remove Item',
@@ -128,18 +140,6 @@ export class TalentHobbiesComponent implements OnInit {
       dismissible: false
     });
 
-  }
-
-  openConfirmationDialog(key): void {
-    // Open the dialog and save the reference of it
-    const dialogRef = this._fuseConfirmationService.open(this.configForm.value);
-
-    // Subscribe to afterClosed from the dialog reference
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result === 'confirmed') {
-        this.onDelete(key);
-      }
-    });
   }
 
 }

@@ -13,9 +13,9 @@
         <!-- Actions -->
         <div class="flex shrink-0 items-center">
 
-            <div [hidden]="!showaddtalent">
+            <div [hidden]="!showadditem">
                 <button  
-                    (click)="onHideAddForm(); talentForm.resetForm(); edittalentForm.resetForm();"
+                    (click)="onHideAddForm(); addItemForm.resetForm(); editItemForm.resetForm();"
                     class="ml-4"
                     mat-stroked-button
                     type="button"
@@ -25,7 +25,7 @@
             </div>
             <button  
                 (click)="onShowAddForm();"
-                [disabled]="showaddtalent"
+                [disabled]="showadditem"
                 class="ml-4"
                 mat-flat-button
                 type="button"
@@ -42,12 +42,12 @@
         <div class="h-400 min-h-400 max-h-400">
 
             <!-- Add Form -->
-            <div [hidden]="!showaddtalent">
+            <div [hidden]="!showadditem">
                 <h2 class="text-2xl md:text-2xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate mb-5">
                     Add a Talent or Hobby
                 </h2>
 
-                <form (ngSubmit)="onSubmit()" #talentForm="ngForm">
+                <form (ngSubmit)="onSubmit()" #addItemForm="ngForm">
                     <div class="form-group">
                     <mat-form-field class="fuse-mat-no-subscript w-full">
                         <mat-label>Talent Name</mat-label>
@@ -96,7 +96,7 @@
                     <div class="flex shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
 
                         <button  
-                            (click)="onHideAddForm(); talentForm.resetForm(); edittalentForm.resetForm();"
+                            (click)="onHideAddForm(); addItemForm.resetForm(); editItemForm.resetForm();"
                             class="ml-4"
                             mat-stroked-button
                             type="button"
@@ -105,8 +105,8 @@
                         </button>
 
                         <button  
-                            (click)="onSubmit(); talentForm.resetForm(); edittalentForm.resetForm();"
-                            [disabled]="!talentForm.form.valid" 
+                            (click)="onSubmit(); addItemForm.resetForm(); editItemForm.resetForm();"
+                            [disabled]="!addItemForm.form.valid" 
                             class="ml-4"
                             mat-flat-button
                             type="button"
@@ -124,12 +124,12 @@
             </div>
 
             <!-- Edit Form -->
-            <div [hidden]="!showedittalent">
+            <div [hidden]="!showedititem">
                 <h2 class="text-2xl md:text-2xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate mb-5">
                     Edit Talent or Hobby
                 </h2>
 
-                <form (ngSubmit)="onEdit(model.key)" #edittalentForm="ngForm">
+                <form (ngSubmit)="onEdit(model.key)" #editItemForm="ngForm">
                     <div class="form-group">
                     <mat-form-field class="fuse-mat-no-subscript w-full">
                         <mat-label>Talent Name</mat-label>
@@ -184,7 +184,7 @@
                     <div class="flex shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
 
                         <button  
-                            (click)="onHideEditForm(); edittalentForm.resetForm(); talentForm.resetForm()"
+                            (click)="onHideEditForm(); editItemForm.resetForm(); addItemForm.resetForm()"
                             class="ml-4"
                             mat-stroked-button
                             type="button"
@@ -193,8 +193,8 @@
                         </button>
 
                         <button  
-                            (click)="onEdit(model.key); edittalentForm.resetForm(); talentForm.resetForm()"
-                            [disabled]="!edittalentForm.form.valid" 
+                            (click)="onEdit(model.key); editItemForm.resetForm(); addItemForm.resetForm()"
+                            [disabled]="!editItemForm.form.valid" 
                             class="ml-4"
                             mat-flat-button
                             type="button"
@@ -213,7 +213,7 @@
 
 
             <!-- Table View -->
-            <table mat-table [dataSource]="items" class="mat-elevation-z8 w-full" [hidden]="showaddtalent||showedittalent">
+            <table mat-table [dataSource]="items" class="mat-elevation-z8 w-full" [hidden]="showadditem||showedititem">
                 <!-- Name Column -->
                 <ng-container matColumnDef="name">
                     <th mat-header-cell *matHeaderCellDef> Name </th>
@@ -261,13 +261,12 @@
 
             <!-- Card View -->
             <div class="flex flex-wrap items-center">
-                <div [hidden]="showaddtalent||showedittalent">
+                <div [hidden]="showadditem||showedititem">
 
                     <h2 class="text-3xl md:text-3xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate">
                         Card View
                         </h2>  
-        
-                    <!-- Talent Card -->
+                        
                     <div class="flex flex-wrap items-center mt-6 sm:mt-0 sm:ml-4">
                 
                         <div *ngFor="let item of items | async">
