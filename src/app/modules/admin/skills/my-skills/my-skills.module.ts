@@ -14,6 +14,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import { MatSliderModule } from '@angular/material/slider';
 import { FuseAlertModule } from '@fuse/components/alert';
 import { SharedModule } from 'app/shared/shared.module';
 import { FuseCardModule } from '@fuse/components/card';
@@ -47,6 +48,7 @@ const myskillsRoutes: Route[] = [
     FuseAlertModule,
     FuseCardModule,
     FuseConfirmationModule,
+    MatSliderModule,
     SharedModule,
     RouterModule.forChild(myskillsRoutes)
   ]
