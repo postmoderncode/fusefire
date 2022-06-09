@@ -132,6 +132,7 @@ export class AuthService {
     signOut(): Observable<any> {
         // Remove the access token from the local storage
         localStorage.removeItem('accessToken');
+        localStorage.removeItem('fbuserid');
 
         // Set the authenticated flag to false
         this._authenticated = false;
@@ -208,7 +209,7 @@ export class AuthService {
                     const promise_writeuser = listRef.update(result.user.uid, { id: result.user.uid, name: result.user.displayName, email: result.user.email });
                     promise_writeuser
                         .then(_ =>
-                            console.log('ANGULAR FIRE USER WRITE: success')
+                            localStorage.setItem('fbuserid', result.user.uid)
                         )
                         .catch(err =>
                             console.log(err, 'ANGULAR FIRE USER WRITE: Error!')

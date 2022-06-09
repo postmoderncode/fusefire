@@ -19,24 +19,25 @@ export class TalentHobbiesComponent implements OnInit {
   showedittalent = false;
 
   //Placeholder variable to make sure dynamic paths are possible
-  fbkey: string = 'cQT4PtEZEAczJoAcbghuCtt7vDP2';
+  //fbkey: string = 'cQT4PtEZEAczJoAcbghuCtt7vDP2';
+  fbuserid: string = localStorage.getItem('fbuserid');
 
   constructor(public db: AngularFireDatabase,) { }
 
   onSubmit(): void {
 
-    this.listRef = this.db.list('/users/' + this.fbkey + '/talents');
+    this.listRef = this.db.list('/users/' + this.fbuserid + '/talents');
 
     //Cast model to variable for formReset
     const mname: string = this.model.name;
     const mdescription: string = this.model.description;
 
     //Define Promise
-    const promiseAddTalent = this.listRef.push({ name: mname, description: mdescription, created: Math.floor(Date.now()), modified: Math.floor(Date.now()), user: this.fbkey });
+    const promiseAddTalent = this.listRef.push({ name: mname, description: mdescription, created: Math.floor(Date.now()), modified: Math.floor(Date.now()), user: this.fbuserid });
 
     //Call Promise
     promiseAddTalent
-      .then(_ => this.db.object('/talents/' + this.fbkey + '/' + _.key).update({ name: mname, description: mdescription, created: Math.floor(Date.now()), modified: Math.floor(Date.now()), user: this.fbkey }))
+      .then(_ => this.db.object('/talents/' + this.fbuserid + '/' + _.key).update({ name: mname, description: mdescription, created: Math.floor(Date.now()), modified: Math.floor(Date.now()), user: this.fbuserid }))
       .then(_ => this.showaddtalent = false)
       .catch(err => console.log(err, 'Error Submitting Talent!'));
 
@@ -48,15 +49,15 @@ export class TalentHobbiesComponent implements OnInit {
     const mname: string = this.model.name;
     const mdescription: string = this.model.description;
 
-    this.db.object('/users/' + this.fbkey + '/talents' + '/' + key).update({ name: mname, description: mdescription, created: Math.floor(Date.now()), modified: Math.floor(Date.now()), user: this.fbkey })
-    this.db.object('/talents/' + this.fbkey + '/' + key).update({ name: mname, description: mdescription, created: Math.floor(Date.now()), modified: Math.floor(Date.now()), user: this.fbkey })
+    this.db.object('/users/' + this.fbuserid + '/talents' + '/' + key).update({ name: mname, description: mdescription, created: Math.floor(Date.now()), modified: Math.floor(Date.now()), user: this.fbuserid })
+    this.db.object('/talents/' + this.fbuserid + '/' + key).update({ name: mname, description: mdescription, created: Math.floor(Date.now()), modified: Math.floor(Date.now()), user: this.fbuserid })
     this.showedittalent = false
     console.log(key + ' edited');
   }
 
   onDelete(key): void {
-    this.db.object('/users/' + this.fbkey + '/talents/' + key).remove();
-    this.db.object('/talents/' + this.fbkey + '/' + key).remove();
+    this.db.object('/users/' + this.fbuserid + '/talents/' + key).remove();
+    this.db.object('/talents/' + this.fbuserid + '/' + key).remove();
     console.log(key + ' deleted');
 
   }
@@ -75,7 +76,7 @@ export class TalentHobbiesComponent implements OnInit {
     this.showedittalent = true;
 
     //Define Observable
-    this.item = this.db.object('/users/' + this.fbkey + '/talents/' + key).valueChanges();
+    this.item = this.db.object('/users/' + this.fbuserid + '/talents/' + key).valueChanges();
 
     //Subscribe to Observable
     this.item.subscribe(item => {
