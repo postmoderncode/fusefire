@@ -38,14 +38,15 @@ export class TalentHobbiesComponent implements OnInit {
     //Cast model to variable for formReset
     const mname: string = this.model.name;
     const mdescription: string = this.model.description;
+    const mdatenow = Math.floor(Date.now());
 
     //Define Promise
-    const promiseAddItem = this.listRef.push({ name: mname, description: mdescription, created: Math.floor(Date.now()), modified: Math.floor(Date.now()), user: this.fbuserid });
+    const promiseAddItem = this.listRef.push({ name: mname, description: mdescription, created: mdatenow, modified: mdatenow, user: this.fbuserid });
 
     //Call Promise
     promiseAddItem
       .then(_ => this.db.object('/talents/' + this.fbuserid + '/' + _.key)
-        .update({ name: mname, description: mdescription, created: Math.floor(Date.now()), modified: Math.floor(Date.now()), user: this.fbuserid }))
+        .update({ name: mname, description: mdescription, created: mdatenow, modified: mdatenow, user: this.fbuserid }))
       .then(_ => this.showadditem = false)
       .catch(err => console.log(err, 'Error Submitting Talent!'));
 
@@ -56,11 +57,12 @@ export class TalentHobbiesComponent implements OnInit {
     //Cast model to variable for formReset
     const mname: string = this.model.name;
     const mdescription: string = this.model.description;
+    const mdatenow = Math.floor(Date.now());
 
     this.db.object('/users/' + this.fbuserid + '/talents' + '/' + key)
-      .update({ name: mname, description: mdescription, created: Math.floor(Date.now()), modified: Math.floor(Date.now()), user: this.fbuserid });
+      .update({ name: mname, description: mdescription, created: mdatenow, modified: mdatenow, user: this.fbuserid });
     this.db.object('/talents/' + this.fbuserid + '/' + key)
-      .update({ name: mname, description: mdescription, created: Math.floor(Date.now()), modified: Math.floor(Date.now()), user: this.fbuserid });
+      .update({ name: mname, description: mdescription, created: mdatenow, modified: mdatenow, user: this.fbuserid });
     this.showedititem = false;
     console.log(key + ' edited');
   }

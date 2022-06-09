@@ -42,14 +42,16 @@ export class AwardsAccoladesComponent implements OnInit {
     const mdescription: string = this.model.description;
     const mawardedby: string = this.model.awardedby;
     const mawardedon: string = this.model.awardedon;
-    console.log('date on: ' + mawardedon)
+    const mdatenow = Math.floor(Date.now());
+
     //Define Promise
-    const promiseAddItem = this.listRef.push({ name: mname, description: mdescription, created: Math.floor(Date.now()), modified: Math.floor(Date.now()), user: this.fbuserid, awardedby: mawardedby, awardedon: mawardedon });
+    const promiseAddItem = this.listRef
+    .push({ name: mname, description: mdescription, created: mdatenow, modified: mdatenow, user: this.fbuserid, awardedby: mawardedby, awardedon: mawardedon });
 
     //Call Promise
     promiseAddItem
       .then(_ => this.db.object('/awards/' + this.fbuserid + '/' + _.key)
-        .update({ name: mname, description: mdescription, created: Math.floor(Date.now()), modified: Math.floor(Date.now()), user: this.fbuserid, awardedby: mawardedby, awardedon: mawardedon }))
+        .update({ name: mname, description: mdescription, created: mdatenow, modified: mdatenow, user: this.fbuserid, awardedby: mawardedby, awardedon: mawardedon }))
       .then(_ => this.showadditem = false)
       .catch(err => console.log(err, 'Error Submitting Talent!'));
 
@@ -62,11 +64,12 @@ export class AwardsAccoladesComponent implements OnInit {
     const mdescription: string = this.model.description;
     const mawardedby: string = this.model.awardedby;
     const mawardedon: string = this.model.awardedon;
+    const mdatenow = Math.floor(Date.now());
 
     this.db.object('/users/' + this.fbuserid + '/awards' + '/' + key)
-      .update({ name: mname, description: mdescription, created: Math.floor(Date.now()), modified: Math.floor(Date.now()), user: this.fbuserid, awardedby: mawardedby, awardedon: mawardedon });
+      .update({ name: mname, description: mdescription, created: mdatenow, modified: mdatenow, user: this.fbuserid, awardedby: mawardedby, awardedon: mawardedon });
     this.db.object('/awards/' + this.fbuserid + '/' + key)
-      .update({ name: mname, description: mdescription, created: Math.floor(Date.now()), modified: Math.floor(Date.now()), user: this.fbuserid, awardedby: mawardedby, awardedon: mawardedon });
+      .update({ name: mname, description: mdescription, created: mdatenow, modified: mdatenow, user: this.fbuserid, awardedby: mawardedby, awardedon: mawardedon });
     this.showedititem = false;
     console.log(key + ' edited');
   }
