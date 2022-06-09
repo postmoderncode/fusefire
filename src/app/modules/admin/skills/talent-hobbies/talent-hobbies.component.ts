@@ -45,7 +45,8 @@ export class TalentHobbiesComponent implements OnInit {
 
     //Call Promise
     promiseAddTalent
-      .then(_ => this.db.object('/talents/' + this.fbuserid + '/' + _.key).update({ name: mname, description: mdescription, created: Math.floor(Date.now()), modified: Math.floor(Date.now()), user: this.fbuserid }))
+      .then(_ => this.db.object('/talents/' + this.fbuserid + '/' + _.key)
+      .update({ name: mname, description: mdescription, created: Math.floor(Date.now()), modified: Math.floor(Date.now()), user: this.fbuserid }))
       .then(_ => this.showaddtalent = false)
       .catch(err => console.log(err, 'Error Submitting Talent!'));
 
@@ -57,9 +58,11 @@ export class TalentHobbiesComponent implements OnInit {
     const mname: string = this.model.name;
     const mdescription: string = this.model.description;
 
-    this.db.object('/users/' + this.fbuserid + '/talents' + '/' + key).update({ name: mname, description: mdescription, created: Math.floor(Date.now()), modified: Math.floor(Date.now()), user: this.fbuserid })
-    this.db.object('/talents/' + this.fbuserid + '/' + key).update({ name: mname, description: mdescription, created: Math.floor(Date.now()), modified: Math.floor(Date.now()), user: this.fbuserid })
-    this.showedittalent = false
+    this.db.object('/users/' + this.fbuserid + '/talents' + '/' + key)
+    .update({ name: mname, description: mdescription, created: Math.floor(Date.now()), modified: Math.floor(Date.now()), user: this.fbuserid });
+    this.db.object('/talents/' + this.fbuserid + '/' + key)
+    .update({ name: mname, description: mdescription, created: Math.floor(Date.now()), modified: Math.floor(Date.now()), user: this.fbuserid });
+    this.showedittalent = false;
     console.log(key + ' edited');
   }
 
@@ -87,7 +90,7 @@ export class TalentHobbiesComponent implements OnInit {
     this.item = this.db.object('/users/' + this.fbuserid + '/talents/' + key).valueChanges();
 
     //Subscribe to Observable
-    this.item.subscribe(item => {
+    this.item.subscribe((item) => {
       this.model = new Talent(key, item.name, item.description, item.created, item.modified, item.user);
     });
 
@@ -133,8 +136,8 @@ export class TalentHobbiesComponent implements OnInit {
 
     // Subscribe to afterClosed from the dialog reference
     dialogRef.afterClosed().subscribe((result) => {
-      if (result == 'confirmed') {
-        this.onDelete(key)
+      if (result === 'confirmed') {
+        this.onDelete(key);
       }
     });
   }
