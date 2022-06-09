@@ -236,7 +236,7 @@
                 <ng-container matColumnDef="delete">
                     <th mat-header-cell  *matHeaderCellDef > </th>
                     <td mat-cell *matCellDef="let item" >
-                        <button mat-mini-fab color="basic" matTooltip="delete" class="mr-2" (click)="onDelete(item.key)">
+                        <button mat-mini-fab color="basic" matTooltip="delete" class="mr-2" (click)="openConfirmationDialog(item.key)">
                             <mat-icon>delete</mat-icon>
                         </button>
                     </td>
@@ -291,7 +291,7 @@
                                 <div class="italic mt-3 text-sm">{{item.key}}</div>
                                 <div class="flex shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
     
-                                    <button mat-mini-fab color="basic" matTooltip="delete" class="mt-8 mr-2" (click)="onDelete(item.key)">
+                                    <button mat-mini-fab color="basic" matTooltip="delete" class="mt-8 mr-2" (click)="openConfirmationDialog(item.key)">
                                         <mat-icon>delete</mat-icon>
                                     </button>
                                     
