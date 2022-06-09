@@ -12,7 +12,6 @@ import { FuseConfirmationService } from '@fuse/services/confirmation';
 })
 export class TalentHobbiesComponent implements OnInit {
 
-
   model = new Talent('', '', '', '', '', '');
   displayedColumns = ['name', 'description', 'created', 'delete', 'edit'];
   listRef: AngularFireList<any>;
@@ -21,7 +20,7 @@ export class TalentHobbiesComponent implements OnInit {
   showadditem = false;
   showedititem = false;
   fbuserid: string = localStorage.getItem('fbuserid');
-  configForm: FormGroup;
+  dialogconfigForm: FormGroup;
 
   /**
    * Constructor
@@ -104,7 +103,7 @@ export class TalentHobbiesComponent implements OnInit {
 
   openConfirmationDialog(key): void {
     // Open the dialog and save the reference of it
-    const dialogRef = this._fuseConfirmationService.open(this.configForm.value);
+    const dialogRef = this._fuseConfirmationService.open(this.dialogconfigForm.value);
 
     // Subscribe to afterClosed from the dialog reference
     dialogRef.afterClosed().subscribe((result) => {
@@ -118,7 +117,7 @@ export class TalentHobbiesComponent implements OnInit {
 
     this.items = this.db.list('/users/' + this.fbuserid + '/talents').snapshotChanges();
 
-    this.configForm = this._formBuilder.group({
+    this.dialogconfigForm = this._formBuilder.group({
       title: 'Remove Item',
       message: 'Are you sure you want to remove this item permanently? <span class="font-medium">This action cannot be undone!</span>',
       icon: this._formBuilder.group({
@@ -156,8 +155,6 @@ export class Talent {
     public user: string,
 
   ) { }
-
-
 
 }
 

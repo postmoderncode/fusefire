@@ -2,8 +2,10 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { AngularFireDatabase, AngularFireList, AngularFireObject } from '@angular/fire/compat/database';
 import _ from 'lodash';
 import { Observable } from 'rxjs';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
+import { MatDatepickerInputEvent } from '@angular/material/datepicker';
+
 
 @Component({
   selector: 'app-awards-accolades',
@@ -20,7 +22,7 @@ export class AwardsAccoladesComponent implements OnInit {
   showadditem = false;
   showedititem = false;
   fbuserid: string = localStorage.getItem('fbuserid');
-  configForm: FormGroup;
+  dialogconfigForm: FormGroup;
 
   /**
    * Constructor
@@ -38,14 +40,16 @@ export class AwardsAccoladesComponent implements OnInit {
     //Cast model to variable for formReset
     const mname: string = this.model.name;
     const mdescription: string = this.model.description;
-
+    const mawardedby: string = this.model.awardedby;
+    const mawardedon: string = this.model.awardedon;
+    console.log('date on: ' + mawardedon)
     //Define Promise
-    const promiseAddItem = this.listRef.push({ name: mname, description: mdescription, created: Math.floor(Date.now()), modified: Math.floor(Date.now()), user: this.fbuserid });
+    const promiseAddItem = this.listRef.push({ name: mname, description: mdescription, created: Math.floor(Date.now()), modified: Math.floor(Date.now()), user: this.fbuserid, awardedby: mawardedby, awardedon: mawardedon });
 
     //Call Promise
     promiseAddItem
       .then(_ => this.db.object('/awards/' + this.fbuserid + '/' + _.key)
-        .update({ name: mname, description: mdescription, created: Math.floor(Date.now()), modified: Math.floor(Date.now()), user: this.fbuserid }))
+        .update({ name: mname, description: mdescription, created: Math.floor(Date.now()), modified: Math.floor(Date.now()), user: this.fbuserid, awardedby: mawardedby, awardedon: mawardedon }))
       .then(_ => this.showadditem = false)
       .catch(err => console.log(err, 'Error Submitting Talent!'));
 
@@ -56,11 +60,13 @@ export class AwardsAccoladesComponent implements OnInit {
     //Cast model to variable for formReset
     const mname: string = this.model.name;
     const mdescription: string = this.model.description;
+    const mawardedby: string = this.model.awardedby;
+    const mawardedon: string = this.model.awardedon;
 
     this.db.object('/users/' + this.fbuserid + '/awards' + '/' + key)
-      .update({ name: mname, description: mdescription, created: Math.floor(Date.now()), modified: Math.floor(Date.now()), user: this.fbuserid });
+      .update({ name: mname, description: mdescription, created: Math.floor(Date.now()), modified: Math.floor(Date.now()), user: this.fbuserid, awardedby: mawardedby, awardedon: mawardedon });
     this.db.object('/awards/' + this.fbuserid + '/' + key)
-      .update({ name: mname, description: mdescription, created: Math.floor(Date.now()), modified: Math.floor(Date.now()), user: this.fbuserid });
+      .update({ name: mname, description: mdescription, created: Math.floor(Date.now()), modified: Math.floor(Date.now()), user: this.fbuserid, awardedby: mawardedby, awardedon: mawardedon });
     this.showedititem = false;
     console.log(key + ' edited');
   }
@@ -103,21 +109,27 @@ export class AwardsAccoladesComponent implements OnInit {
 
   openConfirmationDialog(key): void {
     // Open the dialog and save the reference of it
-    const dialogRef = this._fuseConfirmationService.open(this.configForm.value);
+    const dialogRef = this._fuseConfirmationService.open(this.dialogconfigForm.value);
 
     // Subscribe to afterClosed from the dialog reference
     dialogRef.afterClosed().subscribe((result) => {
       if (result === 'confirmed') {
+        //Call Actual Delete
         this.onDelete(key);
       }
     });
+  }
+
+  onDateChange(event: MatDatepickerInputEvent<any>, control: AbstractControl): void {
+
+    this.model.awardedon = ((event.value.valueOf() / 1000).toString());
   }
 
   ngOnInit(): void {
 
     this.items = this.db.list('/users/' + this.fbuserid + '/awards').snapshotChanges();
 
-    this.configForm = this._formBuilder.group({
+    this.dialogconfigForm = this._formBuilder.group({
       title: 'Remove Item',
       message: 'Are you sure you want to remove this item permanently? <span class="font-medium">This action cannot be undone!</span>',
       icon: this._formBuilder.group({
