@@ -1,9 +1,9 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { AngularFireDatabase, AngularFireList } from '@angular/fire/compat/database';
-import _ from 'lodash';
-import { Observable } from 'rxjs';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
+import { Observable } from 'rxjs';
+import _ from 'lodash';
 
 @Component({
   selector: 'app-talents',
