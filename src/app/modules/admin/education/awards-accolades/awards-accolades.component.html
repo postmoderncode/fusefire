@@ -116,14 +116,14 @@
                     <div class="form-group">
                     <mat-form-field appearance="fill">
                         <mat-label>Date Awarded</mat-label>
-                        <input matInput [matDatepicker]="picker" 
-                        (dateChange)="onDateChange($event, picker)"
+                        <input matInput [matDatepicker]="addpicker" 
+                        (dateChange)="onDateChange($event, addpicker)"
                         name="awardedon"  
                         id="awardedon"
                         class="form-control">
                         <mat-hint>MM/DD/YYYY</mat-hint>
-                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                        <mat-datepicker #picker startView="year"></mat-datepicker>
+                        <mat-datepicker-toggle matSuffix [for]="addpicker"></mat-datepicker-toggle>
+                        <mat-datepicker #addpicker startView="year"></mat-datepicker>
                       </mat-form-field>
                     </div>
 
@@ -209,6 +209,43 @@
                     </mat-form-field>
                     </div>
 
+                    <!-- Spacer -->
+                    <div class="mt-5"></div>
+
+                    <div class="form-group">
+                        <mat-form-field class="fuse-mat-no-subscript w-full">
+                            <mat-label>Awarded By</mat-label>
+                            <mat-icon
+                                class="icon-size-5"
+                                [svgIcon]="'heroicons_solid:shield-check'"
+                                matPrefix></mat-icon>
+                                <input type="text"
+                                id="awardedby" 
+                                class="form-control" 
+                                #name="ngModel"
+                                [(ngModel)]="model.awardedby" name="awardedby"
+                                matInput>
+                        </mat-form-field>
+    
+                    </div>
+    
+                    <!-- Spacer -->
+                    <div class="mt-5"></div>
+
+                    <div class="form-group">
+                    <mat-form-field appearance="fill">
+                        <mat-label>Date Awarded</mat-label>
+                        <input matInput [matDatepicker]="editpicker" 
+                        (dateChange)="onDateChange($event, editpicker)"
+                        name="awardedon"  
+                        id="awardedon"
+                        class="form-control">
+                        <mat-hint>{{model.awardedon| date: 'MM/dd/yy h:mm a'}}</mat-hint>
+                        <mat-datepicker-toggle matSuffix [for]="editpicker"></mat-datepicker-toggle>
+                        <mat-datepicker #editpicker startView="year"></mat-datepicker>
+                      </mat-form-field>
+                    </div>
+                    
                     <div class="float-right text-right mt-3">
                     created:{{model.created | date: 'MM/dd/yy h:mm a'}}
                     <br />

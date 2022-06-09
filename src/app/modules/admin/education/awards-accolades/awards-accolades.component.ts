@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { AngularFireDatabase, AngularFireList, AngularFireObject } from '@angular/fire/compat/database';
+import { AngularFireDatabase, AngularFireList } from '@angular/fire/compat/database';
 import _ from 'lodash';
 import { Observable } from 'rxjs';
 import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
