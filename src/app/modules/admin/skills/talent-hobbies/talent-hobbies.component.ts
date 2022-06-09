@@ -10,11 +10,11 @@ import { Observable } from 'rxjs';
 })
 export class TalentHobbiesComponent implements OnInit {
 
-  model = new Talent('', '', '', '', '');
+  model = new Talent('', '', '', '', '', '');
+  displayedColumns = ['name', 'description', 'created', 'delete', 'edit'];
   listRef: AngularFireList<any>;
   item: Observable<any>;
   items: Observable<any[]>;
-  displayedColumns = ['name', 'description', 'created', 'delete', 'edit'];
   showaddtalent = false;
   showedittalent = false;
 
@@ -32,20 +32,26 @@ export class TalentHobbiesComponent implements OnInit {
     const mdescription: string = this.model.description;
 
     //Define Promise
-    const promiseAddTalent = this.listRef.push({ name: mname, description: mdescription, created: Math.floor(Date.now()), modified: Math.floor(Date.now()) });
+    const promiseAddTalent = this.listRef.push({ name: mname, description: mdescription, created: Math.floor(Date.now()), modified: Math.floor(Date.now()), user: this.fbkey });
 
     //Call Promise
     promiseAddTalent
-      .then(_ => this.db.object('/talents/' + this.fbkey + '/' + _.key).update({ name: mname, description: mdescription, created: Math.floor(Date.now()), modified: Math.floor(Date.now()) }))
+      .then(_ => this.db.object('/talents/' + this.fbkey + '/' + _.key).update({ name: mname, description: mdescription, created: Math.floor(Date.now()), modified: Math.floor(Date.now()), user: this.fbkey }))
       .then(_ => this.showaddtalent = false)
       .catch(err => console.log(err, 'Error Submitting Talent!'));
 
   }
 
   onEdit(key): void {
-    console.log(key + ' edited');
-    //this.db.object('/users/' + this.fbkey + '/talents/' + key);
 
+    //Cast model to variable for formReset
+    const mname: string = this.model.name;
+    const mdescription: string = this.model.description;
+
+    this.db.object('/users/' + this.fbkey + '/talents' + '/' + key).update({ name: mname, description: mdescription, created: Math.floor(Date.now()), modified: Math.floor(Date.now()), user: this.fbkey })
+    this.db.object('/talents/' + this.fbkey + '/' + key).update({ name: mname, description: mdescription, created: Math.floor(Date.now()), modified: Math.floor(Date.now()), user: this.fbkey })
+    this.showedittalent = false
+    console.log(key + ' edited');
   }
 
   onDelete(key): void {
@@ -68,16 +74,20 @@ export class TalentHobbiesComponent implements OnInit {
     this.showaddtalent = false;
     this.showedittalent = true;
 
+    //Define Observable
     this.item = this.db.object('/users/' + this.fbkey + '/talents/' + key).valueChanges();
+
+    //Subscribe to Observable
     this.item.subscribe(item => {
-      this.model = new Talent(item.key, item.name, item.description, item.created, item.modified);
+      this.model = new Talent(key, item.name, item.description, item.created, item.modified, item.user);
     });
+
     console.log(key + 'has been selected to edit');
   }
 
   onHideEditForm(): void {
     this.showedittalent = false;
-    this.model = new Talent('', '', '', '', '');
+    this.model = new Talent('', '', '', '', '', '');
   }
 
   ngOnInit(): void {
@@ -94,7 +104,8 @@ export class Talent {
     public name: string,
     public description: string,
     public created: string,
-    public modified: string
+    public modified: string,
+    public user: string,
 
   ) { }
 
