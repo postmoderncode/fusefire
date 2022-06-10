@@ -23,10 +23,6 @@ export class AwardsAccoladesComponent implements OnInit {
   model = new Award('', '', '', '', '', '', '', '');
   displayedColumns = ['name', 'description', 'created', 'delete', 'edit'];
 
-
-
-
-
   /**
    * Constructor
    */
