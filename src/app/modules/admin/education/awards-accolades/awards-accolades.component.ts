@@ -13,15 +13,19 @@ import _ from 'lodash';
 })
 export class AwardsAccoladesComponent implements OnInit {
 
-  model = new Award('', '', '', '', '', '', '', '');
-  displayedColumns = ['name', 'description', 'created', 'delete', 'edit'];
-  listRef: AngularFireList<any>;
-  item: Observable<any>;
-  items: Observable<any[]>;
-  showadditem = false;
-  showedititem = false;
   fbuserid: string = localStorage.getItem('fbuserid');
   dialogconfigForm: FormGroup;
+  item: Observable<any>;
+  items: Observable<any[]>;
+  listRef: AngularFireList<any>;
+  showadditem = false;
+  showedititem = false;
+  model = new Award('', '', '', '', '', '', '', '');
+  displayedColumns = ['name', 'description', 'created', 'delete', 'edit'];
+
+
+
+
 
   /**
    * Constructor
@@ -171,7 +175,5 @@ export class Award {
     public awardedon: string,
 
   ) { }
-
-
 
 }
