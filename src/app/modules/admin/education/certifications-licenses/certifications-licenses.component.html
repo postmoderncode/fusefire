@@ -389,12 +389,9 @@
                                             matTooltip="created"
                                             class="icon-size-5 mr-3"
                                             [svgIcon]="'heroicons_solid:calendar'"></mat-icon>
-                                        <span class="leading-none">{{item.payload.val().created | date: 'MM/dd/yy h:mm a'}}</span>
-                                        
+                                        <span class="leading-none">{{item.payload.val().created | date: 'MM/dd/yy h:mm a'}}</span>                                      
                                     </div>
-
                                 </div>
-                                <div class="italic mt-3 text-sm">key: {{item.key}}</div>
                                 <div class="flex shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
     
                                     <button mat-mini-fab color="basic" matTooltip="delete" class="mt-8 mr-2" (click)="openConfirmationDialog(item.key)">
