@@ -32,7 +32,7 @@ export class AwardsAccoladesComponent implements OnInit {
     public db: AngularFireDatabase
   ) { }
 
-  onSubmit(): void {
+  onAdd(): void {
 
     this.listRef = this.db.list('/users/' + this.fbuserid + '/awards');
 

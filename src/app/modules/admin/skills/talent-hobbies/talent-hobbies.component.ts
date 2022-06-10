@@ -31,7 +31,7 @@ export class TalentHobbiesComponent implements OnInit {
     public db: AngularFireDatabase
   ) { }
 
-  onSubmit(): void {
+  onAdd(): void {
 
     this.listRef = this.db.list('/users/' + this.fbuserid + '/talents');
 

@@ -206,7 +206,7 @@ export class AuthService {
                     const listRef = this.db.list('users');
 
                     // Write user to Firebase with Promise
-                    const promise_writeuser = listRef.update(result.user.uid, { id: result.user.uid, name: result.user.displayName, email: result.user.email });
+                    const promise_writeuser = listRef.update(result.user.uid, { id: result.user.uid, name: result.user.displayName, email: result.user.email, isadmin: false });
                     promise_writeuser
                         .then(_ =>
                             localStorage.setItem('fbuserid', result.user.uid)

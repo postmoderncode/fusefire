@@ -47,7 +47,7 @@
                     Add a Talent or Hobby
                 </h2>
 
-                <form (ngSubmit)="onSubmit()" #addItemForm="ngForm">
+                <form #addItemForm="ngForm">
                     <div class="form-group">
                     <mat-form-field class="fuse-mat-no-subscript w-full">
                         <mat-label>Talent Name</mat-label>
@@ -105,7 +105,7 @@
                         </button>
 
                         <button  
-                            (click)="onSubmit(); addItemForm.resetForm(); editItemForm.resetForm();"
+                            (click)="onAdd(); addItemForm.resetForm(); editItemForm.resetForm();"
                             [disabled]="!addItemForm.form.valid" 
                             class="ml-4"
                             mat-flat-button
