@@ -15,15 +15,16 @@ import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { FuseAlertModule } from '@fuse/components/alert';
 import { FuseCardModule } from '@fuse/components/card';
 import { FuseConfirmationModule } from '@fuse/services/confirmation';
 
 const certificationslicensesRoutes: Route[] = [
-    {
-        path     : '',
-        component: CertificationsLicensesComponent
-    }
+  {
+    path: '',
+    component: CertificationsLicensesComponent
+  }
 ];
 
 @NgModule({
@@ -44,6 +45,7 @@ const certificationslicensesRoutes: Route[] = [
     MatTooltipModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    MatAutocompleteModule,
     FuseAlertModule,
     FuseCardModule,
     FuseConfirmationModule,
