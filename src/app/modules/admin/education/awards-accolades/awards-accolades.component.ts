@@ -52,7 +52,16 @@ export class AwardsAccoladesComponent implements OnInit {
       .then(_ => this.db.object('/awards/' + this.fbuserid + '/' + _.key)
         .update({ name: mname, description: mdescription, created: mdatenow, modified: mdatenow, user: this.fbuserid, awardedby: mawardedby, awardedon: mawardedon }))
       .then(_ => this.showadditem = false)
-      .catch(err => console.log(err, 'Error Submitting Talent!'));
+      .catch(err => console.log(err, 'Error Submitting Award!'));
+
+    //Increment Count
+    this.db.object('/counts/' + this.fbuserid + '/awards').query.ref.transaction(likes => {
+      if (likes === null) {
+        return likes = 1;
+      } else {
+        return likes + 1;
+      }
+    })
 
   }
 
@@ -76,6 +85,16 @@ export class AwardsAccoladesComponent implements OnInit {
   onDelete(key): void {
     this.db.object('/users/' + this.fbuserid + '/awards/' + key).remove();
     this.db.object('/awards/' + this.fbuserid + '/' + key).remove();
+
+    //Decrement Count
+    this.db.object('/counts/' + this.fbuserid + '/awards').query.ref.transaction(likes => {
+      if (likes === null) {
+        return likes = 0;
+      } else {
+        return likes - 1;
+      }
+    })
+
     console.log(key + ' deleted');
 
   }

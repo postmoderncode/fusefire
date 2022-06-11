@@ -68,7 +68,7 @@
                             <mat-autocomplete #autocomadd="matAutocomplete">
                                 <mat-option *ngFor="let option of filteredData" [value]="option">
                                     {{option}}
-                                  </mat-option>
+                                </mat-option>
                             </mat-autocomplete>
                     </mat-form-field>
 
@@ -114,7 +114,6 @@
                                 [(ngModel)]="model.awardedby" name="awardedby"
                                 matInput>
                         </mat-form-field>
-    
                     </div>
     
                     <!-- Spacer -->
@@ -200,12 +199,13 @@
                             #name="ngModel"
                             [(ngModel)]="model.name" name="name"
                             [matAutocomplete]="autocomedit"
+                            (ngModelChange)="applyFilter($event)"
                             required
                             matInput>
                             <mat-autocomplete #autocomedit="matAutocomplete">
-                                <mat-option *ngFor="let option of options" [value]="option">
+                                <mat-option *ngFor="let option of filteredData" [value]="option">
                                     {{option}}
-                                  </mat-option>
+                                </mat-option>
                             </mat-autocomplete>
                     </mat-form-field>
 

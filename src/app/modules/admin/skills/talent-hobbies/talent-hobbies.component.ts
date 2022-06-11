@@ -50,6 +50,15 @@ export class TalentHobbiesComponent implements OnInit {
       .then(_ => this.showadditem = false)
       .catch(err => console.log(err, 'Error Submitting Talent!'));
 
+    //Increment Count
+    this.db.object('/counts/' + this.fbuserid + '/talents').query.ref.transaction(likes => {
+      if (likes === null) {
+        return likes = 1;
+      } else {
+        return likes + 1;
+      }
+    })
+
   }
 
   onEdit(key): void {
@@ -70,6 +79,16 @@ export class TalentHobbiesComponent implements OnInit {
   onDelete(key): void {
     this.db.object('/users/' + this.fbuserid + '/talents/' + key).remove();
     this.db.object('/talents/' + this.fbuserid + '/' + key).remove();
+
+    //Decrement Count
+    this.db.object('/counts/' + this.fbuserid + '/talents').query.ref.transaction(likes => {
+      if (likes === null) {
+        return likes = 0;
+      } else {
+        return likes - 1;
+      }
+    })
+
     console.log(key + ' deleted');
 
   }
