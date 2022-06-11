@@ -1,4 +1,10 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { AngularFireDatabase, AngularFireList } from '@angular/fire/compat/database';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { FuseConfirmationService } from '@fuse/services/confirmation';
+import { Observable } from 'rxjs';
+import _ from 'lodash';
+
 
 @Component({
   selector: 'app-dashboard',
@@ -7,33 +13,21 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 })
 export class DashboardComponent implements OnInit {
 
-  powers = ['Really Smart', 'Super Flexible',
-    'Super Hot', 'Weather Changer', 'Solves Crimes'];
+  fbuser = JSON.parse(localStorage.getItem('fbuser'));
 
-  model = new Hero(18, 'Ghetto Detective', this.powers[0], 'Pooky Watson');
 
-  submitted = false;
-
-  constructor() { }
-
-  onSubmit(): void { this.submitted = true; }
-
-  newHero(): void {
-    this.model = new Hero(42, '', '');
-  }
-
-  ngOnInit(): void {
-  }
-
-}
-
-export class Hero {
-
+  /**
+   * Constructor
+   */
   constructor(
-    public id: number,
-    public name: string,
-    public power: string,
-    public alterEgo?: string
+    public db: AngularFireDatabase
   ) { }
 
+
+  ngOnInit(): void {
+
+  }
+
 }
+
+

@@ -13,7 +13,7 @@ import _ from 'lodash';
 })
 export class ProfessionalTrainingComponent implements OnInit {
 
-  fbuserid: string = localStorage.getItem('fbuserid');
+  fbuser = JSON.parse(localStorage.getItem('fbuser'));
   dialogconfigForm: FormGroup;
   item: Observable<any>;
   items: Observable<any[]>;
@@ -34,7 +34,7 @@ export class ProfessionalTrainingComponent implements OnInit {
 
   onAdd(): void {
 
-    this.listRef = this.db.list('/users/' + this.fbuserid + '/training');
+    this.listRef = this.db.list('/users/' + this.fbuser.id + '/training');
 
     //Cast model to variable for formReset
     const mname: string = this.model.name;
@@ -45,17 +45,17 @@ export class ProfessionalTrainingComponent implements OnInit {
 
     //Define Promise
     const promiseAddItem = this.listRef
-      .push({ name: mname, description: mdescription, created: mdatenow, modified: mdatenow, user: this.fbuserid, awardedby: mawardedby, awardedon: mawardedon });
+      .push({ name: mname, description: mdescription, created: mdatenow, modified: mdatenow, user: this.fbuser.id, awardedby: mawardedby, awardedon: mawardedon });
 
     //Call Promise
     promiseAddItem
-      .then(_ => this.db.object('/training/' + this.fbuserid + '/' + _.key)
-        .update({ name: mname, description: mdescription, created: mdatenow, modified: mdatenow, user: this.fbuserid, awardedby: mawardedby, awardedon: mawardedon }))
+      .then(_ => this.db.object('/training/' + this.fbuser.id + '/' + _.key)
+        .update({ name: mname, description: mdescription, created: mdatenow, modified: mdatenow, user: this.fbuser.id, awardedby: mawardedby, awardedon: mawardedon }))
       .then(_ => this.showadditem = false)
       .catch(err => console.log(err, 'Error Submitting Talent!'));
 
     //Increment Count
-    this.db.object('/counts/' + this.fbuserid + '/training').query.ref.transaction(likes => {
+    this.db.object('/counts/' + this.fbuser.id + '/training').query.ref.transaction(likes => {
       if (likes === null) {
         return likes = 1;
       } else {
@@ -74,20 +74,20 @@ export class ProfessionalTrainingComponent implements OnInit {
     const mawardedon: string = this.model.awardedon;
     const mdatenow = Math.floor(Date.now());
 
-    this.db.object('/users/' + this.fbuserid + '/training' + '/' + key)
-      .update({ name: mname, description: mdescription, created: mdatenow, modified: mdatenow, user: this.fbuserid, awardedby: mawardedby, awardedon: mawardedon });
-    this.db.object('/training/' + this.fbuserid + '/' + key)
-      .update({ name: mname, description: mdescription, created: mdatenow, modified: mdatenow, user: this.fbuserid, awardedby: mawardedby, awardedon: mawardedon });
+    this.db.object('/users/' + this.fbuser.id + '/training' + '/' + key)
+      .update({ name: mname, description: mdescription, created: mdatenow, modified: mdatenow, user: this.fbuser.id, awardedby: mawardedby, awardedon: mawardedon });
+    this.db.object('/training/' + this.fbuser.id + '/' + key)
+      .update({ name: mname, description: mdescription, created: mdatenow, modified: mdatenow, user: this.fbuser.id, awardedby: mawardedby, awardedon: mawardedon });
     this.showedititem = false;
     console.log(key + ' edited');
   }
 
   onDelete(key): void {
-    this.db.object('/users/' + this.fbuserid + '/training/' + key).remove();
-    this.db.object('/training/' + this.fbuserid + '/' + key).remove();
+    this.db.object('/users/' + this.fbuser.id + '/training/' + key).remove();
+    this.db.object('/training/' + this.fbuser.id + '/' + key).remove();
 
     //Decrement Count
-    this.db.object('/counts/' + this.fbuserid + '/training').query.ref.transaction(likes => {
+    this.db.object('/counts/' + this.fbuser.id + '/training').query.ref.transaction(likes => {
       if (likes === null) {
         return likes = 0;
       } else {
@@ -113,7 +113,7 @@ export class ProfessionalTrainingComponent implements OnInit {
     this.showedititem = true;
 
     //Define Observable
-    this.item = this.db.object('/users/' + this.fbuserid + '/training/' + key).valueChanges();
+    this.item = this.db.object('/users/' + this.fbuser.id + '/training/' + key).valueChanges();
 
     //Subscribe to Observable
     this.item.subscribe((item) => {
@@ -148,7 +148,7 @@ export class ProfessionalTrainingComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.items = this.db.list('/users/' + this.fbuserid + '/training').snapshotChanges();
+    this.items = this.db.list('/users/' + this.fbuser.id + '/training').snapshotChanges();
 
     this.dialogconfigForm = this._formBuilder.group({
       title: 'Remove Item',

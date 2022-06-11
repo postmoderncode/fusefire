@@ -1,10 +1,9 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { AngularFireDatabase, AngularFireList } from '@angular/fire/compat/database';
-import { AbstractControl, FormBuilder, FormGroup, FormControl } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { Observable } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
 import _ from 'lodash';
 
 @Component({
@@ -14,7 +13,7 @@ import _ from 'lodash';
 })
 export class CertificationsLicensesComponent implements OnInit {
 
-  fbuserid: string = localStorage.getItem('fbuserid');
+  fbuser = JSON.parse(localStorage.getItem('fbuser'));
   dialogconfigForm: FormGroup;
   item: Observable<any>;
   items: Observable<any[]>;
@@ -39,7 +38,7 @@ export class CertificationsLicensesComponent implements OnInit {
 
   onAdd(): void {
 
-    this.listRef = this.db.list('/users/' + this.fbuserid + '/certifications');
+    this.listRef = this.db.list('/users/' + this.fbuser.id + '/certifications');
 
     //Cast model to variable for formReset
     const mname: string = this.model.name;
@@ -51,18 +50,18 @@ export class CertificationsLicensesComponent implements OnInit {
 
     //Define Promise
     const promiseAddItem = this.listRef
-      .push({ name: mname, description: mdescription, created: mdatenow, modified: mdatenow, user: this.fbuserid, awardedby: mawardedby, awardedon: mawardedon, expireson: mexpireson });
+      .push({ name: mname, description: mdescription, created: mdatenow, modified: mdatenow, user: this.fbuser.id, awardedby: mawardedby, awardedon: mawardedon, expireson: mexpireson });
 
     //Call Promise
     promiseAddItem
-      .then(_ => this.db.object('/certifications/' + this.fbuserid + '/' + _.key)
-        .update({ name: mname, description: mdescription, created: mdatenow, modified: mdatenow, user: this.fbuserid, awardedby: mawardedby, awardedon: mawardedon, expireson: mexpireson }))
+      .then(_ => this.db.object('/certifications/' + this.fbuser.id + '/' + _.key)
+        .update({ name: mname, description: mdescription, created: mdatenow, modified: mdatenow, user: this.fbuser.id, awardedby: mawardedby, awardedon: mawardedon, expireson: mexpireson }))
       //.then(_ => this.db.object('/users/' + this.fbuserid + '/counts/certifications').set(val() - 1)
       .then(_ => this.showadditem = false)
       .catch(err => console.log(err, 'Error Submitting Certification!'));
 
     //Increment Count
-    this.db.object('/counts/' + this.fbuserid + '/certifications').query.ref.transaction(likes => {
+    this.db.object('/counts/' + this.fbuser.id + '/certifications').query.ref.transaction(likes => {
       if (likes === null) {
         return likes = 1;
       } else {
@@ -82,20 +81,20 @@ export class CertificationsLicensesComponent implements OnInit {
     const mexpireson: string = this.model.expireson;
     const mdatenow = Math.floor(Date.now());
 
-    this.db.object('/users/' + this.fbuserid + '/certifications' + '/' + key)
-      .update({ name: mname, description: mdescription, created: mdatenow, modified: mdatenow, user: this.fbuserid, awardedby: mawardedby, awardedon: mawardedon, expireson: mexpireson });
-    this.db.object('/certifications/' + this.fbuserid + '/' + key)
-      .update({ name: mname, description: mdescription, created: mdatenow, modified: mdatenow, user: this.fbuserid, awardedby: mawardedby, awardedon: mawardedon, expireson: mexpireson });
+    this.db.object('/users/' + this.fbuser.id + '/certifications' + '/' + key)
+      .update({ name: mname, description: mdescription, created: mdatenow, modified: mdatenow, user: this.fbuser.id, awardedby: mawardedby, awardedon: mawardedon, expireson: mexpireson });
+    this.db.object('/certifications/' + this.fbuser.id + '/' + key)
+      .update({ name: mname, description: mdescription, created: mdatenow, modified: mdatenow, user: this.fbuser.id, awardedby: mawardedby, awardedon: mawardedon, expireson: mexpireson });
     this.showedititem = false;
     console.log(key + ' edited');
   }
 
   onDelete(key): void {
-    this.db.object('/users/' + this.fbuserid + '/certifications/' + key).remove();
-    this.db.object('/certifications/' + this.fbuserid + '/' + key).remove();
+    this.db.object('/users/' + this.fbuser.id + '/certifications/' + key).remove();
+    this.db.object('/certifications/' + this.fbuser.id + '/' + key).remove();
 
     //Decrement Count
-    this.db.object('/counts/' + this.fbuserid + '/certifications').query.ref.transaction(likes => {
+    this.db.object('/counts/' + this.fbuser.id + '/certifications').query.ref.transaction(likes => {
       if (likes === null) {
         return likes = 0;
       } else {
@@ -121,7 +120,7 @@ export class CertificationsLicensesComponent implements OnInit {
     this.showedititem = true;
 
     //Define Observable
-    this.item = this.db.object('/users/' + this.fbuserid + '/certifications/' + key).valueChanges();
+    this.item = this.db.object('/users/' + this.fbuser.id + '/certifications/' + key).valueChanges();
 
     //Subscribe to Observable
     this.item.subscribe((item) => {
@@ -182,7 +181,7 @@ export class CertificationsLicensesComponent implements OnInit {
 
     this.filteredData = this.options;
 
-    this.items = this.db.list('/users/' + this.fbuserid + '/certifications').snapshotChanges();
+    this.items = this.db.list('/users/' + this.fbuser.id + '/certifications').snapshotChanges();
 
     this.dialogconfigForm = this._formBuilder.group({
       title: 'Remove Item',

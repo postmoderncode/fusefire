@@ -13,7 +13,7 @@ import _ from 'lodash';
 })
 export class AwardsAccoladesComponent implements OnInit {
 
-  fbuserid: string = localStorage.getItem('fbuserid');
+  fbuser = JSON.parse(localStorage.getItem('fbuser'));
   dialogconfigForm: FormGroup;
   item: Observable<any>;
   items: Observable<any[]>;
@@ -34,7 +34,7 @@ export class AwardsAccoladesComponent implements OnInit {
 
   onAdd(): void {
 
-    this.listRef = this.db.list('/users/' + this.fbuserid + '/awards');
+    this.listRef = this.db.list('/users/' + this.fbuser.id + '/awards');
 
     //Cast model to variable for formReset
     const mname: string = this.model.name;
@@ -45,17 +45,17 @@ export class AwardsAccoladesComponent implements OnInit {
 
     //Define Promise
     const promiseAddItem = this.listRef
-      .push({ name: mname, description: mdescription, created: mdatenow, modified: mdatenow, user: this.fbuserid, awardedby: mawardedby, awardedon: mawardedon });
+      .push({ name: mname, description: mdescription, created: mdatenow, modified: mdatenow, user: this.fbuser.id, awardedby: mawardedby, awardedon: mawardedon });
 
     //Call Promise
     promiseAddItem
-      .then(_ => this.db.object('/awards/' + this.fbuserid + '/' + _.key)
-        .update({ name: mname, description: mdescription, created: mdatenow, modified: mdatenow, user: this.fbuserid, awardedby: mawardedby, awardedon: mawardedon }))
+      .then(_ => this.db.object('/awards/' + this.fbuser.id + '/' + _.key)
+        .update({ name: mname, description: mdescription, created: mdatenow, modified: mdatenow, user: this.fbuser.id, awardedby: mawardedby, awardedon: mawardedon }))
       .then(_ => this.showadditem = false)
       .catch(err => console.log(err, 'Error Submitting Award!'));
 
     //Increment Count
-    this.db.object('/counts/' + this.fbuserid + '/awards').query.ref.transaction(likes => {
+    this.db.object('/counts/' + this.fbuser.id + '/awards').query.ref.transaction(likes => {
       if (likes === null) {
         return likes = 1;
       } else {
@@ -74,20 +74,20 @@ export class AwardsAccoladesComponent implements OnInit {
     const mawardedon: string = this.model.awardedon;
     const mdatenow = Math.floor(Date.now());
 
-    this.db.object('/users/' + this.fbuserid + '/awards' + '/' + key)
-      .update({ name: mname, description: mdescription, created: mdatenow, modified: mdatenow, user: this.fbuserid, awardedby: mawardedby, awardedon: mawardedon });
-    this.db.object('/awards/' + this.fbuserid + '/' + key)
-      .update({ name: mname, description: mdescription, created: mdatenow, modified: mdatenow, user: this.fbuserid, awardedby: mawardedby, awardedon: mawardedon });
+    this.db.object('/users/' + this.fbuser.id + '/awards' + '/' + key)
+      .update({ name: mname, description: mdescription, created: mdatenow, modified: mdatenow, user: this.fbuser.id, awardedby: mawardedby, awardedon: mawardedon });
+    this.db.object('/awards/' + this.fbuser.id + '/' + key)
+      .update({ name: mname, description: mdescription, created: mdatenow, modified: mdatenow, user: this.fbuser.id, awardedby: mawardedby, awardedon: mawardedon });
     this.showedititem = false;
     console.log(key + ' edited');
   }
 
   onDelete(key): void {
-    this.db.object('/users/' + this.fbuserid + '/awards/' + key).remove();
-    this.db.object('/awards/' + this.fbuserid + '/' + key).remove();
+    this.db.object('/users/' + this.fbuser.id + '/awards/' + key).remove();
+    this.db.object('/awards/' + this.fbuser.id + '/' + key).remove();
 
     //Decrement Count
-    this.db.object('/counts/' + this.fbuserid + '/awards').query.ref.transaction(likes => {
+    this.db.object('/counts/' + this.fbuser.id + '/awards').query.ref.transaction(likes => {
       if (likes === null) {
         return likes = 0;
       } else {
@@ -113,7 +113,7 @@ export class AwardsAccoladesComponent implements OnInit {
     this.showedititem = true;
 
     //Define Observable
-    this.item = this.db.object('/users/' + this.fbuserid + '/awards/' + key).valueChanges();
+    this.item = this.db.object('/users/' + this.fbuser.id + '/awards/' + key).valueChanges();
 
     //Subscribe to Observable
     this.item.subscribe((item) => {
@@ -148,7 +148,7 @@ export class AwardsAccoladesComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.items = this.db.list('/users/' + this.fbuserid + '/awards').snapshotChanges();
+    this.items = this.db.list('/users/' + this.fbuser.id + '/awards').snapshotChanges();
 
     this.dialogconfigForm = this._formBuilder.group({
       title: 'Remove Item',

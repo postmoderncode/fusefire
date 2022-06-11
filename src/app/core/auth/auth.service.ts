@@ -132,7 +132,7 @@ export class AuthService {
     signOut(): Observable<any> {
         // Remove the access token from the local storage
         localStorage.removeItem('accessToken');
-        localStorage.removeItem('fbuserid');
+        localStorage.removeItem('fbuser');
 
         // Set the authenticated flag to false
         this._authenticated = false;
@@ -201,6 +201,11 @@ export class AuthService {
             //Sign in using a redirect to Microsoft. 
             this.auth.signInWithPopup(new firebase.auth.OAuthProvider('microsoft.com'))
                 .then(async (result) => {
+                    const model = new FirebaseUser('', '', '', false);
+                    model.id = result.user.uid;
+                    model.name = result.user.displayName;
+                    model.email = result.user.email;
+                    model.isadmin = false;
 
                     //AngularFire add user to list
                     const listRef = this.db.list('users');
@@ -209,7 +214,7 @@ export class AuthService {
                     const promise_writeuser = listRef.update(result.user.uid, { id: result.user.uid, name: result.user.displayName, email: result.user.email, isadmin: false });
                     promise_writeuser
                         .then(_ =>
-                            localStorage.setItem('fbuserid', result.user.uid)
+                            localStorage.setItem('fbuser', JSON.stringify(model))
                         )
                         .catch(err =>
                             console.log(err, 'ANGULAR FIRE USER WRITE: Error!')
@@ -350,4 +355,17 @@ export class AuthService {
         // If the access token exists and it didn't expire, sign in using it
         //return this.signInUsingToken();
     }
+}
+
+// Empty Award class
+export class FirebaseUser {
+
+    constructor(
+        public id: string,
+        public name: string,
+        public email: string,
+        public isadmin: boolean,
+
+    ) { }
+
 }

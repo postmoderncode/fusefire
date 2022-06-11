@@ -19,7 +19,7 @@ export class TalentHobbiesComponent implements OnInit {
   items: Observable<any[]>;
   showadditem = false;
   showedititem = false;
-  fbuserid: string = localStorage.getItem('fbuserid');
+  fbuser = JSON.parse(localStorage.getItem('fbuser'));
   dialogconfigForm: FormGroup;
 
   /**
@@ -33,7 +33,7 @@ export class TalentHobbiesComponent implements OnInit {
 
   onAdd(): void {
 
-    this.listRef = this.db.list('/users/' + this.fbuserid + '/talents');
+    this.listRef = this.db.list('/users/' + this.fbuser.id + '/talents');
 
     //Cast model to variable for formReset
     const mname: string = this.model.name;
@@ -41,17 +41,17 @@ export class TalentHobbiesComponent implements OnInit {
     const mdatenow = Math.floor(Date.now());
 
     //Define Promise
-    const promiseAddItem = this.listRef.push({ name: mname, description: mdescription, created: mdatenow, modified: mdatenow, user: this.fbuserid });
+    const promiseAddItem = this.listRef.push({ name: mname, description: mdescription, created: mdatenow, modified: mdatenow, user: this.fbuser.id });
 
     //Call Promise
     promiseAddItem
-      .then(_ => this.db.object('/talents/' + this.fbuserid + '/' + _.key)
-        .update({ name: mname, description: mdescription, created: mdatenow, modified: mdatenow, user: this.fbuserid }))
+      .then(_ => this.db.object('/talents/' + this.fbuser.id + '/' + _.key)
+        .update({ name: mname, description: mdescription, created: mdatenow, modified: mdatenow, user: this.fbuser.id }))
       .then(_ => this.showadditem = false)
       .catch(err => console.log(err, 'Error Submitting Talent!'));
 
     //Increment Count
-    this.db.object('/counts/' + this.fbuserid + '/talents').query.ref.transaction(likes => {
+    this.db.object('/counts/' + this.fbuser.id + '/talents').query.ref.transaction(likes => {
       if (likes === null) {
         return likes = 1;
       } else {
@@ -68,20 +68,20 @@ export class TalentHobbiesComponent implements OnInit {
     const mdescription: string = this.model.description;
     const mdatenow = Math.floor(Date.now());
 
-    this.db.object('/users/' + this.fbuserid + '/talents' + '/' + key)
-      .update({ name: mname, description: mdescription, created: mdatenow, modified: mdatenow, user: this.fbuserid });
-    this.db.object('/talents/' + this.fbuserid + '/' + key)
-      .update({ name: mname, description: mdescription, created: mdatenow, modified: mdatenow, user: this.fbuserid });
+    this.db.object('/users/' + this.fbuser.id + '/talents' + '/' + key)
+      .update({ name: mname, description: mdescription, created: mdatenow, modified: mdatenow, user: this.fbuser.id });
+    this.db.object('/talents/' + this.fbuser.id + '/' + key)
+      .update({ name: mname, description: mdescription, created: mdatenow, modified: mdatenow, user: this.fbuser.id });
     this.showedititem = false;
     console.log(key + ' edited');
   }
 
   onDelete(key): void {
-    this.db.object('/users/' + this.fbuserid + '/talents/' + key).remove();
-    this.db.object('/talents/' + this.fbuserid + '/' + key).remove();
+    this.db.object('/users/' + this.fbuser.id + '/talents/' + key).remove();
+    this.db.object('/talents/' + this.fbuser.id + '/' + key).remove();
 
     //Decrement Count
-    this.db.object('/counts/' + this.fbuserid + '/talents').query.ref.transaction(likes => {
+    this.db.object('/counts/' + this.fbuser.id + '/talents').query.ref.transaction(likes => {
       if (likes === null) {
         return likes = 0;
       } else {
@@ -107,7 +107,7 @@ export class TalentHobbiesComponent implements OnInit {
     this.showedititem = true;
 
     //Define Observable
-    this.item = this.db.object('/users/' + this.fbuserid + '/talents/' + key).valueChanges();
+    this.item = this.db.object('/users/' + this.fbuser.id + '/talents/' + key).valueChanges();
 
     //Subscribe to Observable
     this.item.subscribe((item) => {
@@ -136,7 +136,7 @@ export class TalentHobbiesComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.items = this.db.list('/users/' + this.fbuserid + '/talents').snapshotChanges();
+    this.items = this.db.list('/users/' + this.fbuser.id + '/talents').snapshotChanges();
 
     this.dialogconfigForm = this._formBuilder.group({
       title: 'Remove Item',
