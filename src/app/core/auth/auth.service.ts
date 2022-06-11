@@ -201,11 +201,15 @@ export class AuthService {
             //Sign in using a redirect to Microsoft. 
             this.auth.signInWithPopup(new firebase.auth.OAuthProvider('microsoft.com'))
                 .then(async (result) => {
-                    const model = new FirebaseUser('', '', '', false);
-                    model.id = result.user.uid;
-                    model.name = result.user.displayName;
-                    model.email = result.user.email;
-                    model.isadmin = false;
+
+                    console.log('ATTN RESULTS ARE:');
+                    console.log(result);
+
+                    const fbuser = new FirebaseUser('', '', '', false);
+                    fbuser.id = result.user.uid;
+                    fbuser.name = result.user.displayName;
+                    fbuser.email = result.user.email;
+                    fbuser.isadmin = false;
 
                     //AngularFire add user to list
                     const listRef = this.db.list('users');
@@ -214,7 +218,7 @@ export class AuthService {
                     const promise_writeuser = listRef.update(result.user.uid, { id: result.user.uid, name: result.user.displayName, email: result.user.email, isadmin: false });
                     promise_writeuser
                         .then(_ =>
-                            localStorage.setItem('fbuser', JSON.stringify(model))
+                            localStorage.setItem('fbuser', JSON.stringify(fbuser))
                         )
                         .catch(err =>
                             console.log(err, 'ANGULAR FIRE USER WRITE: Error!')
