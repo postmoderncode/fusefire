@@ -3,23 +3,6 @@
             <!-- Header -->
     <div class="flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between p-6 pb-22 sm:pt-3 sm:pb-20 sm:px-10 bg-default dark:bg-transparent">
         <div class="flex-1 min-w-0">
-            <!-- Breadcrumbs -->
-            <div>
-                <div class="hidden sm:flex flex-wrap items-center font-medium">
-                    <div>
-                        <a class="whitespace-nowrap text-primary-500">Home</a>
-                    </div>
-                    <div class="flex items-center ml-1 whitespace-nowrap">
-                        <mat-icon class="icon-size-5 text-secondary" [svgIcon]="'heroicons_solid:chevron-right'"></mat-icon>
-                        <a class="ml-1 text-primary-500">Skill Catalog</a>
-                    </div>
-                    <div class="flex items-center ml-1 whitespace-nowrap">
-                        <mat-icon class="icon-size-5 text-secondary" [svgIcon]="'heroicons_solid:chevron-right'"></mat-icon>
-                        <span class="ml-1 text-secondary">Overview</span>
-                    </div>
-                </div>
-
-            </div>
             <!-- Title -->
             <div class="mt-2">
                 <h2 class="text-3xl md:text-3xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate">
@@ -27,17 +10,119 @@
                 </h2>
             </div>
         </div>
-    </div>
+        <!-- Actions -->
+        <div class="flex shrink-0 items-center mt-3">
 
+            <div [hidden]="!showadditem">
+                <button  
+                    (click)="onHideAddForm(); addItemForm.resetForm();"
+                    class="ml-4"
+                    mat-stroked-button
+                    type="button"
+                    [color]="'primary'">
+                    Cancel
+                </button>
+            </div>
+            <button  
+                (click)="onShowAddForm(tabTitle);"
+                [disabled]="showadditem"
+                class="ml-4"
+                mat-flat-button
+                type="button"
+                [color]="'primary'">
+                Add {{tabTitle}}
+            </button>
+        </div>
+    </div>
 
     <!-- Main -->
     <div class="flex-auto -mt-16 p-6 sm:p-10 shadow bg-card">
 
         <!-- CONTENT GOES HERE -->
-        <div class="h-400 min-h-400 max-h-400 border-2 border-dashed border-gray-300 rounded-2xl">
+        <div class="h-400 min-h-400 max-h-400">
+
+            <!-- Add Form -->
+            <div [hidden]="!showadditem" class="border-2 border-dashed border-gray-300 rounded-2xl">
+                <h2 class="text-2xl md:text-2xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate mb-5">
+                    Add {{tabTitle}}
+                </h2>
+                <form #addItemForm="ngForm">
+                    <div class="form-group">
+                        <mat-form-field class="fuse-mat-no-subscript w-full">
+                            <mat-label>{{tabTitle}} Name</mat-label>
+                            <mat-icon
+                                class="icon-size-5"
+                                [svgIcon]="'heroicons_solid:clipboard-list'"
+                                matPrefix></mat-icon>
+                                <input type="text"
+                                id="name" 
+                                class="form-control" 
+                                #name="ngModel"
+                                [(ngModel)]="model.name" name="name"
+                                required
+                                matInput>
+                        </mat-form-field>
+    
+                        <div [hidden]="name.valid || name.pristine" class="alert alert-danger">
+                            <span style="color:red;">Name is required</span>
+                        </div>
+                        </div>
+    
+                        <!-- Spacer -->
+                        <div class="mt-5"></div>
+                        <div class="form-group">
+                            <mat-form-field class="fuse-mat-no-subscript w-full">
+                            <mat-label>Description</mat-label>
+                            <mat-icon
+                                class="icon-size-5"
+                                [svgIcon]="'heroicons_solid:annotation'"
+                                matPrefix></mat-icon>
+                                <textarea type="text"
+                                id="description" 
+                                class="form-control" 
+                                #name="ngModel"
+                                [(ngModel)]="model.description" name="description"
+                                matInput>
+                                </textarea>
+                        </mat-form-field>
+                        </div>
+        
+                        <!-- Spacer -->
+                        <div class="mt-5"></div>
+    
+                        <!-- Actions -->
+                        <div class="flex shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
+    
+                            <button  
+                                (click)="onHideAddForm(); addItemForm.resetForm();"
+                                class="ml-4"
+                                mat-stroked-button
+                                type="button"
+                                [color]="'primary'">
+                                Cancel
+                            </button>
+    
+                            <button  
+                                (click)="onAdd(); addItemForm.resetForm();"
+                                [disabled]="!addItemForm.form.valid" 
+                                class="ml-4"
+                                mat-flat-button
+                                type="button"
+                                [color]="'primary'">
+                                Submit Talent
+                            </button>
+            
+                        </div>
+    
+                    </form>
+    
+                    <!-- Spacer -->
+                    <div class="mt-10"></div>
+            </div>
+
 
             <!-- SELECTOR WRAPPER -->
-            <div class="container mx-auto sm:max-w-[500px] md:max-w-[600px] lg:max-w-[700px] xl:max-w-[800px] ">
+            <div class="container mx-auto sm:max-w-[500px] md:max-w-[600px] lg:max-w-[700px] xl:max-w-[800px] " [hidden]="showadditem">
 
                 <!-- SELECTOR TITLE -->
                 <div class="flex items-center h-15">
@@ -49,13 +134,12 @@
                     </a>
 
                     <div class="flex-1 text-1xl p-2 mr-20 sm:text-2xl md:text-2xl lg:text-3xl font-extrabold text-center tracking-tight">
-                        {{tabTitle}}
+                        Please Select {{tabTitle}}
                     </div>
 
                 </div>
 
-                <!-- TAB GROUP WRAPPER -->
-                
+                <!-- TAB GROUP WRAPPER -->             
                 <div class="overflow-scroll h-full">
 
                     <mat-tab-group [(selectedIndex)]=selectedIndex>
@@ -82,7 +166,6 @@
 
                         </mat-tab>
 
-
                         <!--Categories Tab-->
                         <mat-tab label="Catagories">
 
@@ -102,42 +185,6 @@
                             <div class="flex items-center py-4 px-5 border-t-2 border-slate-100">
                                 <div class="flex-1"></div>
                             </div>
-
-                            <!-- <a (click)="loadSkills()">
-                                <div class="flex items-center py-4 px-5 border-t-2 border-slate-100 hover:bg-slate-100">
-                                    <div class="flex-1">Category One</div>
-                                    <div class="flex-none pt-1">
-                                        <mat-icon svgIcon="mat_solid:chevron_right"></mat-icon>
-                                    </div>
-                                </div>
-                            </a>
-                            <a (click)="loadSkills()">
-                                <div class="flex items-center py-4 px-5 border-t-2 border-slate-100 hover:bg-slate-100">
-                                    <div class="flex-1">Category Two</div>
-                                    <div class="flex-none pt-1">
-                                        <mat-icon svgIcon="mat_solid:chevron_right"></mat-icon>
-                                    </div>
-                                </div>
-                            </a>
-                            <a (click)="loadSkills()">
-                                <div class="flex items-center py-4 px-5 border-t-2 border-slate-100 hover:bg-slate-100">
-                                    <div class="flex-1">Category Three</div>
-                                    <div class="flex-none pt-1">
-                                        <mat-icon svgIcon="mat_solid:chevron_right"></mat-icon>
-                                    </div>
-                                </div>
-                            </a>
-                            <a (click)="loadSkills()">
-                                <div class="flex items-center py-4 px-5 border-t-2 border-slate-100 hover:bg-slate-100">
-                                    <div class="flex-1">Category Four</div>
-                                    <div class="flex-none pt-1">
-                                        <mat-icon svgIcon="mat_solid:chevron_right"></mat-icon>
-                                    </div>
-                                </div>
-                            </a>
-                            <div class="flex items-center py-4 px-5 border-t-2 border-slate-100">
-                                <div class="flex-1"></div>
-                            </div> -->
 
                         </mat-tab>
 

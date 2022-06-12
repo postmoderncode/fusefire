@@ -4,6 +4,9 @@ import { SkillCatalogComponent } from './skill-catalog.component';
 import { Route, RouterModule } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 const skillcatalogRoutes: Route[] = [
   {
@@ -20,6 +23,9 @@ const skillcatalogRoutes: Route[] = [
     SharedModule,
     MatIconModule,
     MatTabsModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatInputModule,
     RouterModule.forChild(skillcatalogRoutes)
   ]
 })

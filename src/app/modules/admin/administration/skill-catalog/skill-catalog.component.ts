@@ -15,6 +15,10 @@ export class SkillCatalogComponent implements OnInit {
   fbuserid: string = localStorage.getItem('fbuserid');
   dialogconfigForm: FormGroup;
   value = 0;
+  showadditem = false;
+  showedititem = false;
+  model = new Talent('', '', '', '', '', '');
+
 
   dbRef = this.db.database.ref("/skillcatalog/categories/");
 
@@ -39,7 +43,7 @@ export class SkillCatalogComponent implements OnInit {
 
   //General Component Variables
   selectedIndex = 0;
-  tabTitle = "Please Select a Skill Area"
+  tabTitle = "Area"
 
   /**
    * Constructor
@@ -56,12 +60,12 @@ export class SkillCatalogComponent implements OnInit {
   goback(): void {
     switch (this.selectedIndex) {
       case 1: {
-        this.tabTitle = "Please Select a Skill Area";
+        this.tabTitle = "Area";
         this.selectedIndex = 0;
         break;
       }
       case 2: {
-        this.tabTitle = "Now, select a category...";
+        this.tabTitle = "Category.";
         this.selectedIndex = 1;
         break;
       }
@@ -80,18 +84,35 @@ export class SkillCatalogComponent implements OnInit {
     );
 
     //Set the title
-    this.tabTitle = "Now, select a category...";
+    this.tabTitle = "Category";
 
     //Set the tab to categories
     this.selectedIndex = 1;
+
+    console.log(this.tabTitle);
   }
 
   //Function to call when a category is selected
   loadSkills(categoryId) {
 
     console.log(categoryId);
-    this.tabTitle = "Then select a Skill to Add!";
+    this.tabTitle = "Skill";
     this.selectedIndex = 2;
+  }
+
+  onAdd(): void {
+    console.log('add clicked');
+  }
+
+  //Contextual Button based on tabTitle
+  onShowAddForm(type: string): void {
+    this.showedititem = false;
+    this.showadditem = true;
+    console.log(type + ' Form Open');
+  }
+
+  onHideAddForm(): void {
+    this.showadditem = false;
   }
 
   ngOnInit(): void {
@@ -130,5 +151,20 @@ export class SkillCatalogComponent implements OnInit {
     });
 
   }
+
+}
+
+// Empty Talent class
+export class Talent {
+
+  constructor(
+    public key: string,
+    public name: string,
+    public description: string,
+    public created: string,
+    public modified: string,
+    public user: string,
+
+  ) { }
 
 }
