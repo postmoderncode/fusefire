@@ -65,7 +65,7 @@ export class SkillCatalogComponent implements OnInit {
         break;
       }
       case 2: {
-        this.tabTitle = "Category.";
+        this.tabTitle = "Category";
         this.selectedIndex = 1;
         break;
       }
