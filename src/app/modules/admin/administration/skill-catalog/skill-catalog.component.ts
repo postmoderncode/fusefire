@@ -12,7 +12,7 @@ import _ from 'lodash';
 })
 export class SkillCatalogComponent implements OnInit {
 
-  fbuserid: string = localStorage.getItem('fbuserid');
+  fbuser = JSON.parse(localStorage.getItem('fbuser'));
   dialogconfigForm: FormGroup;
   value = 0;
   showadditem = false;
@@ -104,6 +104,38 @@ export class SkillCatalogComponent implements OnInit {
     console.log('add clicked');
   }
 
+  onEdit(key): void {
+
+    // //Cast model to variable for formReset
+    // const mname: string = this.model.name;
+    // const mdescription: string = this.model.description;
+    // const mdatenow = Math.floor(Date.now());
+
+    // this.db.object('/users/' + this.fbuser.id + '/talents' + '/' + key)
+    //   .update({ name: mname, description: mdescription, created: mdatenow, modified: mdatenow, user: this.fbuser.id });
+    // this.db.object('/talents/' + this.fbuser.id + '/' + key)
+    //   .update({ name: mname, description: mdescription, created: mdatenow, modified: mdatenow, user: this.fbuser.id });
+    // this.showedititem = false;
+    console.log(key + ' edited');
+  }
+
+  onDelete(key): void {
+    // this.db.object('/users/' + this.fbuser.id + '/talents/' + key).remove();
+    // this.db.object('/talents/' + this.fbuser.id + '/' + key).remove();
+
+    // //Decrement Count
+    // this.db.object('/counts/' + this.fbuser.id + '/talents').query.ref.transaction(likes => {
+    //   if (likes === null) {
+    //     return likes = 0;
+    //   } else {
+    //     return likes - 1;
+    //   }
+    // })
+
+    console.log(key + ' deleted');
+
+  }
+
   //Contextual Button based on tabTitle
   onShowAddForm(type: string): void {
     this.showedititem = false;
@@ -113,6 +145,39 @@ export class SkillCatalogComponent implements OnInit {
 
   onHideAddForm(): void {
     this.showadditem = false;
+  }
+
+  onShowEditForm(key): void {
+    console.log('edit form shown');
+    this.showadditem = false;
+    this.showedititem = true;
+
+    // //Define Observable
+    // this.item = this.db.object('/users/' + this.fbuser.id + '/talents/' + key).valueChanges();
+
+    // //Subscribe to Observable
+    // this.item.subscribe((item) => {
+    //   this.model = new Talent(key, item.name, item.description, item.created, item.modified, item.user);
+    // });
+
+    console.log(key + 'has been selected to edit');
+  }
+
+  onHideEditForm(): void {
+    this.showedititem = false;
+    this.model = new Talent('', '', '', '', '', '');
+  }
+
+  openConfirmationDialog(key): void {
+    // Open the dialog and save the reference of it
+    const dialogRef = this._fuseConfirmationService.open(this.dialogconfigForm.value);
+
+    // Subscribe to afterClosed from the dialog reference
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result === 'confirmed') {
+        this.onDelete(key);
+      }
+    });
   }
 
   ngOnInit(): void {
