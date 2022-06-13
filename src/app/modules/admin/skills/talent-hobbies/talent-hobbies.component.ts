@@ -84,9 +84,9 @@ export class TalentHobbiesComponent implements OnInit {
     const mdatenow = Math.floor(Date.now());
 
     this.db.object('/users/' + this.fbuser.id + '/talents' + '/' + key)
-      .update({ name: mname, description: mdescription, created: mdatenow, modified: mdatenow, user: this.fbuser.id });
+      .update({ name: mname, description: mdescription, modified: mdatenow });
     this.db.object('/talents/' + this.fbuser.id + '/' + key)
-      .update({ name: mname, description: mdescription, created: mdatenow, modified: mdatenow, user: this.fbuser.id });
+      .update({ name: mname, description: mdescription, modified: mdatenow });
     this.showedititem = false;
     console.log(key + ' edited');
   }

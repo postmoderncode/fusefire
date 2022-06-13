@@ -98,9 +98,9 @@ export class CertificationsLicensesComponent implements OnInit {
     const mdatenow = Math.floor(Date.now());
 
     this.db.object('/users/' + this.fbuser.id + '/certifications' + '/' + key)
-      .update({ name: mname, description: mdescription, created: mdatenow, modified: mdatenow, user: this.fbuser.id, awardedby: mawardedby, awardedon: mawardedon, expireson: mexpireson });
+      .update({ name: mname, description: mdescription, modified: mdatenow, awardedby: mawardedby, awardedon: mawardedon, expireson: mexpireson });
     this.db.object('/certifications/' + this.fbuser.id + '/' + key)
-      .update({ name: mname, description: mdescription, created: mdatenow, modified: mdatenow, user: this.fbuser.id, awardedby: mawardedby, awardedon: mawardedon, expireson: mexpireson });
+      .update({ name: mname, description: mdescription, modified: mdatenow, awardedby: mawardedby, awardedon: mawardedon, expireson: mexpireson });
     this.showedititem = false;
     console.log(key + ' edited');
   }

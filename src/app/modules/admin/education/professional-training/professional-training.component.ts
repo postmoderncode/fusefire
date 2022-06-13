@@ -90,9 +90,9 @@ export class ProfessionalTrainingComponent implements OnInit {
     const mdatenow = Math.floor(Date.now());
 
     this.db.object('/users/' + this.fbuser.id + '/training' + '/' + key)
-      .update({ name: mname, description: mdescription, created: mdatenow, modified: mdatenow, user: this.fbuser.id, awardedby: mawardedby, awardedon: mawardedon });
+      .update({ name: mname, description: mdescription, modified: mdatenow, awardedby: mawardedby, awardedon: mawardedon });
     this.db.object('/training/' + this.fbuser.id + '/' + key)
-      .update({ name: mname, description: mdescription, created: mdatenow, modified: mdatenow, user: this.fbuser.id, awardedby: mawardedby, awardedon: mawardedon });
+      .update({ name: mname, description: mdescription, modified: mdatenow, awardedby: mawardedby, awardedon: mawardedon });
     this.showedititem = false;
     console.log(key + ' edited');
   }
