@@ -18,10 +18,10 @@ export class SkillCatalogComponent implements OnInit {
   showadditem = false;
   showedititem = false;
   model = new Skill('', '', '', '', '', '');
-  catmodel = new Catalog_State('', '', '');
+  catmodel = new CatalogState('', '', '');
 
 
-  dbRef = this.db.database.ref("/skillcatalog/categories/");
+  dbRef = this.db.database.ref('/skillcatalog/categories/');
 
   myObserver = {
     next: (x: number) => console.log('Observer got a next value: ' + x),
@@ -32,19 +32,19 @@ export class SkillCatalogComponent implements OnInit {
   //Initialize Varables
   //-------------------
 
-  //Object to Hold All Areas. 
+  //Object to Hold All Areas.
   areas: Observable<any>;
 
-  //Object to Hold Current Category List. 
+  //Object to Hold Current Category List.
   categories: object;
   categories2: object;
 
-  //Object to Hold Current Skill List. 
+  //Object to Hold Current Skill List.
   skills: Observable<any>;
 
   //General Component Variables
   selectedIndex = 0;
-  tabTitle = "Area"
+  tabTitle = 'Area';
 
   /**
    * Constructor
@@ -61,13 +61,20 @@ export class SkillCatalogComponent implements OnInit {
   goback(): void {
     switch (this.selectedIndex) {
       case 1: {
-        this.tabTitle = "Area";
+        console.log('goback 1');
+        this.tabTitle = 'Area';
         this.selectedIndex = 0;
+        this.catmodel.currentArea = '';
+        this.catmodel.currentCategory = '';
+        this.catmodel.currentSkill = '';
         break;
       }
       case 2: {
-        this.tabTitle = "Category";
+        console.log('goback 2');
+        this.tabTitle = 'Category';
         this.selectedIndex = 1;
+        this.catmodel.currentCategory = '';
+        this.catmodel.currentSkill = '';
         break;
       }
     }
@@ -77,7 +84,7 @@ export class SkillCatalogComponent implements OnInit {
   loadCategories(areaId) {
 
     //Populate Categories
-    this.db.list('/skillcatalog/categories/', ref => ref.orderByChild("area").equalTo(parseInt(areaId))).snapshotChanges().subscribe(
+    this.db.list('/skillcatalog/categories/', ref => ref.orderByChild('area').equalTo(parseInt(areaId))).snapshotChanges().subscribe(
       (results: object) => {
         console.log(results);
         this.categories = results;
@@ -85,7 +92,7 @@ export class SkillCatalogComponent implements OnInit {
     );
 
     //Set the title
-    this.tabTitle = "Category";
+    this.tabTitle = 'Category';
 
     //Set the tab to categories
     this.selectedIndex = 1;
@@ -99,7 +106,7 @@ export class SkillCatalogComponent implements OnInit {
   loadSkills(categoryId) {
 
     console.log(categoryId);
-    this.tabTitle = "Skill";
+    this.tabTitle = 'Skill';
     this.selectedIndex = 2;
     this.catmodel.currentCategory = categoryId;
   }
@@ -195,7 +202,7 @@ export class SkillCatalogComponent implements OnInit {
     this.areas = this.db.list('/skillcatalog/areas/').snapshotChanges();
 
     //Populate Categories
-    this.db.list('/skillcatalog/categories/', ref => ref.orderByChild("area").equalTo(4)).snapshotChanges().subscribe(
+    this.db.list('/skillcatalog/categories/', ref => ref.orderByChild('area').equalTo(4)).snapshotChanges().subscribe(
       (results: object) => {
         console.log(results);
         this.categories2 = results;
@@ -244,7 +251,7 @@ export class Skill {
 }
 
 // Empty Skill class
-export class Catalog_State {
+export class CatalogState {
 
   constructor(
     public currentArea: string,
