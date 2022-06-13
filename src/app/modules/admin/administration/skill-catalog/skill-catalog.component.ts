@@ -17,7 +17,8 @@ export class SkillCatalogComponent implements OnInit {
   value = 0;
   showadditem = false;
   showedititem = false;
-  model = new Talent('', '', '', '', '', '');
+  model = new Skill('', '', '', '', '', '');
+  catmodel = new Catalog_State('', '', '');
 
 
   dbRef = this.db.database.ref("/skillcatalog/categories/");
@@ -73,10 +74,10 @@ export class SkillCatalogComponent implements OnInit {
   }
 
   //Function to call when an area is selected
-  loadCategories(categoryId) {
+  loadCategories(areaId) {
 
     //Populate Categories
-    this.db.list('/skillcatalog/categories/', ref => ref.orderByChild("area").equalTo(parseInt(categoryId))).snapshotChanges().subscribe(
+    this.db.list('/skillcatalog/categories/', ref => ref.orderByChild("area").equalTo(parseInt(areaId))).snapshotChanges().subscribe(
       (results: object) => {
         console.log(results);
         this.categories = results;
@@ -89,6 +90,8 @@ export class SkillCatalogComponent implements OnInit {
     //Set the tab to categories
     this.selectedIndex = 1;
 
+    this.catmodel.currentArea = areaId;
+
     console.log(this.tabTitle);
   }
 
@@ -98,6 +101,12 @@ export class SkillCatalogComponent implements OnInit {
     console.log(categoryId);
     this.tabTitle = "Skill";
     this.selectedIndex = 2;
+    this.catmodel.currentCategory = categoryId;
+  }
+
+  //Function to call when a category is selected
+  selectSkill(skillId) {
+    this.catmodel.currentSkill = skillId;
   }
 
   onAdd(): void {
@@ -165,7 +174,7 @@ export class SkillCatalogComponent implements OnInit {
 
   onHideEditForm(): void {
     this.showedititem = false;
-    this.model = new Talent('', '', '', '', '', '');
+    this.model = new Skill('', '', '', '', '', '');
   }
 
   openConfirmationDialog(key): void {
@@ -219,8 +228,8 @@ export class SkillCatalogComponent implements OnInit {
 
 }
 
-// Empty Talent class
-export class Talent {
+// Empty Skill class
+export class Skill {
 
   constructor(
     public key: string,
@@ -233,3 +242,16 @@ export class Talent {
   ) { }
 
 }
+
+// Empty Skill class
+export class Catalog_State {
+
+  constructor(
+    public currentArea: string,
+    public currentCategory: string,
+    public currentSkill: string,
+
+  ) { }
+
+}
+
