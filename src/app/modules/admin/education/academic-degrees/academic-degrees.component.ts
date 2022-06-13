@@ -25,6 +25,10 @@ export class AcademicDegreesComponent implements OnInit {
   //Empty Model
   model = new Education('', '', '', '', '', '', '', '', '');
 
+  //Form Visibility Modifiers
+  showadditem = false;
+  showedititem = false;
+
   //Autocomplete Data
   filteredData;
 
@@ -45,6 +49,31 @@ export class AcademicDegreesComponent implements OnInit {
     else {
       this.filteredData = this.options.filter(item => (item + "") === evt || item.toLocaleLowerCase().indexOf(evt.toLocaleLowerCase()) >= 0);
     }
+  }
+
+  onDateChange(event: MatDatepickerInputEvent<any>, control: AbstractControl): void {
+
+    this.model.awardedon = ((event.value.valueOf()).toString());
+  }
+
+  onShowAddForm(): void {
+    this.showedititem = false;
+    this.showadditem = true;
+  }
+
+  onHideAddForm(): void {
+    this.showadditem = false;
+  }
+
+  onShowEditForm(key): void {
+    this.showadditem = false;
+    this.showedititem = true;
+
+  };
+
+  onHideEditForm(): void {
+    this.showedititem = false;
+
   }
 
   ngOnInit(): void {
