@@ -1,7 +1,7 @@
 <div class="absolute inset-0 flex flex-col min-w-0 overflow-y-auto" cdkScrollable>
 
             <!-- Header -->
-    <div class="flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between p-6 pb-22 sm:pt-3 sm:pb-20 sm:px-10 bg-default dark:bg-transparent">
+    <div class="flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between p-6 pb-22 sm:pt-3 sm:pb-20 sm:px-10 bg-sky-100 dark:bg-transparent">
         <div class="flex-1 min-w-0">
             <!-- Title -->
             <div class="mt-2">
@@ -36,18 +36,99 @@
     </div>
 
     <!-- Main -->
-    <div class="flex-auto -mt-16 p-6 sm:p-10 shadow bg-card">
+    <div class="flex-auto -mt-16 p-6 sm:p-10 shadow bg-card bg-slate-50">
 
         <!-- CONTENT GOES HERE -->
         <div class="h-400 min-h-400 max-h-400">
 
             <!-- Add Form -->
-            <div [hidden]="!showadditem" class="border-2 border-dashed border-gray-300 rounded-2xl p-5 bg-blue-50" >
-                <h2 class="text-2xl md:text-2xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate mb-5">
-                    Add Custom {{tabTitle}}
-                </h2>
-                <form #addItemForm="ngForm">
-                    <div class="form-group">
+            <div [hidden]="!showadditem">
+                <fuse-card class="flex flex-col w-full p-8 filter-info mb-3 drop-shadow-lg bg-orange-50">
+                    <h2 class="text-2xl md:text-2xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate mb-5">
+                        Add Custom {{tabTitle}}
+                    </h2>
+                    <form #addItemForm="ngForm">
+                        <div class="form-group">
+                            <mat-form-field class="fuse-mat-no-subscript w-full">
+                                <mat-label>{{tabTitle}} Name</mat-label>
+                                <mat-icon
+                                    class="icon-size-5"
+                                    [svgIcon]="'heroicons_outline:clipboard-list'"
+                                    matPrefix></mat-icon>
+                                    <input type="text"
+                                    id="name" 
+                                    class="form-control" 
+                                    #name="ngModel"
+                                    [(ngModel)]="model.name" name="name"
+                                    required
+                                    matInput>
+                            </mat-form-field>
+        
+                            <div [hidden]="name.valid || name.pristine" class="alert alert-danger">
+                                <span style="color:red;">Name is required</span>
+                            </div>
+                            </div>
+        
+                            <!-- Spacer -->
+                            <div class="mt-5"></div>
+                            <div class="form-group">
+                                <mat-form-field class="fuse-mat-no-subscript w-full">
+                                <mat-label>Description</mat-label>
+                                <mat-icon
+                                    class="icon-size-5"
+                                    [svgIcon]="'heroicons_outline:annotation'"
+                                    matPrefix></mat-icon>
+                                    <textarea type="text"
+                                    id="description" 
+                                    class="form-control" 
+                                    #name="ngModel"
+                                    [(ngModel)]="model.description" name="description"
+                                    matInput>
+                                    </textarea>
+                            </mat-form-field>
+                            </div>
+            
+                            <!-- Spacer -->
+                            <div class="mt-5"></div>
+        
+                            <!-- Actions -->
+                            <div class="flex shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
+        
+                                <button  
+                                    (click)="onHideAddForm(); addItemForm.resetForm(); editItemForm.resetForm();"
+                                    class="ml-4"
+                                    mat-stroked-button
+                                    type="button"
+                                    [color]="'primary'">
+                                    Cancel
+                                </button>
+        
+                                <button  
+                                    (click)="onAdd(); addItemForm.resetForm(); editItemForm.resetForm();"
+                                    [disabled]="!addItemForm.form.valid" 
+                                    class="ml-4"
+                                    mat-flat-button
+                                    type="button"
+                                    [color]="'primary'">
+                                    Submit {{tabTitle}}
+                                </button>
+                
+                            </div>
+        
+                        </form>
+                </fuse-card>
+
+            </div>
+
+            <!-- Edit Form -->
+            <div [hidden]="!showedititem">
+                <fuse-card class="flex flex-col w-full p-8 filter-info mb-3 drop-shadow-lg bg-orange-50">
+                    <h2 class="text-2xl md:text-2xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate mb-5">
+                        Edit Custom{{tabTitle}}
+                    </h2>
+
+                    <form #editItemForm="ngForm">
+                        <div class="form-group">
                         <mat-form-field class="fuse-mat-no-subscript w-full">
                             <mat-label>{{tabTitle}} Name</mat-label>
                             <mat-icon
@@ -62,14 +143,15 @@
                                 required
                                 matInput>
                         </mat-form-field>
-    
+
                         <div [hidden]="name.valid || name.pristine" class="alert alert-danger">
                             <span style="color:red;">Name is required</span>
                         </div>
                         </div>
-    
+
                         <!-- Spacer -->
                         <div class="mt-5"></div>
+
                         <div class="form-group">
                             <mat-form-field class="fuse-mat-no-subscript w-full">
                             <mat-label>Description</mat-label>
@@ -86,129 +168,47 @@
                                 </textarea>
                         </mat-form-field>
                         </div>
-        
+
                         <!-- Spacer -->
                         <div class="mt-5"></div>
-    
+
                         <!-- Actions -->
-                        <div class="flex shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
-    
+                        <div class="flex shrink-0 items-center mt-3 sm:mt-0 sm:ml-4">
+
                             <button  
-                                (click)="onHideAddForm(); addItemForm.resetForm(); editItemForm.resetForm();"
+                                (click)="onHideEditForm(); editItemForm.resetForm(); addItemForm.resetForm()"
                                 class="ml-4"
                                 mat-stroked-button
                                 type="button"
                                 [color]="'primary'">
                                 Cancel
                             </button>
-    
+
                             <button  
-                                (click)="onAdd(); addItemForm.resetForm(); editItemForm.resetForm();"
-                                [disabled]="!addItemForm.form.valid" 
+                                (click)="onEdit(model.key); editItemForm.resetForm(); addItemForm.resetForm()"
+                                [disabled]="!editItemForm.form.valid" 
                                 class="ml-4"
                                 mat-flat-button
                                 type="button"
                                 [color]="'primary'">
-                                Submit {{tabTitle}}
+                                Accept Edits
                             </button>
             
                         </div>
-    
+
+                        <div class="float-right text-right mt-3">
+                            created:{{model.created | date: 'MM/dd/yy h:mm a'}}
+                            <br />
+                            modified:{{model.modified | date: 'MM/dd/yy h:mm a'}}
+                            <br />
+                            <button mat-mini-fab color="warn" matTooltip="delete" class="mt-2" (click)="openConfirmationDialog(model.key)">
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        </div>
+
                     </form>
-    
-                    <!-- Spacer -->
-                    <div class="mt-10"></div>
-            </div>
 
-            <!-- Edit Form -->
-            <div [hidden]="!showedititem" class="border-2 border-dashed border-gray-300 rounded-2xl p-5 bg-blue-50">
-                <h2 class="text-2xl md:text-2xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate mb-5">
-                    Edit Custom{{tabTitle}}
-                </h2>
-
-                <form #editItemForm="ngForm">
-                    <div class="form-group">
-                    <mat-form-field class="fuse-mat-no-subscript w-full">
-                        <mat-label>{{tabTitle}} Name</mat-label>
-                        <mat-icon
-                            class="icon-size-5"
-                            [svgIcon]="'heroicons_outline:clipboard-list'"
-                            matPrefix></mat-icon>
-                            <input type="text"
-                            id="name" 
-                            class="form-control" 
-                            #name="ngModel"
-                            [(ngModel)]="model.name" name="name"
-                            required
-                            matInput>
-                    </mat-form-field>
-
-                    <div [hidden]="name.valid || name.pristine" class="alert alert-danger">
-                        <span style="color:red;">Name is required</span>
-                    </div>
-                    </div>
-
-                    <!-- Spacer -->
-                    <div class="mt-5"></div>
-
-                    <div class="form-group">
-                        <mat-form-field class="fuse-mat-no-subscript w-full">
-                        <mat-label>Description</mat-label>
-                        <mat-icon
-                            class="icon-size-5"
-                            [svgIcon]="'heroicons_outline:annotation'"
-                            matPrefix></mat-icon>
-                            <textarea type="text"
-                            id="description" 
-                            class="form-control" 
-                            #name="ngModel"
-                            [(ngModel)]="model.description" name="description"
-                            matInput>
-                            </textarea>
-                    </mat-form-field>
-                    </div>
-
-                    <!-- Spacer -->
-                    <div class="mt-5"></div>
-
-                    <!-- Actions -->
-                    <div class="flex shrink-0 items-center mt-3 sm:mt-0 sm:ml-4">
-
-                        <button  
-                            (click)="onHideEditForm(); editItemForm.resetForm(); addItemForm.resetForm()"
-                            class="ml-4"
-                            mat-stroked-button
-                            type="button"
-                            [color]="'primary'">
-                            Cancel
-                        </button>
-
-                        <button  
-                            (click)="onEdit(model.key); editItemForm.resetForm(); addItemForm.resetForm()"
-                            [disabled]="!editItemForm.form.valid" 
-                            class="ml-4"
-                            mat-flat-button
-                            type="button"
-                            [color]="'primary'">
-                            Accept Edits
-                        </button>
-        
-                    </div>
-
-                    <div class="float-right text-right mt-3">
-                        created:{{model.created | date: 'MM/dd/yy h:mm a'}}
-                        <br />
-                        modified:{{model.modified | date: 'MM/dd/yy h:mm a'}}
-                        <br />
-                        <button mat-mini-fab color="warn" matTooltip="delete" class="mt-2" (click)="openConfirmationDialog(model.key)">
-                            <mat-icon>delete</mat-icon>
-                        </button>
-                    </div>
-
-                </form>
-
-                <!-- Spacer -->
-                <div class="mt-10"></div>
+                </fuse-card>
 
             </div>
 

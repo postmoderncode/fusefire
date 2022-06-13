@@ -41,6 +41,7 @@
 
         <!-- CONTENT GOES HERE -->
         <div class="h-400 min-h-400 max-h-400">
+
             <!-- Add Form -->
             <div [hidden]="!showadditem">
                 <fuse-card class="flex flex-col w-full p-8 filter-info mb-3 drop-shadow-lg bg-orange-50">
@@ -180,148 +181,146 @@
             </div>
 
             <!-- Edit Form -->
-            <div [hidden]="!showedititem" class="border-2 border-dashed border-gray-300 rounded-2xl p-5 bg-blue-50">
-                <h2 class="text-2xl md:text-2xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate mb-5">
-                    Edit Certification or License
-                </h2>
+            <div [hidden]="!showedititem">
+                <fuse-card class="flex flex-col w-full p-8 filter-info mb-3 drop-shadow-lg bg-orange-50">
+                    <h2 class="text-2xl md:text-2xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate mb-5">
+                        Edit Certification or License
+                    </h2>
 
-                <form #editItemForm="ngForm">
-                    <div class="form-group">
-                    <mat-form-field class="fuse-mat-no-subscript w-full">
-                        <mat-label>Certification/License Name</mat-label>
-                        <mat-icon
-                            class="icon-size-5"
-                            [svgIcon]="'feather:file-text'"
-                            matPrefix></mat-icon>
-                            <input type="text"
-                            id="name" 
-                            class="form-control" 
-                            placeholder="Start Typing for Suggestions" 
-                            #name="ngModel"
-                            [(ngModel)]="model.name" name="name"
-                            [matAutocomplete]="autocomedit"
-                            (ngModelChange)="applyFilter($event)"
-                            required
-                            matInput>
-                            <mat-autocomplete #autocomedit="matAutocomplete">
-                                <mat-option *ngFor="let option of filteredData" [value]="option">
-                                    {{option}}
-                                </mat-option>
-                            </mat-autocomplete>
-                    </mat-form-field>
-
-                    <div [hidden]="name.valid || name.pristine" class="alert alert-danger">
-                        <span style="color:red;">Name is required</span>
-                    </div>
-                    </div>
-
-                    <!-- Spacer -->
-                    <div class="mt-5"></div>
-
-                    <div class="form-group">
+                    <form #editItemForm="ngForm">
+                        <div class="form-group">
                         <mat-form-field class="fuse-mat-no-subscript w-full">
-                        <mat-label>Description</mat-label>
-                        <mat-icon
-                            class="icon-size-5"
-                            [svgIcon]="'heroicons_outline:annotation'"
-                            matPrefix></mat-icon>
-                            <textarea type="text"
-                            id="description" 
-                            class="form-control" 
-                            #name="ngModel"
-                            [(ngModel)]="model.description" name="description"
-                            matInput>
-                            </textarea>
-                    </mat-form-field>
-                    </div>
-
-                    <!-- Spacer -->
-                    <div class="mt-5"></div>
-
-                    <div class="form-group">
-                        <mat-form-field class="fuse-mat-no-subscript w-full">
-                            <mat-label>Awarded By</mat-label>
+                            <mat-label>Certification/License Name</mat-label>
                             <mat-icon
                                 class="icon-size-5"
-                                [svgIcon]="'feather:users'"
+                                [svgIcon]="'feather:file-text'"
                                 matPrefix></mat-icon>
                                 <input type="text"
-                                id="awardedby" 
+                                id="name" 
+                                class="form-control" 
+                                placeholder="Start Typing for Suggestions" 
+                                #name="ngModel"
+                                [(ngModel)]="model.name" name="name"
+                                [matAutocomplete]="autocomedit"
+                                (ngModelChange)="applyFilter($event)"
+                                required
+                                matInput>
+                                <mat-autocomplete #autocomedit="matAutocomplete">
+                                    <mat-option *ngFor="let option of filteredData" [value]="option">
+                                        {{option}}
+                                    </mat-option>
+                                </mat-autocomplete>
+                        </mat-form-field>
+
+                        <div [hidden]="name.valid || name.pristine" class="alert alert-danger">
+                            <span style="color:red;">Name is required</span>
+                        </div>
+                        </div>
+
+                        <!-- Spacer -->
+                        <div class="mt-5"></div>
+
+                        <div class="form-group">
+                            <mat-form-field class="fuse-mat-no-subscript w-full">
+                            <mat-label>Description</mat-label>
+                            <mat-icon
+                                class="icon-size-5"
+                                [svgIcon]="'heroicons_outline:annotation'"
+                                matPrefix></mat-icon>
+                                <textarea type="text"
+                                id="description" 
                                 class="form-control" 
                                 #name="ngModel"
-                                [(ngModel)]="model.awardedby" name="awardedby"
+                                [(ngModel)]="model.description" name="description"
                                 matInput>
+                                </textarea>
                         </mat-form-field>
-    
-                    </div>
-    
-                    <!-- Spacer -->
-                    <div class="mt-5"></div>
-                    
-                    <div class="form-group">
-                        <mat-form-field appearance="fill">
-                            <mat-label>Earned {{model.awardedon| date: 'MM/dd/yyyy'}}</mat-label>
-                            <input matInput [matDatepicker]="editpicker" 
-                            (dateChange)="onDateChange($event, editpicker, 'award')"
-                            name="awardedon"  
-                            id="awardedon"
-                            class="form-control">
-                            <mat-hint>MM/DD/YYYY</mat-hint>
-                            <mat-datepicker-toggle matSuffix [for]="editpicker"></mat-datepicker-toggle>
-                            <mat-datepicker #editpicker startView="year"></mat-datepicker>
-                        </mat-form-field>
+                        </div>
 
-                        <mat-form-field appearance="fill" class="ml-15">
-                            <mat-label>Expires {{model.expireson| date: 'MM/dd/yyyy'}}</mat-label>
-                            <input matInput [matDatepicker]="editpickerexp" 
-                            (dateChange)="onDateChange($event, editpickerexp, 'expire')"
-                            name="expireson"  
-                            id="expireson"
-                            class="form-control">
-                            <mat-hint>MM/DD/YYYY</mat-hint>
-                            <mat-datepicker-toggle matSuffix [for]="editpickerexp"></mat-datepicker-toggle>
-                            <mat-datepicker #editpickerexp startView="year"></mat-datepicker>
-                        </mat-form-field>
-                    </div>
-                    
-                    <div class="float-right text-right mt-3">
-                    created:{{model.created | date: 'MM/dd/yy h:mm a'}}
-                    <br />
-                    modified:{{model.modified | date: 'MM/dd/yy h:mm a'}}
-                    </div>
+                        <!-- Spacer -->
+                        <div class="mt-5"></div>
 
-                    <!-- Spacer -->
-                    <div class="mt-5"></div>
-
-                    <!-- Actions -->
-                    <div class="flex shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
-
-                        <button  
-                            (click)="onHideEditForm(); editItemForm.resetForm(); addItemForm.resetForm()"
-                            class="ml-4"
-                            mat-stroked-button
-                            type="button"
-                            [color]="'primary'">
-                            Cancel
-                        </button>
-
-                        <button  
-                            (click)="onEdit(model.key); editItemForm.resetForm(); addItemForm.resetForm()"
-                            [disabled]="!editItemForm.form.valid" 
-                            class="ml-4"
-                            mat-flat-button
-                            type="button"
-                            [color]="'primary'">
-                            Accept Edits
-                        </button>
+                        <div class="form-group">
+                            <mat-form-field class="fuse-mat-no-subscript w-full">
+                                <mat-label>Awarded By</mat-label>
+                                <mat-icon
+                                    class="icon-size-5"
+                                    [svgIcon]="'feather:users'"
+                                    matPrefix></mat-icon>
+                                    <input type="text"
+                                    id="awardedby" 
+                                    class="form-control" 
+                                    #name="ngModel"
+                                    [(ngModel)]="model.awardedby" name="awardedby"
+                                    matInput>
+                            </mat-form-field>
         
-                    </div>
+                        </div>
+        
+                        <!-- Spacer -->
+                        <div class="mt-5"></div>
+                        
+                        <div class="form-group">
+                            <mat-form-field appearance="fill">
+                                <mat-label>Earned {{model.awardedon| date: 'MM/dd/yyyy'}}</mat-label>
+                                <input matInput [matDatepicker]="editpicker" 
+                                (dateChange)="onDateChange($event, editpicker, 'award')"
+                                name="awardedon"  
+                                id="awardedon"
+                                class="form-control">
+                                <mat-hint>MM/DD/YYYY</mat-hint>
+                                <mat-datepicker-toggle matSuffix [for]="editpicker"></mat-datepicker-toggle>
+                                <mat-datepicker #editpicker startView="year"></mat-datepicker>
+                            </mat-form-field>
 
-                </form>
+                            <mat-form-field appearance="fill" class="ml-15">
+                                <mat-label>Expires {{model.expireson| date: 'MM/dd/yyyy'}}</mat-label>
+                                <input matInput [matDatepicker]="editpickerexp" 
+                                (dateChange)="onDateChange($event, editpickerexp, 'expire')"
+                                name="expireson"  
+                                id="expireson"
+                                class="form-control">
+                                <mat-hint>MM/DD/YYYY</mat-hint>
+                                <mat-datepicker-toggle matSuffix [for]="editpickerexp"></mat-datepicker-toggle>
+                                <mat-datepicker #editpickerexp startView="year"></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                        
+                        <div class="float-right text-right mt-3">
+                        created:{{model.created | date: 'MM/dd/yy h:mm a'}}
+                        <br />
+                        modified:{{model.modified | date: 'MM/dd/yy h:mm a'}}
+                        </div>
 
-                <!-- Spacer -->
-                <div class="mt-10"></div>
+                        <!-- Spacer -->
+                        <div class="mt-5"></div>
 
+                        <!-- Actions -->
+                        <div class="flex shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
+
+                            <button  
+                                (click)="onHideEditForm(); editItemForm.resetForm(); addItemForm.resetForm()"
+                                class="ml-4"
+                                mat-stroked-button
+                                type="button"
+                                [color]="'primary'">
+                                Cancel
+                            </button>
+
+                            <button  
+                                (click)="onEdit(model.key); editItemForm.resetForm(); addItemForm.resetForm()"
+                                [disabled]="!editItemForm.form.valid" 
+                                class="ml-4"
+                                mat-flat-button
+                                type="button"
+                                [color]="'primary'">
+                                Accept Edits
+                            </button>
+            
+                        </div>
+
+                    </form>
+                </fuse-card>
             </div>
 
             <!-- Table View -->
