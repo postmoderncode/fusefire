@@ -56,9 +56,9 @@
                     <fuse-card class="flex flex-col w-full p-8 filter-info mb-3 drop-shadow-lg bg-orange-50">
 
                         <div class="form-group">
-                            <mat-form-field appearance="fill" class="mr-5">
+                            <mat-form-field appearance="fill" class="min-w-50 mr-5">
                                 <mat-label>State</mat-label>
-                                <mat-select required>
+                                <mat-select required (selectionChange)="onStateChange($event)">
                                     <mat-option value="AL">Alabama</mat-option>
                                     <mat-option value="AK">Alaska</mat-option>
                                     <mat-option value="AS">American Samoa</mat-option>
@@ -132,13 +132,13 @@
                                     class="form-control"
                                     placeholder="Start Typing for Suggestions" 
                                     #name="ngModel"
-                                    (ngModelChange)="applyFilter($event)"
+                                    (ngModelChange)="applyFilterSchools($event)"
                                     [(ngModel)]="model.name" name="name"
                                     [matAutocomplete]="autocomadd"
                                     matInput>
                                     <!-- [formControl]="myControl" -->
                                     <mat-autocomplete #autocomadd="matAutocomplete">
-                                        <mat-option *ngFor="let option of filteredData" [value]="option">
+                                        <mat-option *ngFor="let option of schoolfilteredData" [value]="option">
                                             {{option}}
                                         </mat-option>
                                     </mat-autocomplete>
@@ -162,8 +162,6 @@
                             <mat-form-field appearance="fill" class="w-100">
                                 <mat-label>Degree Type</mat-label>
                                 <mat-select required>
-                                    <mat-option value="Certified">Certified</mat-option>
-                                    <mat-option value="Licensed">Licensed</mat-option>
                                     <mat-option value="Associate of Arts (AA)">Associate of Arts (AA)</mat-option>
                                     <mat-option value="Associate of Science (AS)">Associate of Science (AS)</mat-option>
                                     <mat-option value="Associate of Applied Science (AAS)">Associate of Applied Science (AAS)</mat-option>
@@ -199,13 +197,13 @@
                                     class="form-control"
                                     placeholder="Start Typing for Suggestions" 
                                     #name="ngModel"
-                                    (ngModelChange)="applyFilter($event)"
+                                    (ngModelChange)="applyFilterFields($event)"
                                     [(ngModel)]="model.name" name="name"
                                     [matAutocomplete]="autocomadd"
                                     matInput>
                                     <!-- [formControl]="myControl" -->
                                     <mat-autocomplete #autocomadd="matAutocomplete">
-                                        <mat-option *ngFor="let option of filteredData" [value]="option">
+                                        <mat-option *ngFor="let option of fieldfilteredData" [value]="option">
                                             {{option}}
                                         </mat-option>
                                     </mat-autocomplete>
@@ -227,13 +225,13 @@
                                     class="form-control"
                                     placeholder="Start Typing for Suggestions" 
                                     #name="ngModel"
-                                    (ngModelChange)="applyFilter($event)"
+                                    (ngModelChange)="applyFilterFields($event)"
                                     [(ngModel)]="model.name" name="name"
                                     [matAutocomplete]="autocomadd"
                                     matInput>
                                     <!-- [formControl]="myControl" -->
                                     <mat-autocomplete #autocomadd="matAutocomplete">
-                                        <mat-option *ngFor="let option of filteredData" [value]="option">
+                                        <mat-option *ngFor="let option of fieldfilteredData" [value]="option">
                                             {{option}}
                                         </mat-option>
                                     </mat-autocomplete>

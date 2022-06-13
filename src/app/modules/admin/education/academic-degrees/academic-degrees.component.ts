@@ -30,9 +30,13 @@ export class AcademicDegreesComponent implements OnInit {
   showedititem = false;
 
   //Autocomplete Data
-  filteredData;
+  fieldfilteredData;
+  schoolfilteredData;
 
-  options: string[] = ["Accounting", "Advertising", "African-American Studies", "Agriculture", "Animal Science", "Anthropology", "Aerospace Engineering", "Archaeology", "Architecture", "Art History", "Arts Management", "Asian-American Studies", "Astronomy and Astrophysics", "Bilingual/Crosscultural Education", "Athletic Training", "Biochemistry", "Biology", "Biomedical Engineering", "Business", "Chemical Engineering", "Chemistry", "Civil Engineering", "Classical Studies", "Communication Disorders Sciences and Services", "Communications", "Comparative Literature", "Computer Engineering", "Computer Information Systems", "Computer Science", "Construction Services", "Cosmetology Services", "Creative Writing", "Criminology", "Culinary Arts", "Cybersecurity", "Design", "Economics", "Education", "Electrical Engineering", "Elementary Education", "Engineering", "English Language and Literature", "Entomology", "Environmental Engineering", "Film and Video Production", "Film-Video Arts", "Finance", "Fine Arts", "Fire Safety Science", "Food Science", "Foreign Languages", "Forestry", "Gender Studies", "Genetics", "Geology", "Graphic Design", "Health Sciences", "History", "Hospitality Management", "Human Ecology", "Industrial Technology", "International Business", "International Relations", "Journalism", "Kinesiology", "Latin American Studies", "Liberal Studies", "Library Science", "Linguistics", "Logistics Management", "Marketing", "Mathematics", "Mechanical Engineering", "Medical Technology", "Metallurgical Engineering", "Meteorology", "Microbiology", "Military Technology", "Mining and Mineral Engineering", "Music", "Mythology and Folklore", "Naval Architecture and Marine Engineering", "Neuroscience", "Nuclear Engineering", "Nursing", "Oceanography", "Occupational Health and Safety", "Parks, Recreation, and Leisure Studies", "Performing Arts", "Petroleum Engineering", "Pharmacology", "Philosophy", "Photography", "Physics", "Physiology", "Plant Science", "Political Science", "Pre-Law", "Psychology", "Public Administration", "Puppetry", "Religious Studies", "Rhetoric", "Social Work", "Sociology", "Software Engineering", "Special Education", "Sports Medicine", "Statistics", "Student Counseling", "Supply Chain Management", "Theater Arts", "Viticulture", "Zoology"]
+  schooloptions: string[] = ["Ball State University", "Indiana University", "Notre Dame", "Purdue University", "Indiana Tech"];
+  fieldoptions: string[] = ["Accounting", "Advertising", "African-American Studies", "Agriculture", "Animal Science", "Anthropology", "Aerospace Engineering", "Archaeology", "Architecture", "Art History", "Arts Management", "Asian-American Studies", "Astronomy and Astrophysics", "Bilingual/Crosscultural Education", "Athletic Training", "Biochemistry", "Biology", "Biomedical Engineering", "Business", "Chemical Engineering", "Chemistry", "Civil Engineering", "Classical Studies", "Communication Disorders Sciences and Services", "Communications", "Comparative Literature", "Computer Engineering", "Computer Information Systems", "Computer Science", "Construction Services", "Cosmetology Services", "Creative Writing", "Criminology", "Culinary Arts", "Cybersecurity", "Design", "Economics", "Education", "Electrical Engineering", "Elementary Education", "Engineering", "English Language and Literature", "Entomology", "Environmental Engineering", "Film and Video Production", "Film-Video Arts", "Finance", "Fine Arts", "Fire Safety Science", "Food Science", "Foreign Languages", "Forestry", "Gender Studies", "Genetics", "Geology", "Graphic Design", "Health Sciences", "History", "Hospitality Management", "Human Ecology", "Industrial Technology", "International Business", "International Relations", "Journalism", "Kinesiology", "Latin American Studies", "Liberal Studies", "Library Science", "Linguistics", "Logistics Management", "Marketing", "Mathematics", "Mechanical Engineering", "Medical Technology", "Metallurgical Engineering", "Meteorology", "Microbiology", "Military Technology", "Mining and Mineral Engineering", "Music", "Mythology and Folklore", "Naval Architecture and Marine Engineering", "Neuroscience", "Nuclear Engineering", "Nursing", "Oceanography", "Occupational Health and Safety", "Parks, Recreation, and Leisure Studies", "Performing Arts", "Petroleum Engineering", "Pharmacology", "Philosophy", "Photography", "Physics", "Physiology", "Plant Science", "Political Science", "Pre-Law", "Psychology", "Public Administration", "Puppetry", "Religious Studies", "Rhetoric", "Social Work", "Sociology", "Software Engineering", "Special Education", "Sports Medicine", "Statistics", "Student Counseling", "Supply Chain Management", "Theater Arts", "Viticulture", "Zoology"]
+
+  degreelevels;
 
   /**
    * Constructor
@@ -43,11 +47,19 @@ export class AcademicDegreesComponent implements OnInit {
     public db: AngularFireDatabase
   ) { }
 
-  applyFilter(evt: string) {
+  applyFilterFields(evt: string) {
     evt = evt + "";
-    if (!evt) this.filteredData = this.options;
+    if (!evt) this.fieldfilteredData = this.fieldoptions;
     else {
-      this.filteredData = this.options.filter(item => (item + "") === evt || item.toLocaleLowerCase().indexOf(evt.toLocaleLowerCase()) >= 0);
+      this.fieldfilteredData = this.fieldoptions.filter(item => (item + "") === evt || item.toLocaleLowerCase().indexOf(evt.toLocaleLowerCase()) >= 0);
+    }
+  }
+
+  applyFilterSchools(evt: string) {
+    evt = evt + "";
+    if (!evt) this.schoolfilteredData = this.schooloptions;
+    else {
+      this.schoolfilteredData = this.schooloptions.filter(item => (item + "") === evt || item.toLocaleLowerCase().indexOf(evt.toLocaleLowerCase()) >= 0);
     }
   }
 
@@ -76,9 +88,18 @@ export class AcademicDegreesComponent implements OnInit {
 
   }
 
+  onStateChange(ob) {
+
+    let selectedState = ob.value;
+    console.log(selectedState);
+
+    //TODO: Fill School Dropdown 
+  }
+
   ngOnInit(): void {
 
-    this.filteredData = this.options;
+    this.fieldfilteredData = this.fieldoptions;
+    this.schoolfilteredData = this.schooloptions;
 
   }
 
