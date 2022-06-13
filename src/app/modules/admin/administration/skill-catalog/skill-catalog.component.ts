@@ -68,7 +68,6 @@ export class SkillCatalogComponent implements OnInit {
         console.log('goback 1');
         this.tabTitle = 'Area';
         this.selectedIndex = 0;
-        this.catmodel.currentArea = '';
         this.catmodel.currentCategory = '';
         this.catmodel.currentSkill = '';
         break;
@@ -77,7 +76,6 @@ export class SkillCatalogComponent implements OnInit {
         console.log('goback 2');
         this.tabTitle = 'Category';
         this.selectedIndex = 1;
-        this.catmodel.currentCategory = '';
         this.catmodel.currentSkill = '';
         break;
       }
