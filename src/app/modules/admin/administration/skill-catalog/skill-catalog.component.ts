@@ -12,15 +12,24 @@ import _ from 'lodash';
 })
 export class SkillCatalogComponent implements OnInit {
 
+  //Initialize Varables
+  //-------------------
+
+  //Current User
   fbuser = JSON.parse(localStorage.getItem('fbuser'));
+
+  //Confirmation Dialog
   dialogconfigForm: FormGroup;
-  value = 0;
-  showadditem = false;
-  showedititem = false;
+
+  //Empty Model
   model = new Skill('', '', '', '', '', '');
   catmodel = new CatalogState('', '', '');
 
+  //Form Visibility Modifiers
+  showadditem = false;
+  showedititem = false;
 
+  //Firebase Observables
   dbRef = this.db.database.ref('/skillcatalog/categories/');
 
   myObserver = {
@@ -28,9 +37,6 @@ export class SkillCatalogComponent implements OnInit {
     error: (err: Error) => console.error('Observer got an error: ' + err),
     complete: () => console.log('Observer got a complete notification'),
   };
-
-  //Initialize Varables
-  //-------------------
 
   //Object to Hold All Areas.
   areas: Observable<any>;
@@ -54,8 +60,6 @@ export class SkillCatalogComponent implements OnInit {
     private _fuseConfirmationService: FuseConfirmationService,
     public db: AngularFireDatabase
   ) { }
-
-
 
   //Function to Handle the Back Arrow
   goback(): void {
@@ -209,9 +213,10 @@ export class SkillCatalogComponent implements OnInit {
       }
     );
 
+    //Formbuilder for Dialog Popup
     this.dialogconfigForm = this._formBuilder.group({
       title: 'Remove Item',
-      message: 'Are you sure you want to remove this item permanently? <span class="font-medium">This action cannot be undone!</span>',
+      message: 'Are you sure you want to remove this ' + this.tabTitle + ' permanently? <span class="font-medium">This action cannot be undone!</span>',
       icon: this._formBuilder.group({
         show: true,
         name: 'heroicons_outline:exclamation',

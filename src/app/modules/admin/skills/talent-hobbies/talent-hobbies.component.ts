@@ -12,15 +12,30 @@ import _ from 'lodash';
 })
 export class TalentHobbiesComponent implements OnInit {
 
+  //Initialize Varables
+  //-------------------
+
+  //Current User
+  fbuser = JSON.parse(localStorage.getItem('fbuser'));
+
+  //Confirmation Dialog
+  dialogconfigForm: FormGroup;
+
+  //Empty Model
   model = new Talent('', '', '', '', '', '');
+
+  //Table Control
   displayedColumns = ['name', 'description', 'created', 'delete', 'edit'];
+
+  //Firebase Observables
   listRef: AngularFireList<any>;
   item: Observable<any>;
   items: Observable<any[]>;
+
+  //Form Visibility Modifiers
   showadditem = false;
   showedititem = false;
-  fbuser = JSON.parse(localStorage.getItem('fbuser'));
-  dialogconfigForm: FormGroup;
+
 
   /**
    * Constructor
@@ -123,10 +138,10 @@ export class TalentHobbiesComponent implements OnInit {
   }
 
   openConfirmationDialog(key): void {
-    // Open the dialog and save the reference of it
+    //Open the dialog and save the reference of it
     const dialogRef = this._fuseConfirmationService.open(this.dialogconfigForm.value);
 
-    // Subscribe to afterClosed from the dialog reference
+    //Subscribe to afterClosed from the dialog reference
     dialogRef.afterClosed().subscribe((result) => {
       if (result === 'confirmed') {
         this.onDelete(key);
@@ -138,6 +153,7 @@ export class TalentHobbiesComponent implements OnInit {
 
     this.items = this.db.list('/users/' + this.fbuser.id + '/talents').snapshotChanges();
 
+    //Formbuilder for Dialog Popup
     this.dialogconfigForm = this._formBuilder.group({
       title: 'Remove Item',
       message: 'Are you sure you want to remove this item permanently? <span class="font-medium">This action cannot be undone!</span>',

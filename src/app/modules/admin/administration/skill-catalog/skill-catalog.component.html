@@ -30,7 +30,7 @@
                 mat-flat-button
                 type="button"
                 [color]="'primary'">
-                Add {{tabTitle}}
+                Add Custom {{tabTitle}}
             </button>
         </div>
     </div>
@@ -41,12 +41,10 @@
         <!-- CONTENT GOES HERE -->
         <div class="h-400 min-h-400 max-h-400">
 
-            Catalog_State: {{this.catmodel.currentArea}} | {{this.catmodel.currentCategory}} | {{this.catmodel.currentSkill}}
-
             <!-- Add Form -->
             <div [hidden]="!showadditem" class="border-2 border-dashed border-gray-300 rounded-2xl p-5 bg-blue-50" >
                 <h2 class="text-2xl md:text-2xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate mb-5">
-                    Add {{tabTitle}}
+                    Add Custom {{tabTitle}}
                 </h2>
                 <form #addItemForm="ngForm">
                     <div class="form-group">
@@ -54,7 +52,7 @@
                             <mat-label>{{tabTitle}} Name</mat-label>
                             <mat-icon
                                 class="icon-size-5"
-                                [svgIcon]="'heroicons_solid:clipboard-list'"
+                                [svgIcon]="'heroicons_outline:clipboard-list'"
                                 matPrefix></mat-icon>
                                 <input type="text"
                                 id="name" 
@@ -125,7 +123,7 @@
             <!-- Edit Form -->
             <div [hidden]="!showedititem" class="border-2 border-dashed border-gray-300 rounded-2xl p-5 bg-blue-50">
                 <h2 class="text-2xl md:text-2xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate mb-5">
-                    Edit {{tabTitle}}
+                    Edit Custom{{tabTitle}}
                 </h2>
 
                 <form #editItemForm="ngForm">
@@ -134,7 +132,7 @@
                         <mat-label>{{tabTitle}} Name</mat-label>
                         <mat-icon
                             class="icon-size-5"
-                            [svgIcon]="'heroicons_solid:clipboard-list'"
+                            [svgIcon]="'heroicons_outline:clipboard-list'"
                             matPrefix></mat-icon>
                             <input type="text"
                             id="name" 
@@ -216,6 +214,8 @@
 
             <!-- SELECTOR WRAPPER -->
             <div class="container mx-auto sm:max-w-[500px] md:max-w-[600px] lg:max-w-[700px] xl:max-w-[800px] " [hidden]="showadditem||showedititem">
+
+                Catalog_State: {{this.catmodel.currentArea}} | {{this.catmodel.currentCategory}} | {{this.catmodel.currentSkill}}
 
                 <!-- SELECTOR TITLE -->
                 <div class="flex items-center h-15">

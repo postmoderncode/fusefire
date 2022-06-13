@@ -13,15 +13,31 @@ import _ from 'lodash';
 })
 export class AwardsAccoladesComponent implements OnInit {
 
+  //Initialize Varables
+  //-------------------
+
+  //Current User
   fbuser = JSON.parse(localStorage.getItem('fbuser'));
+
+  //Confirmation Dialog
   dialogconfigForm: FormGroup;
+
+  //Empty Model
+  model = new Award('', '', '', '', '', '', '', '');
+
+  //Table Control
+  displayedColumns = ['name', 'description', 'created', 'delete', 'edit'];
+
+  //Firebase Observables
   item: Observable<any>;
   items: Observable<any[]>;
   listRef: AngularFireList<any>;
+
+  //Form Visibility Modifiers
   showadditem = false;
   showedititem = false;
-  model = new Award('', '', '', '', '', '', '', '');
-  displayedColumns = ['name', 'description', 'created', 'delete', 'edit'];
+
+
 
   /**
    * Constructor
@@ -129,10 +145,10 @@ export class AwardsAccoladesComponent implements OnInit {
   }
 
   openConfirmationDialog(key): void {
-    // Open the dialog and save the reference of it
+    //Open the dialog and save the reference of it
     const dialogRef = this._fuseConfirmationService.open(this.dialogconfigForm.value);
 
-    // Subscribe to afterClosed from the dialog reference
+    //Subscribe to afterClosed from the dialog reference
     dialogRef.afterClosed().subscribe((result) => {
       if (result === 'confirmed') {
         //Call Actual Delete
@@ -150,6 +166,7 @@ export class AwardsAccoladesComponent implements OnInit {
 
     this.items = this.db.list('/users/' + this.fbuser.id + '/awards').snapshotChanges();
 
+    //Formbuilder for Dialog Popup
     this.dialogconfigForm = this._formBuilder.group({
       title: 'Remove Item',
       message: 'Are you sure you want to remove this item permanently? <span class="font-medium">This action cannot be undone!</span>',

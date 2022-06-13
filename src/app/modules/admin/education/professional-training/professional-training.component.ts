@@ -13,15 +13,30 @@ import _ from 'lodash';
 })
 export class ProfessionalTrainingComponent implements OnInit {
 
+  //Initialize Varables
+  //-------------------
+
+  //Current User
   fbuser = JSON.parse(localStorage.getItem('fbuser'));
+
+  //Confirmation Dialog
   dialogconfigForm: FormGroup;
+
+  //Empty Model
+  model = new Training('', '', '', '', '', '', '', '');
+
+  //Table Control
+  displayedColumns = ['name', 'description', 'created', 'delete', 'edit'];
+
+  //Firebase Observables
   item: Observable<any>;
   items: Observable<any[]>;
   listRef: AngularFireList<any>;
+
+  //Form Visibility Modifiers
   showadditem = false;
   showedititem = false;
-  model = new Training('', '', '', '', '', '', '', '');
-  displayedColumns = ['name', 'description', 'created', 'delete', 'edit'];
+
 
   /**
    * Constructor
@@ -129,10 +144,10 @@ export class ProfessionalTrainingComponent implements OnInit {
   }
 
   openConfirmationDialog(key): void {
-    // Open the dialog and save the reference of it
+    //Open the dialog and save the reference of it
     const dialogRef = this._fuseConfirmationService.open(this.dialogconfigForm.value);
 
-    // Subscribe to afterClosed from the dialog reference
+    //Subscribe to afterClosed from the dialog reference
     dialogRef.afterClosed().subscribe((result) => {
       if (result === 'confirmed') {
         //Call Actual Delete
@@ -150,6 +165,7 @@ export class ProfessionalTrainingComponent implements OnInit {
 
     this.items = this.db.list('/users/' + this.fbuser.id + '/training').snapshotChanges();
 
+    //Formbuilder for Dialog Popup
     this.dialogconfigForm = this._formBuilder.group({
       title: 'Remove Item',
       message: 'Are you sure you want to remove this item permanently? <span class="font-medium">This action cannot be undone!</span>',
@@ -176,7 +192,7 @@ export class ProfessionalTrainingComponent implements OnInit {
 
 }
 
-// Empty Award class
+// Empty Training class
 export class Training {
 
   constructor(
