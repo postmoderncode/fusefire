@@ -38,12 +38,10 @@ export class AcademicDegreesComponent implements OnInit {
 
   degreelevels =
     [
-      { id: "1", name: "Certificate" },
-      { id: "2", name: "License" },
-      { id: "3", name: "Associate" },
-      { id: "4", name: "Bachelors" },
-      { id: "5", name: "Masters" },
-      { id: "6", name: "Doctorate" }
+      { id: "1", name: "Associate" },
+      { id: "2", name: "Bachelors" },
+      { id: "3", name: "Masters" },
+      { id: "4", name: "Doctorate" }
     ];
 
   degreetypes =
@@ -66,6 +64,8 @@ export class AcademicDegreesComponent implements OnInit {
       { name: "Doctor of Medicine (M.D.)", degreeLevel: "4" },
       { name: "Doctor of Dental Surgery (DDS)", degreeLevel: "4" }
     ]
+
+  degreetypesfilteredData;
 
   /**
    * Constructor
@@ -127,8 +127,8 @@ export class AcademicDegreesComponent implements OnInit {
 
   onDegreeLevelChanged(ob): void {
 
-    let selectedLevel = ob.value;
-    console.log(selectedLevel);
+    this.degreetypesfilteredData = this.degreetypes.filter(degreetypes => degreetypes.degreeLevel == ob.value)
+    console.log(this.degreetypes);
 
   }
 
@@ -143,6 +143,7 @@ export class AcademicDegreesComponent implements OnInit {
 
     this.fieldfilteredData = this.fieldoptions;
     this.schoolfilteredData = this.schooloptions;
+    this.degreetypesfilteredData = this.degreetypes;
 
   }
 
