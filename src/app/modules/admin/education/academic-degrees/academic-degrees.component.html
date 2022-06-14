@@ -59,7 +59,12 @@
                       
                             <mat-form-field appearance="fill" class="min-w-50 mr-5">
                                 <mat-label>State</mat-label>
-                                <mat-select required (selectionChange)="onStateChange($event)">
+                                <mat-select   
+                                (selectionChange)="onStateChange($event)"
+                                #name="ngModel"
+                                [(ngModel)]="model.state"
+                                name="state"
+                                required >
                                   <mat-option *ngFor="let state of states" [value]="state.abbreviation">
                                     {{state.name}}
                                   </mat-option>
@@ -78,11 +83,11 @@
                                     placeholder="Start Typing for Suggestions" 
                                     #name="ngModel"
                                     (ngModelChange)="applyFilterSchools($event)"
-                                    [(ngModel)]="model.institution" name="institution"
+                                    [(ngModel)]="model.institution" 
+                                    name="institution"
                                     [matAutocomplete]="autocomaddschool"
                                     required
                                     matInput>
-                                    <!-- [formControl]="myControl" -->
                                     <mat-autocomplete #autocomaddschool="matAutocomplete">
                                         <mat-option *ngFor="let option of schoolfilteredData" [value]="option">
                                             {{option}}
@@ -98,7 +103,12 @@
 
                             <mat-form-field appearance="fill" class="mr-5 min-w-50">
                                 <mat-label>Degree Level</mat-label>
-                                <mat-select required (selectionChange)="onDegreeLevelChanged($event)">
+                                <mat-select 
+                                (selectionChange)="onDegreeLevelChanged($event)"  
+                                #name="ngModel"
+                                [(ngModel)]="model.degreelevel"
+                                name="degreelevel"
+                                required>
                                   <mat-option *ngFor="let degreelevel of degreelevels" [value]="degreelevel.level">
                                     {{degreelevel.name}}
                                   </mat-option>
@@ -107,7 +117,11 @@
 
                               <mat-form-field appearance="fill" class="w-100">
                                 <mat-label>Degree Type</mat-label>
-                                <mat-select required>
+                                <mat-select
+                                #name="ngModel"
+                                [(ngModel)]="model.degreetype" 
+                                name="degreetype"                              
+                                required>
                                   <mat-option *ngFor="let degreetype of degreetypesfilteredData" [value]="degreetype.name">
                                     {{degreetype.name}}
                                   </mat-option>
@@ -222,7 +236,7 @@
                                     </button>
 
                                     <button  
-                                        (click)="addItemForm.resetForm(); editItemForm.resetForm();"
+                                        (click)="onAdd(); addItemForm.resetForm(); editItemForm.resetForm();"
                                         [disabled]="!addItemForm.form.valid" 
                                         class="ml-4"
                                         mat-flat-button

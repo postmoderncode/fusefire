@@ -23,9 +23,14 @@ export class AcademicDegreesComponent implements OnInit {
   dialogconfigForm: FormGroup;
 
   //Empty Model
-  model = new Education('', '', '', '', '', '', '', false, '', '', '');
+  model = new Education('', '', '', '', '', '', '', false, '', '', '', '');
 
   gradDate = 'Expected Graduation Date';
+
+  //Firebase Observables
+  item: Observable<any>;
+  items: Observable<any[]>;
+  listRef: AngularFireList<any>;
 
   //Form Visibility Modifiers
   showadditem = false;
@@ -41,15 +46,15 @@ export class AcademicDegreesComponent implements OnInit {
   degreetypesfilteredData;
   states = [{ "name": "Alabama", "abbreviation": "AL" }, { "name": "Alaska", "abbreviation": "AK" }, { "name": "Arizona", "abbreviation": "AZ" }, { "name": "Arkansas", "abbreviation": "AR" }, { "name": "California", "abbreviation": "CA" }, { "name": "Colorado", "abbreviation": "CO" }, { "name": "Connecticut", "abbreviation": "CT" }, { "name": "Delaware", "abbreviation": "DE" }, { "name": "Florida", "abbreviation": "FL" }, { "name": "Georgia", "abbreviation": "GA" }, { "name": "Hawaii", "abbreviation": "HI" }, { "name": "Idaho", "abbreviation": "ID" }, { "name": "Illinois", "abbreviation": "IL" }, { "name": "Indiana", "abbreviation": "IN" }, { "name": "Iowa", "abbreviation": "IA" }, { "name": "Kansas", "abbreviation": "KS" }, { "name": "Kentucky", "abbreviation": "KY" }, { "name": "Louisiana", "abbreviation": "LA" }, { "name": "Maine", "abbreviation": "ME" }, { "name": "Maryland", "abbreviation": "MD" }, { "name": "Massachusetts", "abbreviation": "MA" }, { "name": "Michigan", "abbreviation": "MI" }, { "name": "Minnesota", "abbreviation": "MN" }, { "name": "Mississippi", "abbreviation": "MS" }, { "name": "Missouri", "abbreviation": "MO" }, { "name": "Montana", "abbreviation": "MT" }, { "name": "Nebraska", "abbreviation": "NE" }, { "name": "Nevada", "abbreviation": "NV" }, { "name": "New Hampshire", "abbreviation": "NH" }, { "name": "New Jersey", "abbreviation": "NJ" }, { "name": "New Mexico", "abbreviation": "NM" }, { "name": "New York", "abbreviation": "NY" }, { "name": "North Carolina", "abbreviation": "NC" }, { "name": "North Dakota", "abbreviation": "ND" }, { "name": "Ohio", "abbreviation": "OH" }, { "name": "Oklahoma", "abbreviation": "OK" }, { "name": "Oregon", "abbreviation": "OR" }, { "name": "Pennsylvania", "abbreviation": "PA" }, { "name": "Rhode Island", "abbreviation": "RI" }, { "name": "South Carolina", "abbreviation": "SC" }, { "name": "South Dakota", "abbreviation": "SD" }, { "name": "Tennessee", "abbreviation": "TN" }, { "name": "Texas", "abbreviation": "TX" }, { "name": "Utah", "abbreviation": "UT" }, { "name": "Vermont", "abbreviation": "VT" }, { "name": "Virginia", "abbreviation": "VA" }, { "name": "Washington", "abbreviation": "WA" }, { "name": "West Virginia", "abbreviation": "WV" }, { "name": "Wisconsin", "abbreviation": "WI" }, { "name": "Wyoming", "abbreviation": "WY" }];
 
-  degreelevels;
+  //degreelevels;
 
-  // degreelevels =
-  //   [
-  //     { level: '1', name: 'Associate' },
-  //     { level: '2', name: 'Bachelors' },
-  //     { level: '3', name: 'Masters' },
-  //     { level: '4', name: 'Doctorate' }
-  //   ];
+  degreelevels =
+    [
+      { level: '1', name: 'Associate' },
+      { level: '2', name: 'Bachelors' },
+      { level: '3', name: 'Masters' },
+      { level: '4', name: 'Doctorate' }
+    ];
 
   //degreetypes;
 
@@ -83,6 +88,44 @@ export class AcademicDegreesComponent implements OnInit {
     public db: AngularFireDatabase
   ) { }
 
+  onAdd(): void {
+
+    this.listRef = this.db.list('/users/' + this.fbuser.id + '/degrees');
+
+    //Cast model to variable for formReset
+    const mstate: string = this.model.state;
+    const minstitution: string = this.model.institution;
+    const mdegreelevel: string = this.model.degreelevel;
+    const mdegreetype: string = this.model.degreetype;
+    const mmajor: string = this.model.major;
+    const mminor: string = this.model.minor;
+    const mcompleted: boolean = this.model.completed;
+    const mawardedon: string = this.model.awardedon;
+
+    const mdatenow = Math.floor(Date.now());
+
+    //Define Promise 
+    const promiseAddItem = this.listRef
+      .push({ state: mstate, institution: minstitution, degreelevel: mdegreelevel, degreetype: mdegreetype, major: mmajor, minor: mminor, completed: mcompleted, awardedon: mawardedon, created: mdatenow, modified: mdatenow, user: this.fbuser.id });
+
+    //Call Promise
+    promiseAddItem
+      .then(_ => this.db.object('/degrees/' + this.fbuser.id + '/' + _.key)
+        .update({ state: mstate, institution: minstitution, degreelevel: mdegreelevel, degreetype: mdegreetype, major: mmajor, minor: mminor, completed: mcompleted, awardedon: mawardedon, created: mdatenow, modified: mdatenow, user: this.fbuser.id }))
+      .then(_ => this.showadditem = false)
+      .catch(err => console.log(err, 'Error Submitting Degree!'));
+
+    //Increment Count
+    this.db.object('/counts/' + this.fbuser.id + '/degrees').query.ref.transaction((likes) => {
+      if (likes === null) {
+        return likes = 1;
+      } else {
+        return likes + 1;
+      }
+    });
+
+  }
+
   //Filter for Field of Study Autocomplete
   applyFilterFields(evt: string): void {
     evt = evt + '';
@@ -104,7 +147,7 @@ export class AcademicDegreesComponent implements OnInit {
   //Calendar Change Event to set Model
   onDateChange(event: MatDatepickerInputEvent<any>, control: AbstractControl): void {
 
-    //this.model.awardedon = ((event.value.valueOf()).toString());
+    this.model.awardedon = ((event.value.valueOf()).toString());
 
   }
 
@@ -159,31 +202,15 @@ export class AcademicDegreesComponent implements OnInit {
 
   ngOnInit(): void {
 
-    //Fill Degree Levels dropdown
-    const degreelevelshold = this.db.object('/degreelevels').valueChanges()
-      .subscribe((inp) => {
-        this.degreelevels = Object.values(inp);
-      }).unsubscribe;
-
-    // .subscribe((inp) => {
-    //   this.degreetypes = Object.values(inp);
-    // });
-        // const promiseAddItem = this.db.object('/degreetypes').valueChanges();
-        // //Call Promise
-        // promiseAddItem
-        // .then(_ => this.db.object('/talents/' + this.fbuser.id + '/' + _.key).update({  }))
-        // .catch(err => console.log(err, 'Error Submitting Talent!'));
-
-    // //Fill Degree Types dropdown
-    // const degreetypeshold = this.db.object('/degreetypes').valueChanges()
+    // //Fill Degree Levels dropdown
+    // const degreelevelshold = this.db.object('/degreelevels').valueChanges()
     //   .subscribe((inp) => {
-    //     this.degreetypes = Object.values(inp);
+    //     this.degreelevels = Object.values(inp);
     //   }).unsubscribe;
 
     this.fieldfilteredData = this.fieldoptions;
     this.schoolfilteredData = this.schooloptions;
     this.degreetypesfilteredData = this.degreetypes;
-    //console.log(this.degreetypesfilteredData);
 
   }
 
@@ -194,16 +221,17 @@ export class Education {
 
   constructor(
     public key: string,
-    public name: string,
-    public description: string,
+    public state: string,
+    public institution: string,
+    public degreelevel: string,
+    public degreetype: string,
+    public major: string,
+    public minor: string,
+    public completed: boolean,
+    public awardedon: string,
     public created: string,
     public modified: string,
     public user: string,
-    public institution: string,
-    public completed: boolean,
-    public awardedon: string,
-    public major: string,
-    public minor: string,
 
   ) { }
 

@@ -41,21 +41,25 @@
               }  
         },
           
+      "degrees": {
+          ".read": "auth !== null",
+          "$uid": {
+              ".write": "$uid !== null"
+          }
+
+      },
+          
     "degreelevels": {
       ".read": true,
-        "$id": {
-            ".read": true,
-            ".write": "$id == auth.uid" 
-              }  
+      ".write": true
         },
+          
           
     "degreetypes": {
       ".read": true,
-        "$id": {
-            ".read": true,
-            ".write": "$id == auth.uid" 
-              }  
+      ".write": true
         },
+          
           
       "skillcatalog": {
           ".read": "auth !== null",

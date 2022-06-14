@@ -73,7 +73,6 @@ export class CertificationsLicensesComponent implements OnInit {
     promiseAddItem
       .then(_ => this.db.object('/certifications/' + this.fbuser.id + '/' + _.key)
         .update({ name: mname, description: mdescription, created: mdatenow, modified: mdatenow, user: this.fbuser.id, awardedby: mawardedby, awardedon: mawardedon, expireson: mexpireson }))
-      //.then(_ => this.db.object('/users/' + this.fbuserid + '/counts/certifications').set(val() - 1)
       .then(_ => this.showadditem = false)
       .catch(err => console.log(err, 'Error Submitting Certification!'));
 
@@ -179,7 +178,7 @@ export class CertificationsLicensesComponent implements OnInit {
 
   applyFilter(evt: string): void {
     evt = evt + '';
-    if (!evt) {this.filteredData = this.options;}
+    if (!evt) { this.filteredData = this.options; }
     else {
       this.filteredData = this.options.filter(item => (item + '') === evt || item.toLocaleLowerCase().indexOf(evt.toLocaleLowerCase()) >= 0);
     }
