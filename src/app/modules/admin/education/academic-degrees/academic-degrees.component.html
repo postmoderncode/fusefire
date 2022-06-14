@@ -73,7 +73,7 @@
                                     [svgIcon]="'heroicons_outline:office-building'"
                                     matPrefix></mat-icon>
                                     <input type="text"
-                                    id="name" 
+                                    id="institution" 
                                     class="form-control"
                                     placeholder="Start Typing for Suggestions" 
                                     #name="ngModel"
@@ -184,6 +184,7 @@
                             [(ngModel)]="model.completed"
                             name="graddate"
                             #name="ngModel"
+                            class="form-control"
                             (change)="onCompletedChecked($event)">Academic Requirements Completed</mat-checkbox>
                         
                         </div>
@@ -191,7 +192,7 @@
                         <div class="form-group mt-10">
 
                             <mat-form-field appearance="fill"  class="min-w-50">
-                                <mat-label>{{GradDate}}</mat-label>
+                                <mat-label>{{gradDate}}</mat-label>
                                 <input matInput [matDatepicker]="addpicker" 
                                 (dateChange)="onDateChange($event, addpicker)"
                                 name="awardedon"  

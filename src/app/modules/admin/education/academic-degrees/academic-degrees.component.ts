@@ -25,7 +25,7 @@ export class AcademicDegreesComponent implements OnInit {
   //Empty Model
   model = new Education('', '', '', '', '', '', '', false, '', '', '');
 
-  GradDate = 'Expected Graduation Date';
+  gradDate = 'Expected Graduation Date';
 
   //Form Visibility Modifiers
   showadditem = false;
@@ -108,8 +108,8 @@ export class AcademicDegreesComponent implements OnInit {
 
   //Degree Completed Checkbox
   onCompletedChecked($event): void {
-    if ($event.checked === true) { this.GradDate = 'Date of Completion'; }
-    else { this.GradDate = 'Expected Graduation Date'; }
+    if ($event.checked === true) { this.gradDate = 'Date of Completion'; }
+    else { this.gradDate = 'Expected Graduation Date'; }
   }
 
 
