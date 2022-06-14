@@ -133,7 +133,7 @@
                                     placeholder="Start Typing for Suggestions" 
                                     #name="ngModel"
                                     (ngModelChange)="applyFilterSchools($event)"
-                                    [(ngModel)]="model.name" name="name"
+                                    [(ngModel)]="model.institution" name="institution"
                                     [matAutocomplete]="autocomadd"
                                     matInput>
                                     <!-- [formControl]="myControl" -->
@@ -184,7 +184,7 @@
                                     placeholder="Start Typing for Suggestions" 
                                     #name="ngModel"
                                     (ngModelChange)="applyFilterFields($event)"
-                                    [(ngModel)]="model.name" name="name"
+                                    [(ngModel)]="model.major" name="major"
                                     [matAutocomplete]="autocomadd"
                                     matInput>
                                     <!-- [formControl]="myControl" -->
@@ -212,7 +212,7 @@
                                     placeholder="Start Typing for Suggestions" 
                                     #name="ngModel"
                                     (ngModelChange)="applyFilterFields($event)"
-                                    [(ngModel)]="model.name" name="name"
+                                    [(ngModel)]="model.minor" name="minor"
                                     [matAutocomplete]="autocomadd"
                                     matInput>
                                     <!-- [formControl]="myControl" -->
