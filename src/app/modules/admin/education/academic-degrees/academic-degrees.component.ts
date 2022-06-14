@@ -44,6 +44,8 @@ export class AcademicDegreesComponent implements OnInit {
       { id: "4", name: "Doctorate" }
     ];
 
+  //degreelevels;
+
   degreetypes =
     [
       { name: "Associate of Arts (AA)", degreeLevel: "1" },
@@ -140,7 +142,6 @@ export class AcademicDegreesComponent implements OnInit {
   onDegreeLevelChanged(ob): void {
 
     this.degreetypesfilteredData = this.degreetypes.filter(degreetypes => degreetypes.degreeLevel == ob.value)
-    console.log(this.degreetypes);
 
   }
 
@@ -150,6 +151,16 @@ export class AcademicDegreesComponent implements OnInit {
     this.fieldfilteredData = this.fieldoptions;
     this.schoolfilteredData = this.schooloptions;
     this.degreetypesfilteredData = this.degreetypes;
+
+    // this.degreelevels = this.db.object('/degreelevels').snapshotChanges();
+    // this.degreelevels.subscribe(level => console.log(level));
+
+    // this.degreelevels = this.db.object('/degreelevels').valueChanges()
+    //   .subscribe((inp) => {
+    //     this.degreelevels = inp;
+    //     console.log(this.degreelevels);
+    //   });
+
 
   }
 
