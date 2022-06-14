@@ -99,7 +99,7 @@
                             <mat-form-field appearance="fill" class="mr-5">
                                 <mat-label>Degree Level</mat-label>
                                 <mat-select required (selectionChange)="onDegreeLevelChanged($event)">
-                                  <mat-option *ngFor="let degreelevel of degreelevels" [value]="degreelevel.id">
+                                  <mat-option *ngFor="let degreelevel of degreelevels" [value]="degreelevel.level">
                                     {{degreelevel.name}}
                                   </mat-option>
                                 </mat-select>
