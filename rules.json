@@ -68,6 +68,14 @@
           }
 
       },
+        
+      "talents": {
+          ".read": "auth !== null",
+          "$uid": {
+              ".write": "$uid !== null"
+          }
+
+      },
 
       "training": {
       ".read": true,
