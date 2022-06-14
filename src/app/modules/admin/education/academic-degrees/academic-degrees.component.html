@@ -31,7 +31,7 @@
                 mat-flat-button
                 type="button"
                 [color]="'primary'">
-                Add Education
+                Add Degree
             </button>
         </div>
 
@@ -80,6 +80,7 @@
                                     (ngModelChange)="applyFilterSchools($event)"
                                     [(ngModel)]="model.institution" name="institution"
                                     [matAutocomplete]="autocomaddschool"
+                                    required
                                     matInput>
                                     <!-- [formControl]="myControl" -->
                                     <mat-autocomplete #autocomaddschool="matAutocomplete">
@@ -124,13 +125,15 @@
                                     [svgIcon]="'heroicons_outline:academic-cap'"
                                     matPrefix></mat-icon>
                                     <input type="text"
-                                    id="name" 
+                                    id="major" 
                                     class="form-control"
                                     placeholder="Start Typing for Suggestions" 
                                     #name="ngModel"
                                     (ngModelChange)="applyFilterFields($event)"
-                                    [(ngModel)]="model.major" name="name"
+                                    [(ngModel)]="model.major" 
+                                    name="major"
                                     [matAutocomplete]="autocomaddmajor"
+                                    required
                                     matInput>
                                     <!-- [formControl]="myControl" -->
                                     <mat-autocomplete #autocomaddmajor="matAutocomplete">
@@ -152,12 +155,13 @@
                                     [svgIcon]="'heroicons_outline:book-open'"
                                     matPrefix></mat-icon>
                                     <input type="text"
-                                    id="name" 
+                                    id="minor" 
                                     class="form-control"
                                     placeholder="Start Typing for Suggestions" 
                                     #name="ngModel"
                                     (ngModelChange)="applyFilterFields($event)"
-                                    [(ngModel)]="model.minor" name="name"
+                                    [(ngModel)]="model.minor" 
+                                    name="minor"
                                     [matAutocomplete]="autocomaddminor"
                                     matInput>
                                     <!-- [formControl]="myControl" -->
@@ -176,19 +180,24 @@
 
                         <div class="form-group mt-5">
 
-                            <mat-checkbox>Academic Requirements Completed</mat-checkbox>
+                            <mat-checkbox 
+                            [(ngModel)]="model.completed"
+                            name="graddate"
+                            #name="ngModel"
+                            (change)="onCompletedChecked($event)">Academic Requirements Completed</mat-checkbox>
                         
                         </div>
 
-                        <div class="form-group mt-5">
+                        <div class="form-group mt-10">
 
-                            <mat-form-field appearance="fill">
-                                <mat-label>Date Completed</mat-label>
+                            <mat-form-field appearance="fill"  class="min-w-50">
+                                <mat-label>{{GradDate}}</mat-label>
                                 <input matInput [matDatepicker]="addpicker" 
                                 (dateChange)="onDateChange($event, addpicker)"
                                 name="awardedon"  
                                 id="awardedon"
-                                class="form-control">
+                                class="form-control"
+                                required>
                                 <mat-hint>MM/DD/YYYY</mat-hint>
                                 <mat-datepicker-toggle matSuffix [for]="addpicker"></mat-datepicker-toggle>
                                 <mat-datepicker #addpicker startView="year"></mat-datepicker>

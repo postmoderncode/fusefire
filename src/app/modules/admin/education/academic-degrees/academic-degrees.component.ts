@@ -23,7 +23,9 @@ export class AcademicDegreesComponent implements OnInit {
   dialogconfigForm: FormGroup;
 
   //Empty Model
-  model = new Education('', '', '', '', '', '', '', '', '', '');
+  model = new Education('', '', '', '', '', '', '', false, '', '', '');
+
+  GradDate = 'Expected Graduation Date';
 
   //Form Visibility Modifiers
   showadditem = false;
@@ -104,6 +106,12 @@ export class AcademicDegreesComponent implements OnInit {
 
   }
 
+  //Degree Completed Checkbox
+  onCompletedChecked($event): void {
+    if ($event.checked === true) { this.GradDate = 'Date of Completion'; }
+    else { this.GradDate = 'Expected Graduation Date'; }
+  }
+
 
   //Form Visibility Modifiers
 
@@ -178,6 +186,7 @@ export class Education {
     public modified: string,
     public user: string,
     public institution: string,
+    public completed: boolean,
     public awardedon: string,
     public major: string,
     public minor: string,
