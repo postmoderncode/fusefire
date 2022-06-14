@@ -56,70 +56,15 @@
                     <fuse-card class="flex flex-col w-full p-8 filter-info mb-3 drop-shadow-lg bg-orange-50">
 
                         <div class="form-group">
+                      
                             <mat-form-field appearance="fill" class="min-w-50 mr-5">
                                 <mat-label>State</mat-label>
                                 <mat-select required (selectionChange)="onStateChange($event)">
-                                    <mat-option value="AL">Alabama</mat-option>
-                                    <mat-option value="AK">Alaska</mat-option>
-                                    <mat-option value="AS">American Samoa</mat-option>
-                                    <mat-option value="AZ">Arizona</mat-option>
-                                    <mat-option value="AR">Arkansas</mat-option>
-                                    <mat-option value="CA">California</mat-option>
-                                    <mat-option value="CO">Colorado</mat-option>
-                                    <mat-option value="CT">Connecticut</mat-option>
-                                    <mat-option value="DE">Delaware</mat-option>
-                                    <mat-option value="DC">District Of Columbia</mat-option>
-                                    <mat-option value="FM">Federated States Of Micronesia</mat-option>
-                                    <mat-option value="FL">Florida</mat-option>
-                                    <mat-option value="GA">Georgia</mat-option>
-                                    <mat-option value="GU">Guam</mat-option>
-                                    <mat-option value="HI">Hawaii</mat-option>
-                                    <mat-option value="ID">Idaho</mat-option>
-                                    <mat-option value="IL">Illinois</mat-option>
-                                    <mat-option value="IN">Indiana</mat-option>
-                                    <mat-option value="IA">Iowa</mat-option>
-                                    <mat-option value="KS">Kansas</mat-option>
-                                    <mat-option value="KY">Kentucky</mat-option>
-                                    <mat-option value="LA">Louisiana</mat-option>
-                                    <mat-option value="ME">Maine</mat-option>
-                                    <mat-option value="MH">Marshall Islands</mat-option>
-                                    <mat-option value="MD">Maryland</mat-option>
-                                    <mat-option value="MA">Massachusetts</mat-option>
-                                    <mat-option value="MI">Michigan</mat-option>
-                                    <mat-option value="MN">Minnesota</mat-option>
-                                    <mat-option value="MS">Mississippi</mat-option>
-                                    <mat-option value="MO">Missouri</mat-option>
-                                    <mat-option value="MT">Montana</mat-option>
-                                    <mat-option value="NE">Nebraska</mat-option>
-                                    <mat-option value="NV">Nevada</mat-option>
-                                    <mat-option value="NH">New Hampshire</mat-option>
-                                    <mat-option value="NJ">New Jersey</mat-option>
-                                    <mat-option value="NM">New Mexico</mat-option>
-                                    <mat-option value="NY">New York</mat-option>
-                                    <mat-option value="NC">North Carolina</mat-option>
-                                    <mat-option value="ND">North Dakota</mat-option>
-                                    <mat-option value="MP">Northern Mariana Islands</mat-option>
-                                    <mat-option value="OH">Ohio</mat-option>
-                                    <mat-option value="OK">Oklahoma</mat-option>
-                                    <mat-option value="OR">Oregon</mat-option>
-                                    <mat-option value="PW">Palau</mat-option>
-                                    <mat-option value="PA">Pennsylvania</mat-option>
-                                    <mat-option value="PR">Puerto Rico</mat-option>
-                                    <mat-option value="RI">Rhode Island</mat-option>
-                                    <mat-option value="SC">South Carolina</mat-option>
-                                    <mat-option value="SD">South Dakota</mat-option>
-                                    <mat-option value="TN">Tennessee</mat-option>
-                                    <mat-option value="TX">Texas</mat-option>
-                                    <mat-option value="UT">Utah</mat-option>
-                                    <mat-option value="VT">Vermont</mat-option>
-                                    <mat-option value="VI">Virgin Islands</mat-option>
-                                    <mat-option value="VA">Virginia</mat-option>
-                                    <mat-option value="WA">Washington</mat-option>
-                                    <mat-option value="WV">West Virginia</mat-option>
-                                    <mat-option value="WI">Wisconsin</mat-option>
-                                    <mat-option value="WY">Wyoming</mat-option>
+                                  <mat-option *ngFor="let state of states" [value]="state.abbreviation">
+                                    {{state.name}}
+                                  </mat-option>
                                 </mat-select>
-                            </mat-form-field>
+                              </mat-form-field>
 
                             <mat-form-field class="fuse-mat-no-subscript w-full">
                                 <mat-label>Name of Institution</mat-label>
@@ -134,10 +79,10 @@
                                     #name="ngModel"
                                     (ngModelChange)="applyFilterSchools($event)"
                                     [(ngModel)]="model.institution" name="institution"
-                                    [matAutocomplete]="autocomadd"
+                                    [matAutocomplete]="autocomaddschool"
                                     matInput>
                                     <!-- [formControl]="myControl" -->
-                                    <mat-autocomplete #autocomadd="matAutocomplete">
+                                    <mat-autocomplete #autocomaddschool="matAutocomplete">
                                         <mat-option *ngFor="let option of schoolfilteredData" [value]="option">
                                             {{option}}
                                         </mat-option>
@@ -184,11 +129,11 @@
                                     placeholder="Start Typing for Suggestions" 
                                     #name="ngModel"
                                     (ngModelChange)="applyFilterFields($event)"
-                                    [(ngModel)]="model.major" name="major"
-                                    [matAutocomplete]="autocomadd"
+                                    [(ngModel)]="model.major" name="name"
+                                    [matAutocomplete]="autocomaddmajor"
                                     matInput>
                                     <!-- [formControl]="myControl" -->
-                                    <mat-autocomplete #autocomadd="matAutocomplete">
+                                    <mat-autocomplete #autocomaddmajor="matAutocomplete">
                                         <mat-option *ngFor="let option of fieldfilteredData" [value]="option">
                                             {{option}}
                                         </mat-option>
@@ -212,11 +157,11 @@
                                     placeholder="Start Typing for Suggestions" 
                                     #name="ngModel"
                                     (ngModelChange)="applyFilterFields($event)"
-                                    [(ngModel)]="model.minor" name="minor"
-                                    [matAutocomplete]="autocomadd"
+                                    [(ngModel)]="model.minor" name="name"
+                                    [matAutocomplete]="autocomaddminor"
                                     matInput>
                                     <!-- [formControl]="myControl" -->
-                                    <mat-autocomplete #autocomadd="matAutocomplete">
+                                    <mat-autocomplete #autocomaddminor="matAutocomplete">
                                         <mat-option *ngFor="let option of fieldfilteredData" [value]="option">
                                             {{option}}
                                         </mat-option>
