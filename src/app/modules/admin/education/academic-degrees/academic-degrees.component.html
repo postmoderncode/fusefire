@@ -161,7 +161,7 @@
 
                               <mat-form-field appearance="fill" class="w-100">
                                 <mat-label>Degree Type</mat-label>
-                                <mat-select required (selectionChange)="onDegreeTypeChanged($event)">
+                                <mat-select required>
                                   <mat-option *ngFor="let degreetype of degreetypesfilteredData" [value]="degreetype.name">
                                     {{degreetype.name}}
                                   </mat-option>
