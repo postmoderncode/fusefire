@@ -126,6 +126,23 @@ export class AcademicDegreesComponent implements OnInit {
 
   }
 
+  onDelete(key): void {
+    this.db.object('/users/' + this.fbuser.id + '/degrees/' + key).remove();
+    this.db.object('/degrees/' + this.fbuser.id + '/' + key).remove();
+
+    //Decrement Count
+    this.db.object('/counts/' + this.fbuser.id + '/degrees').query.ref.transaction((likes) => {
+      if (likes === null) {
+        return likes = 0;
+      } else {
+        return likes - 1;
+      }
+    });
+
+    console.log(key + ' deleted');
+
+  }
+
   //Filter for Field of Study Autocomplete
   applyFilterFields(evt: string): void {
     evt = evt + '';
@@ -199,8 +216,45 @@ export class AcademicDegreesComponent implements OnInit {
 
   }
 
+  openConfirmationDialog(key): void {
+    //Open the dialog and save the reference of it
+    const dialogRef = this._fuseConfirmationService.open(this.dialogconfigForm.value);
+
+    //Subscribe to afterClosed from the dialog reference
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result === 'confirmed') {
+        this.onDelete(key);
+      }
+    });
+  }
+
 
   ngOnInit(): void {
+
+    this.items = this.db.list('/users/' + this.fbuser.id + '/degrees').snapshotChanges();
+
+    //Formbuilder for Dialog Popup
+    this.dialogconfigForm = this._formBuilder.group({
+      title: 'Remove Item',
+      message: 'Are you sure you want to remove this item permanently? <span class="font-medium">This action cannot be undone!</span>',
+      icon: this._formBuilder.group({
+        show: true,
+        name: 'heroicons_outline:exclamation',
+        color: 'warn'
+      }),
+      actions: this._formBuilder.group({
+        confirm: this._formBuilder.group({
+          show: true,
+          label: 'Remove',
+          color: 'warn'
+        }),
+        cancel: this._formBuilder.group({
+          show: true,
+          label: 'Cancel'
+        })
+      }),
+      dismissible: false
+    });
 
     // //Fill Degree Levels dropdown
     // const degreelevelshold = this.db.object('/degreelevels').valueChanges()
@@ -211,6 +265,9 @@ export class AcademicDegreesComponent implements OnInit {
     this.fieldfilteredData = this.fieldoptions;
     this.schoolfilteredData = this.schooloptions;
     this.degreetypesfilteredData = this.degreetypes;
+
+
+
 
   }
 

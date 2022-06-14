@@ -254,6 +254,66 @@
             <form #editItemForm="ngForm">
             </form>
 
+            <!-- Spacer -->
+            <div class="mt-10"></div>
+
+            <!-- Card View -->
+            <div class="flex flex-wrap items-center">
+                <div [hidden]="showadditem||showedititem">
+
+                    <h2 class="text-3xl md:text-3xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate">
+                        Card View
+                        </h2>  
+                        <hr class="w-full border-t my-6">
+                    <div class="flex flex-wrap items-center mt-6 sm:mt-0 sm:ml-4">
+                
+                        <div *ngFor="let item of items | async">
+
+                            <fuse-card class="flex flex-col max-w-200 w-full p-8 filter-info mb-3">
+                                <div class="text-2xl font-semibold leading-tight">{{item.payload.val().institution}}</div>
+                                <div class="mt-4">
+                                    {{item.payload.val().degreetype}}
+                                </div>
+                                <div class="mt-4">
+                                    {{item.payload.val().major}}
+                                </div>
+                                <div class="mt-4">
+                                    {{item.payload.val().minor}}
+                                </div>
+                                <div class="mt-4">
+                                    {{item.payload.val().awardedon | date: 'MM/yyyy'}}
+                                </div>
+                                <hr class="w-full border-t my-6">
+                                <div class="flex flex-col">
+    
+                                    <div class="flex items-center mt-4">
+                                        <mat-icon
+                                            matTooltip="created"
+                                            class="icon-size-5 mr-3"
+                                            [svgIcon]="'heroicons_solid:calendar'"></mat-icon>
+                                        <span class="leading-none">{{item.payload.val().created | date: 'MM/dd/yy h:mm a'}}</span>
+                                    </div>
+                                </div>
+                                <div class="flex shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
+    
+                                    <button mat-mini-fab color="warn" matTooltip="delete" class="mt-8 mr-2" (click)="openConfirmationDialog(item.key)">
+                                        <mat-icon>delete</mat-icon>
+                                    </button>
+                                    
+                                    <button mat-mini-fab color="basic" matTooltip="edit" class="mt-8" (click)="onShowEditForm(item.key)">
+                                        <mat-icon>edit</mat-icon>
+                                    </button>
+                                </div>
+                                                        
+                            </fuse-card>
+                        </div>
+    
+                    </div>
+
+                </div>
+
+            </div>
+
         </div>
         
     </div>
