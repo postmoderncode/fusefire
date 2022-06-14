@@ -17,7 +17,7 @@ export class MyReportsComponent implements OnInit {
   /**
    * Constructor
    */
-   constructor(
+  constructor(
     private _formBuilder: FormBuilder,
     private _fuseConfirmationService: FuseConfirmationService,
     public db: AngularFireDatabase
@@ -25,19 +25,17 @@ export class MyReportsComponent implements OnInit {
 
   onBtnClk(): void {
     console.log('button clicked');
-    this.listRef = this.db.list('/certifications');
-
     // online array maker https://codepen.io/jtfm/pen/apxJXG
     // online csv to array https://www.convertsimple.com/convert-csv-to-javascript-array/
     let arr = [10, 20, 30, 40];
 
     for (var val of arr) {
       console.log(val);
-      //this.db.list('/certifications').push({ name: val });
+      // this.db.list('/certifications').push({ name: val });
     }
 
 
-      }
+  }
 
   ngOnInit(): void {
   }

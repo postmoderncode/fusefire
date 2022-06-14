@@ -149,38 +149,24 @@
                     <fuse-card class="flex flex-col w-full p-8 filter-info mb-3 drop-shadow-lg bg-orange-50">
 
                         <div class="form-group">
+
                             <mat-form-field appearance="fill" class="mr-5">
                                 <mat-label>Degree Level</mat-label>
-                                <mat-select required>
-                                    <mat-option value="Associates">Associates</mat-option>
-                                    <mat-option value="Bachelor">Bachelor</mat-option>
-                                    <mat-option value="Masters">Masters</mat-option>
-                                    <mat-option value="Doctorate">Doctorate</mat-option>
+                                <mat-select required (selectionChange)="onDegreeLevelChanged($event)">
+                                  <mat-option *ngFor="let degreelevel of degreelevels" [value]="degreelevel.name">
+                                    {{degreelevel.name}}
+                                  </mat-option>
                                 </mat-select>
-                            </mat-form-field>
+                              </mat-form-field>
 
-                            <mat-form-field appearance="fill" class="w-100">
+                              <mat-form-field appearance="fill" class="w-100">
                                 <mat-label>Degree Type</mat-label>
-                                <mat-select required>
-                                    <mat-option value="Associate of Arts (AA)">Associate of Arts (AA)</mat-option>
-                                    <mat-option value="Associate of Science (AS)">Associate of Science (AS)</mat-option>
-                                    <mat-option value="Associate of Applied Science (AAS)">Associate of Applied Science (AAS)</mat-option>
-                                    <mat-option value="Associate of Applied Arts and Science (AAAS)">Associate of Applied Arts and Science (AAAS)</mat-option>
-                                    <mat-option value="Bachelor of Arts (B.A.)">Bachelor of Arts (B.A.)</mat-option>
-                                    <mat-option value="Bachelor of Science (B.S.)">Bachelor of Science (B.S.)</mat-option>
-                                    <mat-option value="Bachelor of Fine Arts (BFA)">Bachelor of Fine Arts (BFA)</mat-option>
-                                    <mat-option value="Bachelor of Applied Science (BAS)">Bachelor of Applied Science (BAS)</mat-option>
-                                    <mat-option value="Bachelor of Applied Arts and Science (BAAS)">Bachelor of Applied Arts and Science (BAAS)</mat-option>
-                                    <mat-option value="Master of Arts (M.A.)">Master of Arts (M.A.)</mat-option>
-                                    <mat-option value="Master of Science (M.S.)">Master of Science (M.S.)</mat-option>
-                                    <mat-option value="Master of Business Administration (MBA)">Master of Business Administration (MBA)</mat-option>
-                                    <mat-option value="Master of Fine Arts (MFA)">Master of Fine Arts (MFA)</mat-option>
-                                    <mat-option value=">Doctor of Philosophy (Ph.D.)">Doctor of Philosophy (Ph.D.)</mat-option>
-                                    <mat-option value="Juris Doctor (J.D.)">Juris Doctor (J.D.)</mat-option>
-                                    <mat-option value="Doctor of Medicine (M.D.)">Doctor of Medicine (M.D.)</mat-option>
-                                    <mat-option value="Doctor of Dental Surgery (DDS)">Doctor of Dental Surgery (DDS)</mat-option>
+                                <mat-select required (selectionChange)="onDegreeTypeChanged($event)">
+                                  <mat-option *ngFor="let degreetype of degreetypes" [value]="degreetype.name">
+                                    {{degreetype.name}}
+                                  </mat-option>
                                 </mat-select>
-                            </mat-form-field>
+                              </mat-form-field>
 
                         </div>
 

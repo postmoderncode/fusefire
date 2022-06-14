@@ -1,61 +1,77 @@
 {
-    "rules": {
-      
-      "users": {
-        ".read": true,
-          "$id": {
-              ".read": true,
-              ".write": "$id == auth.uid" 
-                }  
-          },
-          
-        "awards": {
-        ".read": true,
-          "$id": {
-              ".read": true,
-              ".write": "$id == auth.uid" 
-                }  
-          },
-
-        "certifications": {
-        ".read": true,
-          "$id": {
-              ".read": true,
-              ".write": "$id == auth.uid" 
-                }  
-          },
-
-        "certnames": {
-            ".read": "auth !== null",
-            "$uid": {
-                ".write": "$uid !== null"
-            }
-
+  "rules": {
+    
+    "users": {
+      ".read": true,
+        "$id": {
+            ".read": true,
+            ".write": "$id == auth.uid" 
+              }  
         },
-          
-      "counts": {
-        ".read": true,
-          "$id": {
-              ".read": true,
-              ".write": "$id == auth.uid" 
-                }  
-          },
-            
-        "skillcatalog": {
-            ".read": "auth !== null",
-            "$uid": {
-                ".write": "$uid !== null"
-            }
-
+        
+      "awards": {
+      ".read": true,
+        "$id": {
+            ".read": true,
+            ".write": "$id == auth.uid" 
+              }  
         },
 
-        "training": {
-        ".read": true,
-          "$id": {
-              ".read": true,
-              ".write": true 
-                }  
+      "certifications": {
+      ".read": true,
+        "$id": {
+            ".read": true,
+            ".write": "$id == auth.uid" 
+              }  
+        },
+
+      "certnames": {
+          ".read": "auth !== null",
+          "$uid": {
+              ".write": "$uid !== null"
           }
 
-    }
+      },
+        
+    "counts": {
+      ".read": true,
+        "$id": {
+            ".read": true,
+            ".write": "$id == auth.uid" 
+              }  
+        },
+          
+    "degreelevels": {
+      ".read": true,
+        "$id": {
+            ".read": true,
+            ".write": "$id == auth.uid" 
+              }  
+        },
+          
+    "degreetypes": {
+      ".read": true,
+        "$id": {
+            ".read": true,
+            ".write": "$id == auth.uid" 
+              }  
+        },
+          
+      "skillcatalog": {
+          ".read": "auth !== null",
+          "$uid": {
+              ".write": "$uid !== null"
+          }
+
+      },
+
+      "training": {
+      ".read": true,
+        "$id": {
+            ".read": true,
+            ".write": true 
+              }  
+        }
+
+  }
 }
