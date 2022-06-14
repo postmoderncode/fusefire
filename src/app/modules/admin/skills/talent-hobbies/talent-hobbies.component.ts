@@ -66,13 +66,13 @@ export class TalentHobbiesComponent implements OnInit {
       .catch(err => console.log(err, 'Error Submitting Talent!'));
 
     //Increment Count
-    this.db.object('/counts/' + this.fbuser.id + '/talents').query.ref.transaction(likes => {
+    this.db.object('/counts/' + this.fbuser.id + '/talents').query.ref.transaction((likes) => {
       if (likes === null) {
         return likes = 1;
       } else {
         return likes + 1;
       }
-    })
+    });
 
   }
 
@@ -96,13 +96,13 @@ export class TalentHobbiesComponent implements OnInit {
     this.db.object('/talents/' + this.fbuser.id + '/' + key).remove();
 
     //Decrement Count
-    this.db.object('/counts/' + this.fbuser.id + '/talents').query.ref.transaction(likes => {
+    this.db.object('/counts/' + this.fbuser.id + '/talents').query.ref.transaction((likes) => {
       if (likes === null) {
         return likes = 0;
       } else {
         return likes - 1;
       }
-    })
+    });
 
     console.log(key + ' deleted');
 

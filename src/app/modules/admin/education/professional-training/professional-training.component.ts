@@ -70,13 +70,13 @@ export class ProfessionalTrainingComponent implements OnInit {
       .catch(err => console.log(err, 'Error Submitting Talent!'));
 
     //Increment Count
-    this.db.object('/counts/' + this.fbuser.id + '/training').query.ref.transaction(likes => {
+    this.db.object('/counts/' + this.fbuser.id + '/training').query.ref.transaction((likes) => {
       if (likes === null) {
         return likes = 1;
       } else {
         return likes + 1;
       }
-    })
+    });
 
   }
 
@@ -102,13 +102,13 @@ export class ProfessionalTrainingComponent implements OnInit {
     this.db.object('/training/' + this.fbuser.id + '/' + key).remove();
 
     //Decrement Count
-    this.db.object('/counts/' + this.fbuser.id + '/training').query.ref.transaction(likes => {
+    this.db.object('/counts/' + this.fbuser.id + '/training').query.ref.transaction((likes) => {
       if (likes === null) {
         return likes = 0;
       } else {
         return likes - 1;
       }
-    })
+    });
 
     console.log(key + ' deleted');
 
