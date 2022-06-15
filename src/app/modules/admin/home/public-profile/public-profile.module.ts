@@ -1,14 +1,15 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { SharedModule } from 'app/shared/shared.module';
 import { Route, RouterModule } from '@angular/router';
 import { PublicProfileComponent } from './public-profile.component';
 import { MatIconModule } from '@angular/material/icon';
+import { FuseCardModule } from '@fuse/components/card';
 
 const publicprofileRoutes: Route[] = [
-    {
-        path     : '',
-        component: PublicProfileComponent
-    }
+  {
+    path: '',
+    component: PublicProfileComponent
+  }
 ];
 
 @NgModule({
@@ -16,8 +17,9 @@ const publicprofileRoutes: Route[] = [
     PublicProfileComponent
   ],
   imports: [
-    CommonModule,
-      MatIconModule,
+    SharedModule,
+    MatIconModule,
+    FuseCardModule,
     RouterModule.forChild(publicprofileRoutes)
   ]
 })
