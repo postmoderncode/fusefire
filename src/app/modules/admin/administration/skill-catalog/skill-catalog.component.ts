@@ -110,6 +110,7 @@ export class SkillCatalogComponent implements OnInit {
 
     this.tabTitle = "Skill";
     this.selectedIndex = 2;
+    this.catmodel.currentCategory = categoryId;
   }
 
   //Function to call when a category is selected

@@ -293,7 +293,7 @@
 
                             <!--Repeat for Each Skill-->
                             <span *ngFor="let skill of skills" >
-                                <a (click)="loadSkills(skill.key)">
+                                <a (click)="selectSkill(skill.key)">
                                     <div class="flex items-center py-4 px-5 border-t-2 border-slate-100 hover:bg-slate-100">
                                         <button mat-mini-fab color="basic" matTooltip="edit" class="mr-5" (click)="onShowEditForm('9');">
                                             <mat-icon>edit</mat-icon>
