@@ -40,31 +40,12 @@
             <br />
             {{ (item | async)?.email }}
             <br />
-            {{ (item | async)?.isadmin }}
+            {{(item | async)?.awards}}
 
+            <div *ngFor="let user of (item | async)?.awards">
+                has something
+            </div>
 
-
-            <!-- <br />
-            {{ (item | async)?.talents }}
-
-            <br />
-            {{ (item | async)?.awards }} -->
-
-            <br />
-
-            {{item.awards[0].name}}
-            <!-- <ul>
-                <li *ngFor="let pizza of (item | async)?.awards| async ; index as i">
-                  {{ i + 1 }}. {{ pizza.name }}
-                </li>
-            </ul> -->
-
-          
-                <!-- <div *ngFor="let subitem in (item).awards | async">
-                  {{ subitem.name }}
-                </div> -->
-            
-              <!-- <li ng-repeat="f in a.filmography">{{f.name}} -({{f.year}}) </li> -->
 
         </div>
         

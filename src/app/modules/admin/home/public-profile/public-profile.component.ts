@@ -36,7 +36,6 @@ export class PublicProfileComponent implements OnInit {
 
     this.item = this.db.object('/users/' + this.fbuser.id).valueChanges();
 
-
   }
 
 }

@@ -29,24 +29,14 @@ export class SkillCatalogComponent implements OnInit {
   showadditem = false;
   showedititem = false;
 
-  //Firebase Observables
-  dbRef = this.db.database.ref('/skillcatalog/categories/');
-
-  myObserver = {
-    next: (x: number) => console.log('Observer got a next value: ' + x),
-    error: (err: Error) => console.error('Observer got an error: ' + err),
-    complete: () => console.log('Observer got a complete notification'),
-  };
-
   //Object to Hold All Areas.
   areas: Observable<any>;
 
   //Object to Hold Current Category List.
   categories: object;
-  categories2: object;
 
   //Object to Hold Current Skill List.
-  skills: Observable<any>;
+  skills: object;
 
   //General Component Variables
   selectedIndex = 0;
@@ -83,15 +73,15 @@ export class SkillCatalogComponent implements OnInit {
   }
 
   //Function to call when an area is selected
-  loadCategories(areaId) {
+  onAreaSelect(areaId) {
 
-    //Populate Categories
-    this.db.list('/skillcatalog/categories/', ref => ref.orderByChild('area').equalTo(parseInt(areaId))).snapshotChanges().subscribe(
-      (results: object) => {
-        console.log(results);
-        this.categories = results;
-      }
-    );
+    //Populate Categories - Firebase List w/ Sort&Filter Query
+    this.db.list('/skillcatalog/categories/', ref => ref
+      .orderByChild("area")
+      .equalTo(areaId))
+      .snapshotChanges().subscribe(
+        (results: object) => { this.categories = results; }
+      );
 
     //Set the title
     this.tabTitle = 'Category';
@@ -102,15 +92,24 @@ export class SkillCatalogComponent implements OnInit {
     this.catmodel.currentArea = areaId;
 
     console.log(this.tabTitle);
+
   }
 
   //Function to call when a category is selected
-  loadSkills(categoryId) {
+  onCategorySelect(categoryId) {
 
     console.log(categoryId);
-    this.tabTitle = 'Skill';
+
+    //Populate Categories - Firebase List w/ Sort&Filter Query
+    this.db.list('/skillcatalog/skills/', ref => ref
+      .orderByChild("category")
+      .equalTo(categoryId))
+      .snapshotChanges().subscribe(
+        (results: object) => { this.skills = results; }
+      );
+
+    this.tabTitle = "Skill";
     this.selectedIndex = 2;
-    this.catmodel.currentCategory = categoryId;
   }
 
   //Function to call when a category is selected
@@ -200,16 +199,9 @@ export class SkillCatalogComponent implements OnInit {
 
   ngOnInit(): void {
 
-    //Populate the Areas Object
+    //Populate Areas - Firebase List Object
     this.areas = this.db.list('/skillcatalog/areas/').snapshotChanges();
 
-    //Populate Categories
-    this.db.list('/skillcatalog/categories/', ref => ref.orderByChild('area').equalTo(4)).snapshotChanges().subscribe(
-      (results: object) => {
-        console.log(results);
-        this.categories2 = results;
-      }
-    );
 
     //Formbuilder for Dialog Popup
     this.dialogconfigForm = this._formBuilder.group({
