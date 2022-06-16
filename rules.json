@@ -2,25 +2,25 @@
   "rules": {
     
     "users": {
-      ".read": true,
+      ".read": "auth !== null",
         "$id": {
-            ".read": true,
+            ".read": "auth !== null",
             ".write": "$id == auth.uid" 
               }  
         },
         
       "awards": {
-      ".read": true,
+      ".read": "auth !== null",
         "$id": {
-            ".read": true,
+            ".read": "auth !== null",
             ".write": "$id == auth.uid" 
               }  
         },
 
       "certifications": {
-      ".read": true,
+      ".read": "auth !== null",
         "$id": {
-            ".read": true,
+            ".read": "auth !== null",
             ".write": "$id == auth.uid" 
               }  
         },
@@ -34,9 +34,9 @@
       },
         
     "counts": {
-      ".read": true,
+      ".read": "auth !== null",
         "$id": {
-            ".read": true,
+            ".read": "auth !== null",
             ".write": "$id == auth.uid" 
               }  
         },
@@ -50,21 +50,30 @@
       },
           
     "degreelevels": {
-      ".read": true,
-      ".write": true
+      ".read": "auth !== null",
+      ".write": "auth !== null"
         },
           
           
     "degreetypes": {
-      ".read": true,
-      ".write": true
+      ".read": "auth !== null",
+      ".write": "auth !== null"
         },
           
           
       "skillcatalog": {
           ".read": "auth !== null",
           "$uid": {
-              ".write": "$uid !== null"
+              ".write": "$uid !== null",
+       
+            "catagories": {
+            ".indexOn": "area"
+            },
+            
+            "skills": {
+            ".indexOn": "catagory"
+            },      
+            
           }
 
       },
@@ -78,10 +87,10 @@
       },
 
       "training": {
-      ".read": true,
+      ".read": "auth !== null",
         "$id": {
-            ".read": true,
-            ".write": true 
+            ".read": "auth !== null",
+            ".write": "auth !== null" 
               }  
         }
 
