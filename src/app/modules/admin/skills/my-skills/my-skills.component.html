@@ -13,6 +13,21 @@
 <!-- Actions -->
 <div class="flex shrink-0 items-center mt-3">
 
+
+    <form #editItemForm="ngForm">
+        <input #searchbox type="text" placeholder="search">
+        <button  
+            (click)="onSearch(searchbox.value);"
+            class="ml-4"
+            mat-stroked-button
+            type="button"
+            [color]="'primary'">
+        Search
+        </button>
+    </form>
+
+    
+
     <div [hidden]="!showadditem">
 
     <div [hidden]="!showadditem">
@@ -46,6 +61,10 @@
 <!-- CONTENT GOES HERE -->
 <div class="h-400 min-h-400 max-h-400">
 
+    <div *ngFor="let searchresult of searchresults">
+        Search Results:{{searchresult.payload.val().name}}
+    </div>
+
     <!-- Add Form -->
     <div [hidden]="!showadditem">
         <fuse-card class="flex flex-col w-full p-8 filter-info mb-3 drop-shadow-lg bg-orange-50">
@@ -64,7 +83,8 @@
                             id="name" 
                             class="form-control" 
                             #name="ngModel"
-                            [(ngModel)]="model.name" name="name"
+                            [(ngModel)]="model.name" 
+                            name="name"
                             required
                             matInput>
                     </mat-form-field>
@@ -87,7 +107,8 @@
                             id="description" 
                             class="form-control" 
                             #name="ngModel"
-                            [(ngModel)]="model.description" name="description"
+                            [(ngModel)]="model.description" 
+                            name="description"
                             matInput>
                             </textarea>
                     </mat-form-field>
@@ -144,7 +165,8 @@
                         id="name" 
                         class="form-control" 
                         #name="ngModel"
-                        [(ngModel)]="model.name" name="name"
+                        [(ngModel)]="model.name" 
+                        name="name"
                         required
                         matInput>
                 </mat-form-field>
@@ -168,7 +190,8 @@
                         id="description" 
                         class="form-control" 
                         #name="ngModel"
-                        [(ngModel)]="model.description" name="description"
+                        [(ngModel)]="model.description" 
+                        name="description"
                         matInput>
                         </textarea>
                 </mat-form-field>

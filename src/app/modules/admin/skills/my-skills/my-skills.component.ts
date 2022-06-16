@@ -42,6 +42,9 @@ export class MySkillsComponent implements OnInit {
   selectedIndex = 0;
   tabTitle = 'Area';
 
+  searchresults: object;
+  qresults;
+
   /**
    * Constructor
    */
@@ -72,12 +75,25 @@ export class MySkillsComponent implements OnInit {
     }
   }
 
+ onSearch(queryText: string): void {
+
+    this.db.list('/skillcatalog/skills/', ref => ref
+    .orderByChild('name')
+    .startAt(queryText)
+    .endAt(queryText+'\uf8ff')
+    )
+    .snapshotChanges().subscribe(
+      (results: object) => { this.searchresults = results; }
+    );
+
+  }
+
   //Function to call when an area is selected
-  onAreaSelect(areaId) {
+  onAreaSelect(areaId): void {
 
     //Populate Categories - Firebase List w/ Sort&Filter Query
     this.db.list('/skillcatalog/categories/', ref => ref
-      .orderByChild("area")
+      .orderByChild('area')
       .equalTo(areaId))
       .snapshotChanges().subscribe(
         (results: object) => { this.categories = results; }
@@ -96,25 +112,25 @@ export class MySkillsComponent implements OnInit {
   }
 
   //Function to call when a category is selected
-  onCategorySelect(categoryId) {
+  onCategorySelect(categoryId): void {
 
     console.log(categoryId);
 
     //Populate Categories - Firebase List w/ Sort&Filter Query
     this.db.list('/skillcatalog/skills/', ref => ref
-      .orderByChild("category")
+      .orderByChild('category')
       .equalTo(categoryId))
       .snapshotChanges().subscribe(
         (results: object) => { this.skills = results; }
       );
 
-    this.tabTitle = "Skill";
+    this.tabTitle = 'Skill';
     this.selectedIndex = 2;
     this.catmodel.currentCategory = categoryId;
   }
 
   //Function to call when a category is selected
-  selectSkill(skillId) {
+  selectSkill(skillId): void {
     this.catmodel.currentSkill = skillId;
   }
 
