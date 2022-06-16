@@ -75,11 +75,28 @@ export class MySkillsComponent implements OnInit {
     }
   }
 
- onSearch(queryText: string): void {
+  //Function for unique value of name for search/duplicates
+  onConvertName(name: string): string
+  {
+    //trim leading and trailing spaces
+    const trimname: string = name.trim();
+
+    //replace spaces and multiple spaces with dash
+    const dashname: string = trimname.replace(/\s+/g, '-');
+
+    //covert to lowercase
+    const value: string = dashname.toLowerCase();
+
+    return value;
+
+  }
+
+  //Function to search through skills for filtered querytext
+  onSearch(queryText: string): void {
 
     this.db.list('/skillcatalog/skills/', ref => ref
     .orderByChild('name')
-    .startAt(queryText)
+    .startAt(this.onConvertName(queryText))
     .endAt(queryText+'\uf8ff')
     )
     .snapshotChanges().subscribe(
