@@ -298,7 +298,7 @@
 
 
             <!-- Table View -->
-            <table mat-table [dataSource]="items" class="mat-elevation-z8 w-full" [hidden]="showadditem||showedititem">
+            <table mat-table [dataSource]="items | async" class="mat-elevation-z8 w-full" [hidden]="showadditem||showedititem">
                 <!-- Name Column -->
                 <ng-container matColumnDef="name">
                     <th mat-header-cell *matHeaderCellDef> Name </th>
