@@ -22,7 +22,7 @@ export class TalentHobbiesComponent implements OnInit {
   dialogconfigForm: FormGroup;
 
   //Empty Model
-  model = new Talent('', '', '', '', '', '');
+  model = new Talent();
 
   //Table Control
   displayedColumns = ['name', 'description', 'created', 'delete', 'edit'];
@@ -134,7 +134,7 @@ export class TalentHobbiesComponent implements OnInit {
 
   onHideEditForm(): void {
     this.showedititem = false;
-    this.model = new Talent('', '', '', '', '', '');
+    this.model = new Talent();
   }
 
   openConfirmationDialog(key): void {
@@ -184,12 +184,12 @@ export class TalentHobbiesComponent implements OnInit {
 export class Talent {
 
   constructor(
-    public key: string,
-    public name: string,
-    public description: string,
-    public created: string,
-    public modified: string,
-    public user: string,
+    public key: string = '',
+    public name: string = '',
+    public description: string = '',
+    public created: string = '',
+    public modified: string = '',
+    public user: string = '',
 
   ) { }
 

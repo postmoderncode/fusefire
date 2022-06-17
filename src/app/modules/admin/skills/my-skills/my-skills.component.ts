@@ -22,8 +22,8 @@ export class MySkillsComponent implements OnInit {
   dialogconfigForm: FormGroup;
 
   //Empty Model
-  model = new Skill('', '', '', '', '', '');
-  catmodel = new CatalogState('', '', '');
+  model = new Skill();
+  catmodel = new CatalogState();
 
   //Form Visibility Modifiers
   showadditem = false;
@@ -76,8 +76,7 @@ export class MySkillsComponent implements OnInit {
   }
 
   //Function for unique value of name for search/duplicates
-  onConvertName(name: string): string
-  {
+  onConvertName(name: string): string {
     //trim leading and trailing spaces
     const trimname: string = name.trim();
 
@@ -95,13 +94,13 @@ export class MySkillsComponent implements OnInit {
   onSearch(queryText: string): void {
 
     this.db.list('/skillcatalog/skills/', ref => ref
-    .orderByChild('name')
-    .startAt(this.onConvertName(queryText))
-    .endAt(queryText+'\uf8ff')
+      .orderByChild('name')
+      .startAt(this.onConvertName(queryText))
+      .endAt(queryText + '\uf8ff')
     )
-    .snapshotChanges().subscribe(
-      (results: object) => { this.searchresults = results; }
-    );
+      .snapshotChanges().subscribe(
+        (results: object) => { this.searchresults = results; }
+      );
 
   }
 
@@ -216,7 +215,7 @@ export class MySkillsComponent implements OnInit {
 
   onHideEditForm(): void {
     this.showedititem = false;
-    this.model = new Skill('', '', '', '', '', '');
+    this.model = new Skill();
   }
 
   openConfirmationDialog(key): void {
@@ -268,24 +267,24 @@ export class MySkillsComponent implements OnInit {
 export class Skill {
 
   constructor(
-    public key: string,
-    public name: string,
-    public description: string,
-    public created: string,
-    public modified: string,
-    public user: string,
+    public key: string = '',
+    public name: string = '',
+    public description: string = '',
+    public created: string = '',
+    public modified: string = '',
+    public user: string = '',
 
   ) { }
 
 }
 
-// Empty Skill class
+// Empty CatalogState class
 export class CatalogState {
 
   constructor(
-    public currentArea: string,
-    public currentCategory: string,
-    public currentSkill: string,
+    public currentArea: string = '',
+    public currentCategory: string = '',
+    public currentSkill: string = '',
 
   ) { }
 

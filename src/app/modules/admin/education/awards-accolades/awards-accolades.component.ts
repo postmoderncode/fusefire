@@ -23,7 +23,7 @@ export class AwardsAccoladesComponent implements OnInit {
   dialogconfigForm: FormGroup;
 
   //Empty Model
-  model = new Award('', '', '', '', '', '', '', '');
+  model = new Award();
 
   //Table Control
   displayedColumns = ['name', 'description', 'created', 'delete', 'edit'];
@@ -141,7 +141,7 @@ export class AwardsAccoladesComponent implements OnInit {
 
   onHideEditForm(): void {
     this.showedititem = false;
-    this.model = new Award('', '', '', '', '', '', '', '');
+    this.model = new Award();
   }
 
   openConfirmationDialog(key): void {
@@ -197,14 +197,14 @@ export class AwardsAccoladesComponent implements OnInit {
 export class Award {
 
   constructor(
-    public key: string,
-    public name: string,
-    public description: string,
-    public created: string,
-    public modified: string,
-    public user: string,
-    public awardedby: string,
-    public awardedon: string,
+    public key: string = '',
+    public name: string = '',
+    public description: string = '',
+    public created: string = '',
+    public modified: string = '',
+    public user: string = '',
+    public awardedby: string = '',
+    public awardedon: string = '',
 
   ) { }
 

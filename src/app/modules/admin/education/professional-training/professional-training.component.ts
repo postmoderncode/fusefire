@@ -23,7 +23,7 @@ export class ProfessionalTrainingComponent implements OnInit {
   dialogconfigForm: FormGroup;
 
   //Empty Model
-  model = new Training('', '', '', '', '', '', '', '');
+  model = new Training();
 
   //Table Control
   displayedColumns = ['name', 'description', 'created', 'delete', 'edit'];
@@ -140,7 +140,7 @@ export class ProfessionalTrainingComponent implements OnInit {
 
   onHideEditForm(): void {
     this.showedititem = false;
-    this.model = new Training('', '', '', '', '', '', '', '');
+    this.model = new Training();
   }
 
   openConfirmationDialog(key): void {
@@ -196,14 +196,14 @@ export class ProfessionalTrainingComponent implements OnInit {
 export class Training {
 
   constructor(
-    public key: string,
-    public name: string,
-    public description: string,
-    public created: string,
-    public modified: string,
-    public user: string,
-    public awardedby: string,
-    public awardedon: string,
+    public key: string = '',
+    public name: string = '',
+    public description: string = '',
+    public created: string = '',
+    public modified: string = '',
+    public user: string = '',
+    public awardedby: string = '',
+    public awardedon: string = '',
 
   ) { }
 

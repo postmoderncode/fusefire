@@ -22,8 +22,8 @@ export class SkillCatalogComponent implements OnInit {
   dialogconfigForm: FormGroup;
 
   //Empty Model
-  model = new Skill('', '', '', '', '', '');
-  catmodel = new CatalogState('', '', '');
+  model = new Skill();
+  catmodel = new CatalogState();
 
   //Form Visibility Modifiers
   showadditem = false;
@@ -183,7 +183,7 @@ export class SkillCatalogComponent implements OnInit {
 
   onHideEditForm(): void {
     this.showedititem = false;
-    this.model = new Skill('', '', '', '', '', '');
+    this.model = new Skill();
   }
 
   openConfirmationDialog(key): void {
@@ -235,26 +235,28 @@ export class SkillCatalogComponent implements OnInit {
 export class Skill {
 
   constructor(
-    public key: string,
-    public name: string,
-    public description: string,
-    public created: string,
-    public modified: string,
-    public user: string,
+    public key: string = '',
+    public name: string = '',
+    public description: string = '',
+    public created: string = '',
+    public modified: string = '',
+    public user: string = '',
 
   ) { }
 
 }
 
-// Empty Skill class
+// Empty CatalogState class
 export class CatalogState {
 
   constructor(
-    public currentArea: string,
-    public currentCategory: string,
-    public currentSkill: string,
+    public currentArea: string = '',
+    public currentCategory: string = '',
+    public currentSkill: string = '',
 
   ) { }
 
 }
+
+
 

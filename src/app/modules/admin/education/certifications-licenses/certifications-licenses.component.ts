@@ -23,7 +23,7 @@ export class CertificationsLicensesComponent implements OnInit {
   dialogconfigForm: FormGroup;
 
   //Empty Model
-  model = new Certification('', '', '', '', '', '', '', '', '');
+  model = new Certification();
 
   //Table Control
   displayedColumns = ['name', 'description', 'created', 'delete', 'edit'];
@@ -148,7 +148,7 @@ export class CertificationsLicensesComponent implements OnInit {
 
   onHideEditForm(): void {
     this.showedititem = false;
-    this.model = new Certification('', '', '', '', '', '', '', '', '');
+    this.model = new Certification();
   }
 
   openConfirmationDialog(key): void {
@@ -230,15 +230,15 @@ export class CertificationsLicensesComponent implements OnInit {
 export class Certification {
 
   constructor(
-    public key: string,
-    public name: string,
-    public description: string,
-    public created: string,
-    public modified: string,
-    public user: string,
-    public awardedby: string,
-    public awardedon: string,
-    public expireson: string,
+    public key: string = '',
+    public name: string = '',
+    public description: string = '',
+    public created: string = '',
+    public modified: string = '',
+    public user: string = '',
+    public awardedby: string = '',
+    public awardedon: string = '',
+    public expireson: string = '',
 
   ) { }
 
