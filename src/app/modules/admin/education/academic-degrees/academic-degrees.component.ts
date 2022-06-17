@@ -23,7 +23,7 @@ export class AcademicDegreesComponent implements OnInit {
   dialogconfigForm: FormGroup;
 
   //Empty Model
-  model = new Education('', '', '', '', '', '', '', false, '', '', '', '');
+  model = new Education();
 
   gradDate = 'Expected Graduation Date';
 
@@ -277,18 +277,18 @@ export class AcademicDegreesComponent implements OnInit {
 export class Education {
 
   constructor(
-    public key: string,
-    public state: string,
-    public institution: string,
-    public degreelevel: string,
-    public degreetype: string,
-    public major: string,
-    public minor: string,
-    public completed: boolean,
-    public awardedon: string,
-    public created: string,
-    public modified: string,
-    public user: string,
+    public key: string = '',
+    public state: string = '',
+    public institution: string = '',
+    public degreelevel: string = '',
+    public degreetype: string = '',
+    public major: string = '',
+    public minor: string = '',
+    public completed: boolean = true,
+    public awardedon: string = '',
+    public created: string = '',
+    public modified: string = '',
+    public user: string = '',
 
   ) { }
 
