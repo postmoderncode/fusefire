@@ -269,7 +269,7 @@ export class Skill {
   constructor(
     public key: string = '',
     public name: string = '',
-    public description: string = '',
+    public description?: string,
     public created: string = '',
     public modified: string = '',
     public user: string = '',
@@ -282,9 +282,9 @@ export class Skill {
 export class CatalogState {
 
   constructor(
-    public currentArea: string = '',
-    public currentCategory: string = '',
-    public currentSkill: string = '',
+    public currentArea?: string,
+    public currentCategory?: string,
+    public currentSkill?: string,
 
   ) { }
 

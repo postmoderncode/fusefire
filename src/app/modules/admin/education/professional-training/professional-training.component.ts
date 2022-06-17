@@ -5,6 +5,7 @@ import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { Observable } from 'rxjs';
 import _ from 'lodash';
+import { BooleanInput } from '@angular/cdk/coercion';
 
 @Component({
   selector: 'app-professional-training',
@@ -198,12 +199,12 @@ export class Training {
   constructor(
     public key: string = '',
     public name: string = '',
-    public description: string = '',
+    public description?,
     public created: string = '',
     public modified: string = '',
     public user: string = '',
-    public awardedby: string = '',
-    public awardedon: string = '',
+    public awardedby?: string,
+    public awardedon?: string,
 
   ) { }
 

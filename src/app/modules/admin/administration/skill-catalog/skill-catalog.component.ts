@@ -3,7 +3,7 @@ import { AngularFireDatabase, AngularFireList } from '@angular/fire/compat/datab
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { Observable } from 'rxjs';
-import _ from 'lodash';
+import _, { String } from 'lodash';
 
 @Component({
   selector: 'app-skill-catalog',
@@ -237,7 +237,7 @@ export class Skill {
   constructor(
     public key: string = '',
     public name: string = '',
-    public description: string = '',
+    public description?: string,
     public created: string = '',
     public modified: string = '',
     public user: string = '',
@@ -250,9 +250,9 @@ export class Skill {
 export class CatalogState {
 
   constructor(
-    public currentArea: string = '',
-    public currentCategory: string = '',
-    public currentSkill: string = '',
+    public currentArea?: string,
+    public currentCategory?: string,
+    public currentSkill?: string,
 
   ) { }
 

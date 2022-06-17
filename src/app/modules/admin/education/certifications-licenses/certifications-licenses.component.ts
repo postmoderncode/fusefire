@@ -232,13 +232,13 @@ export class Certification {
   constructor(
     public key: string = '',
     public name: string = '',
-    public description: string = '',
+    public description?: string,
     public created: string = '',
     public modified: string = '',
     public user: string = '',
-    public awardedby: string = '',
-    public awardedon: string = '',
-    public expireson: string = '',
+    public awardedby?: string,
+    public awardedon?: string,
+    public expireson?: string,
 
   ) { }
 
