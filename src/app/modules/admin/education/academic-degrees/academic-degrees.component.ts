@@ -35,6 +35,7 @@ export class AcademicDegreesComponent implements OnInit {
   //Form Visibility Modifiers
   showadditem = false;
   showedititem = false;
+  stateselected = false;
 
   //Autocomplete Data
   schoolfilteredData;
@@ -195,7 +196,7 @@ export class AcademicDegreesComponent implements OnInit {
     evt = evt + '';
     if (!evt) { this.schoolfilteredData = this.schooloptions; }
     else {
-      this.schoolfilteredData = this.schooloptions.filter(item => (item.name + '') === evt || item.name.toString().toLocaleLowerCase().indexOf(evt.toLocaleLowerCase()) >= 0);
+      this.schoolfilteredData = this.schooloptions.filter(item => (item + '') === evt || item.name.toLocaleLowerCase().indexOf(evt.toLocaleLowerCase()) >= 0);
     }
   }
 
@@ -276,7 +277,7 @@ export class AcademicDegreesComponent implements OnInit {
     this.fieldfilteredData = this.fieldoptions;
 
     //Only need if prepopulating dropbox without filter
-    this.schoolfilteredData = this.schooloptions;
+    //this.schoolfilteredData = this.schooloptions;
     //this.degreetypesfilteredData = this.degreetypes;
 
 
