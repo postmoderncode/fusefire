@@ -60,6 +60,12 @@
       ".write": "auth !== null"
         },
           
+    "institutions": {
+      ".indexOn": "state",
+      ".read": "auth !== null",
+      ".write": "auth !== null"
+        },
+          
           
       "skillcatalog": {
           ".read": "auth !== null",
