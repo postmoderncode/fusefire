@@ -72,12 +72,27 @@ export class SkillCatalogComponent implements OnInit {
     }
   }
 
+  //Function for unique value of name for search/duplicates
+  onConvertName(name: string): string {
+    //trim leading and trailing spaces
+    const trimname: string = name.trim();
+
+    //replace spaces and multiple spaces with dash
+    const dashname: string = trimname.replace(/\s+/g, '-');
+
+    //covert to lowercase
+    const value: string = dashname.toLowerCase();
+
+    return value;
+
+  }
+
   //Function to call when an area is selected
-  onAreaSelect(areaId) {
+  onAreaSelect(areaId): void {
 
     //Populate Categories - Firebase List w/ Sort&Filter Query
     this.db.list('/skillcatalog/categories/', ref => ref
-      .orderByChild("area")
+      .orderByChild('area')
       .equalTo(areaId))
       .snapshotChanges().subscribe(
         (results: object) => { this.categories = results; }
@@ -91,30 +106,28 @@ export class SkillCatalogComponent implements OnInit {
 
     this.catmodel.currentArea = areaId;
 
-    console.log(this.tabTitle);
-
   }
 
   //Function to call when a category is selected
-  onCategorySelect(categoryId) {
+  onCategorySelect(categoryId): void {
 
     console.log(categoryId);
 
     //Populate Categories - Firebase List w/ Sort&Filter Query
     this.db.list('/skillcatalog/skills/', ref => ref
-      .orderByChild("category")
+      .orderByChild('category')
       .equalTo(categoryId))
       .snapshotChanges().subscribe(
         (results: object) => { this.skills = results; }
       );
 
-    this.tabTitle = "Skill";
+    this.tabTitle = 'Skill';
     this.selectedIndex = 2;
     this.catmodel.currentCategory = categoryId;
   }
 
   //Function to call when a category is selected
-  selectSkill(skillId) {
+  selectSkill(skillId): void {
     this.catmodel.currentSkill = skillId;
   }
 
@@ -183,7 +196,7 @@ export class SkillCatalogComponent implements OnInit {
 
   onHideEditForm(): void {
     this.showedititem = false;
-    this.model = new Skill();
+    this.model = new Skill('', '', '', '', '', '');
   }
 
   openConfirmationDialog(key): void {

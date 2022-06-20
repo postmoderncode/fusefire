@@ -95,12 +95,21 @@ export class MySkillsComponent implements OnInit {
 
     this.db.list('/skillcatalog/skills/', ref => ref
       .orderByChild('name')
-      .startAt(this.onConvertName(queryText))
+      .startAt(queryText)
       .endAt(queryText + '\uf8ff')
     )
       .snapshotChanges().subscribe(
         (results: object) => { this.searchresults = results; }
       );
+
+    //   this.db.list('/skillcatalog/skills/', ref => ref
+    //   .orderByChild('name')
+    //   .startAt(this.onConvertName(queryText))
+    //   .endAt(queryText + '\uf8ff')
+    // )
+    //   .snapshotChanges().subscribe(
+    //     (results: object) => { this.searchresults = results; }
+    //   );
 
   }
 
