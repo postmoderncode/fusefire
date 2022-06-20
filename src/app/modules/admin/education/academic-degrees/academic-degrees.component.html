@@ -194,10 +194,10 @@
 
                         <div class="form-group mt-5">
 
-                            <mat-checkbox 
-                            [(ngModel)]="model.completed"
-                            name="graddate"
-                            #name="ngModel"
+                            <mat-checkbox      
+                            [checked]= "model.completed"
+                            name="reqcompleted"
+                            id="reqcompleted"
                             class="form-control"
                             (change)="onCompletedChecked($event)">Academic Requirements Completed</mat-checkbox>
                         

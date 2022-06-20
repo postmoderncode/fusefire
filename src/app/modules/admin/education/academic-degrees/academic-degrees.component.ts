@@ -4,7 +4,6 @@ import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { Observable } from 'rxjs';
-import _, { orderBy, sortBy } from 'lodash';
 
 @Component({
   selector: 'app-academic-degrees',
@@ -16,8 +15,6 @@ export class AcademicDegreesComponent implements OnInit {
   //Initialize Varables
   //-------------------
 
-  horizontalStepperForm: FormGroup;
-
   //Current User
   fbuser = JSON.parse(localStorage.getItem('fbuser'));
 
@@ -26,6 +23,7 @@ export class AcademicDegreesComponent implements OnInit {
 
   //Empty Model
   model = new Education();
+
 
   gradDate = 'Expected Graduation Date';
 
@@ -38,6 +36,7 @@ export class AcademicDegreesComponent implements OnInit {
   showadditem = false;
   showedititem = false;
   stateselected = false;
+
 
   //Autocomplete Data
   schoolfilteredData;
@@ -195,8 +194,8 @@ export class AcademicDegreesComponent implements OnInit {
 
   //Degree Completed Checkbox
   onCompletedChecked($event): void {
-    if ($event.checked === true) { this.gradDate = 'Date of Completion'; }
-    else { this.gradDate = 'Expected Graduation Date'; }
+    if ($event.checked === true) { this.gradDate = 'Date of Completion'; this.model.completed = true; }
+    else { this.gradDate = 'Expected Graduation Date'; this.model.completed = false; }
   }
 
   //Filter for Field of Study Autocomplete
@@ -291,6 +290,7 @@ export class AcademicDegreesComponent implements OnInit {
     //     this.degreelevels = Object.values(inp);
     //   }).unsubscribe;
 
+    //Prepopulate Field of Study Autocomplete
     this.fieldfilteredData = this.fieldoptions;
 
     //Only need if prepopulating dropbox without filter
