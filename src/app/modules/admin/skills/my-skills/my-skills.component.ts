@@ -42,6 +42,7 @@ export class MySkillsComponent implements OnInit {
   selectedIndex = 0;
   tabTitle = 'Area';
 
+  //Search Variables
   searchresults: object;
   qresults1;
   qresults2;
@@ -94,7 +95,7 @@ export class MySkillsComponent implements OnInit {
   //Function to search through skills for filtered querytext
   onSearch(queryText: string): void {
 
-    //Move to value and following filter once value field is added for unique search
+    //Move to value and following filter once value field is added to skill for unique search
     //.startAt(this.onConvertName(queryText))
 
     this.qresults1 = this.db.list('/skillcatalog/skills/', ref => ref

@@ -120,6 +120,11 @@
             
                         </div>
 
+                        <div class="w-full text-right">
+                        {{ addItemForm.status }},
+                        {{ addItemForm.touched ? 'touched' : 'untouched'}},
+                        {{ addItemForm.dirty ? 'dirty' : 'pristine'}}
+                        </div>
                     </form>
 
                 </fuse-card>

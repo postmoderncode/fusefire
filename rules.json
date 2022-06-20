@@ -2,6 +2,7 @@
   "rules": {
     
     "users": {
+      ".indexOn": "name, email",
       ".read": "auth !== null",
         "$id": {
             ".read": "auth !== null",
