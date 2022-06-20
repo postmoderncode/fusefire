@@ -4,7 +4,7 @@ import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { Observable } from 'rxjs';
-import _ from 'lodash';
+import _, { orderBy, sortBy } from 'lodash';
 
 @Component({
   selector: 'app-academic-degrees',
@@ -15,6 +15,8 @@ export class AcademicDegreesComponent implements OnInit {
 
   //Initialize Varables
   //-------------------
+
+  horizontalStepperForm: FormGroup;
 
   //Current User
   fbuser = JSON.parse(localStorage.getItem('fbuser'));
@@ -55,7 +57,7 @@ export class AcademicDegreesComponent implements OnInit {
       { level: '1', name: 'Associate' },
       { level: '2', name: 'Bachelors' },
       { level: '3', name: 'Masters' },
-      { level: '4', name: 'Doctorate' }
+      { level: '4', name: 'Doctoral' }
     ];
 
   //degreetypes;
@@ -66,20 +68,35 @@ export class AcademicDegreesComponent implements OnInit {
       { name: 'Associate of Science (AS)', degreeLevel: '1' },
       { name: 'Associate of Applied Science (AAS)', degreeLevel: '1' },
       { name: 'Associate of Applied Arts and Science (AAAS)', degreeLevel: '1' },
-      { name: 'Bachelor of Arts (B.A.)', degreeLevel: '2' },
-      { name: 'Bachelor of Science (B.S.)', degreeLevel: '2' },
-      { name: 'Bachelor of Fine Arts (BFA)', degreeLevel: '2' },
-      { name: 'Bachelor of Applied Science (BAS)', degreeLevel: '2' },
+      { name: 'Bachelor of Architecture (B.Arch.)', degreeLevel: '2' },
       { name: 'Bachelor of Applied Arts and Science (BAAS)', degreeLevel: '2' },
+      { name: 'Bachelor of Applied Science (BAS)', degreeLevel: '2' },
+      { name: 'Bachelor of Arts (B.A.)', degreeLevel: '2' },
+      { name: 'Bachelor of Business Administration(BBA)', degreeLevel: '2' },
+      { name: 'Bachelor of Fine Arts (BFA)', degreeLevel: '2' },
+      { name: 'Bachelor of Science (B.S.)', degreeLevel: '2' },
       { name: 'Master of Arts (M.A.)', degreeLevel: '3' },
-      { name: 'Master of Science (M.S.)', degreeLevel: '3' },
       { name: 'Master of Business Administration (MBA)', degreeLevel: '3' },
+      { name: 'Master of Education (M.Ed.)', degreeLevel: '3' },
       { name: 'Master of Fine Arts (MFA)', degreeLevel: '3' },
-      { name: 'Doctor of Philosophy (Ph.D.)', degreeLevel: '4' },
-      { name: 'Juris Doctor (J.D.)', degreeLevel: '4' },
+      { name: 'Master of Science (M.S.)', degreeLevel: '3' },
+      { name: 'Master of Laws (LL.M.)', degreeLevel: '3' },
+      { name: 'Master of Public Administration (MPA)', degreeLevel: '3' },
+      { name: 'Master of Public Health (MPH)', degreeLevel: '3' },
+      { name: 'Master of Publishing (M.Pub.)', degreeLevel: '3' },
+      { name: 'Master of Social Work (MSW)', degreeLevel: '3' },
+      { name: 'Doctor of Business Administration (DBA)', degreeLevel: '4' },
+      { name: 'Doctor of Dental Surgery (DDS)', degreeLevel: '4' },
+      { name: 'Doctor of Education (Ed.D.)', degreeLevel: '4' },
       { name: 'Doctor of Medicine (M.D.)', degreeLevel: '4' },
-      { name: 'Doctor of Dental Surgery (DDS)', degreeLevel: '4' }
+      { name: 'Doctor of Pharmacy (Pharm.D.)', degreeLevel: '4' },
+      { name: 'Doctor of Philosophy (Ph.D.)', degreeLevel: '4' },
+      { name: 'Doctor of Psychology (Psy.D.)', degreeLevel: '4' },
+      { name: 'Juris Doctor (J.D.)', degreeLevel: '4' }
+
     ];
+
+
 
   /**
    * Constructor
