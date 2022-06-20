@@ -43,7 +43,8 @@ export class MySkillsComponent implements OnInit {
   tabTitle = 'Area';
 
   searchresults: object;
-  qresults;
+  qresults1;
+  qresults2;
 
   /**
    * Constructor
@@ -93,23 +94,28 @@ export class MySkillsComponent implements OnInit {
   //Function to search through skills for filtered querytext
   onSearch(queryText: string): void {
 
-    this.db.list('/skillcatalog/skills/', ref => ref
+    //Move to value and following filter once value field is added for unique search
+    //.startAt(this.onConvertName(queryText))
+
+    this.qresults1 = this.db.list('/skillcatalog/skills/', ref => ref
       .orderByChild('name')
       .startAt(queryText)
-      .endAt(queryText + '\uf8ff')
-    )
-      .snapshotChanges().subscribe(
-        (results: object) => { this.searchresults = results; }
-      );
+      .endAt(queryText + '\uf8ff')).snapshotChanges()
 
-    //   this.db.list('/skillcatalog/skills/', ref => ref
-    //   .orderByChild('name')
-    //   .startAt(this.onConvertName(queryText))
-    //   .endAt(queryText + '\uf8ff')
-    // )
-    //   .snapshotChanges().subscribe(
-    //     (results: object) => { this.searchresults = results; }
-    //   );
+
+    this.qresults2 = this.db.list('/users/', ref => ref
+      .orderByChild('name')
+      .startAt(queryText)
+      .endAt(queryText + '\uf8ff')).snapshotChanges()
+
+    this.qresults1.subscribe((searchskill) => {
+      this.qresults2.subscribe((searchuser) => {
+
+        this.searchresults = searchskill.concat(searchuser);
+
+      })
+
+    })
 
   }
 
