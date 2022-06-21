@@ -1,4 +1,5 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { CdkScrollable } from '@angular/cdk/scrolling';
 import { AngularFireDatabase, AngularFireList } from '@angular/fire/compat/database';
 import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
@@ -8,7 +9,7 @@ import { Observable } from 'rxjs';
 @Component({
   selector: 'app-awards-accolades',
   templateUrl: './awards-accolades.component.html',
-  encapsulation: ViewEncapsulation.None,
+
 })
 export class AwardsAccoladesComponent implements OnInit {
 
@@ -17,6 +18,9 @@ export class AwardsAccoladesComponent implements OnInit {
 
   //Current User
   fbuser = JSON.parse(localStorage.getItem('fbuser'));
+
+  //Scroll element
+  @ViewChild(CdkScrollable) cdkScrollable: CdkScrollable;
 
   //Confirmation Dialog
   dialogconfigForm: FormGroup;
@@ -78,6 +82,8 @@ export class AwardsAccoladesComponent implements OnInit {
       }
     });
 
+    this.cdkScrollable.scrollTo({ top: 0 });
+
   }
 
   onEdit(key): void {
@@ -94,6 +100,7 @@ export class AwardsAccoladesComponent implements OnInit {
     this.db.object('/awards/' + this.fbuser.id + '/' + key)
       .update({ name: mname, description: mdescription, modified: mdatenow, awardedby: mawardedby, awardedon: mawardedon });
     this.showedititem = false;
+    this.cdkScrollable.scrollTo({ top: 0 });
     console.log(key + ' edited');
   }
 
@@ -117,15 +124,18 @@ export class AwardsAccoladesComponent implements OnInit {
   onShowAddForm(): void {
     this.showedititem = false;
     this.showadditem = true;
+    this.cdkScrollable.scrollTo({ top: 0 });
   }
 
   onHideAddForm(): void {
     this.showadditem = false;
+    this.cdkScrollable.scrollTo({ top: 0 });
   }
 
   onShowEditForm(key): void {
     this.showadditem = false;
     this.showedititem = true;
+    this.cdkScrollable.scrollTo({ top: 0 });
 
     //Define Observable
     this.item = this.db.object('/users/' + this.fbuser.id + '/awards/' + key).valueChanges();
@@ -141,6 +151,7 @@ export class AwardsAccoladesComponent implements OnInit {
   onHideEditForm(): void {
     this.showedititem = false;
     this.model = new Award();
+    this.cdkScrollable.scrollTo({ top: 0 });
   }
 
   openConfirmationDialog(key): void {

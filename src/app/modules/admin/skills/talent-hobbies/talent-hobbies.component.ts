@@ -1,4 +1,5 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { CdkScrollable } from '@angular/cdk/scrolling';
 import { AngularFireDatabase, AngularFireList } from '@angular/fire/compat/database';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
@@ -8,7 +9,6 @@ import { Observable } from 'rxjs';
 @Component({
   selector: 'app-talents',
   templateUrl: './talent-hobbies.component.html',
-  encapsulation: ViewEncapsulation.None
 })
 export class TalentHobbiesComponent implements OnInit {
 
@@ -17,6 +17,9 @@ export class TalentHobbiesComponent implements OnInit {
 
   //Current User
   fbuser = JSON.parse(localStorage.getItem('fbuser'));
+
+  //Scroll element
+  @ViewChild(CdkScrollable) cdkScrollable: CdkScrollable;
 
   //Confirmation Dialog
   dialogconfigForm: FormGroup;
@@ -74,6 +77,8 @@ export class TalentHobbiesComponent implements OnInit {
       }
     });
 
+    this.cdkScrollable.scrollTo({ top: 0 });
+
   }
 
   onEdit(key): void {
@@ -88,6 +93,7 @@ export class TalentHobbiesComponent implements OnInit {
     this.db.object('/talents/' + this.fbuser.id + '/' + key)
       .update({ name: mname, description: mdescription, modified: mdatenow });
     this.showedititem = false;
+    this.cdkScrollable.scrollTo({ top: 0 });
     console.log(key + ' edited');
   }
 
@@ -111,15 +117,18 @@ export class TalentHobbiesComponent implements OnInit {
   onShowAddForm(): void {
     this.showedititem = false;
     this.showadditem = true;
+    this.cdkScrollable.scrollTo({ top: 0 });
   }
 
   onHideAddForm(): void {
     this.showadditem = false;
+    this.cdkScrollable.scrollTo({ top: 0 });
   }
 
   onShowEditForm(key): void {
     this.showadditem = false;
     this.showedititem = true;
+    this.cdkScrollable.scrollTo({ top: 0 });
 
     //Define Observable
     this.item = this.db.object('/users/' + this.fbuser.id + '/talents/' + key).valueChanges();
@@ -135,6 +144,7 @@ export class TalentHobbiesComponent implements OnInit {
   onHideEditForm(): void {
     this.showedititem = false;
     this.model = new Talent();
+    this.cdkScrollable.scrollTo({ top: 0 });
   }
 
   openConfirmationDialog(key): void {

@@ -1,9 +1,11 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { CdkScrollable } from '@angular/cdk/scrolling';
 import { AngularFireDatabase, AngularFireList } from '@angular/fire/compat/database';
 import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { Observable } from 'rxjs';
+
 
 @Component({
   selector: 'app-academic-degrees',
@@ -17,6 +19,9 @@ export class AcademicDegreesComponent implements OnInit {
 
   //Current User
   fbuser = JSON.parse(localStorage.getItem('fbuser'));
+
+  //Scroll element
+  @ViewChild(CdkScrollable) cdkScrollable: CdkScrollable;
 
   //Confirmation Dialog
   dialogconfigForm: FormGroup;
@@ -109,11 +114,13 @@ export class AcademicDegreesComponent implements OnInit {
   onShowAddForm(): void {
     this.showedititem = false;
     this.showadditem = true;
+    this.cdkScrollable.scrollTo({ top: 0 });
 
   }
 
   onHideAddForm(): void {
     this.showadditem = false;
+    this.cdkScrollable.scrollTo({ top: 0 });
 
   }
 
@@ -121,6 +128,7 @@ export class AcademicDegreesComponent implements OnInit {
     this.showadditem = false;
     this.showedititem = true;
     this.degreetypesfilteredData = this.degreetypes;
+    this.cdkScrollable.scrollTo({ top: 0 });
 
 
 
@@ -140,6 +148,7 @@ export class AcademicDegreesComponent implements OnInit {
 
   onHideEditForm(): void {
     this.showedititem = false;
+    this.cdkScrollable.scrollTo({ top: 0 });
 
   }
 
@@ -178,6 +187,8 @@ export class AcademicDegreesComponent implements OnInit {
       }
     });
 
+    this.cdkScrollable.scrollTo({ top: 0 });
+
   }
 
   onEdit(key): void {
@@ -200,6 +211,7 @@ export class AcademicDegreesComponent implements OnInit {
       .update({ state: mstate, institution: minstitution, degreelevel: mdegreelevel, degreetype: mdegreetype, major: mmajor, minor: mminor, completed: mcompleted, awardedon: mawardedon, modified: mdatenow, user: this.fbuser.id });
 
     this.showedititem = false;
+    this.cdkScrollable.scrollTo({ top: 0 });
 
     console.log(key + ' edited');
   }

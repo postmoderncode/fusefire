@@ -1,5 +1,6 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { AngularFireDatabase, AngularFireList } from '@angular/fire/compat/database';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { CdkScrollable } from '@angular/cdk/scrolling';
+import { AngularFireDatabase } from '@angular/fire/compat/database';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { Observable } from 'rxjs';
@@ -8,7 +9,6 @@ import { Observable } from 'rxjs';
 @Component({
   selector: 'app-my-skills',
   templateUrl: './my-skills.component.html',
-  encapsulation: ViewEncapsulation.None
 })
 export class MySkillsComponent implements OnInit {
 
@@ -17,6 +17,9 @@ export class MySkillsComponent implements OnInit {
 
   //Current User
   fbuser = JSON.parse(localStorage.getItem('fbuser'));
+
+  //Scroll element
+  @ViewChild(CdkScrollable) cdkScrollable: CdkScrollable;
 
   //Confirmation Dialog
   dialogconfigForm: FormGroup;
@@ -168,6 +171,7 @@ export class MySkillsComponent implements OnInit {
   }
 
   onAdd(): void {
+    this.cdkScrollable.scrollTo({ top: 0 });
     console.log('add clicked');
   }
 
@@ -183,6 +187,7 @@ export class MySkillsComponent implements OnInit {
     // this.db.object('/talents/' + this.fbuser.id + '/' + key)
     //   .update({ name: mname, description: mdescription, created: mdatenow, modified: mdatenow, user: this.fbuser.id });
     // this.showedititem = false;
+    this.cdkScrollable.scrollTo({ top: 0 });
     console.log(key + ' edited');
   }
 
@@ -207,17 +212,19 @@ export class MySkillsComponent implements OnInit {
   onShowAddForm(type: string): void {
     this.showedititem = false;
     this.showadditem = true;
-    console.log(type + ' Form Open');
+    this.cdkScrollable.scrollTo({ top: 0 });
   }
 
   onHideAddForm(): void {
     this.showadditem = false;
+    this.cdkScrollable.scrollTo({ top: 0 });
   }
 
   onShowEditForm(key): void {
     console.log('edit form shown');
     this.showadditem = false;
     this.showedititem = true;
+    this.cdkScrollable.scrollTo({ top: 0 });
 
     // //Define Observable
     // this.item = this.db.object('/users/' + this.fbuser.id + '/talents/' + key).valueChanges();
@@ -233,6 +240,7 @@ export class MySkillsComponent implements OnInit {
   onHideEditForm(): void {
     this.showedititem = false;
     this.model = new Skill();
+    this.cdkScrollable.scrollTo({ top: 0 });
   }
 
   openConfirmationDialog(key): void {

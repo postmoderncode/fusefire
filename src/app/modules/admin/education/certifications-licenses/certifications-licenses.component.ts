@@ -1,4 +1,5 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { CdkScrollable } from '@angular/cdk/scrolling';
 import { AngularFireDatabase, AngularFireList } from '@angular/fire/compat/database';
 import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
@@ -9,7 +10,6 @@ import { Observable } from 'rxjs';
 @Component({
   selector: 'app-certifications-licenses',
   templateUrl: './certifications-licenses.component.html',
-  encapsulation: ViewEncapsulation.None,
 })
 export class CertificationsLicensesComponent implements OnInit {
 
@@ -18,6 +18,9 @@ export class CertificationsLicensesComponent implements OnInit {
 
   //Current User
   fbuser = JSON.parse(localStorage.getItem('fbuser'));
+
+  //Scroll element
+  @ViewChild(CdkScrollable) cdkScrollable: CdkScrollable;
 
   //Confirmation Dialog
   dialogconfigForm: FormGroup;
@@ -85,6 +88,8 @@ export class CertificationsLicensesComponent implements OnInit {
       }
     });
 
+    this.cdkScrollable.scrollTo({ top: 0 });
+
   }
 
   onEdit(key): void {
@@ -102,6 +107,7 @@ export class CertificationsLicensesComponent implements OnInit {
     this.db.object('/certifications/' + this.fbuser.id + '/' + key)
       .update({ name: mname, description: mdescription, modified: mdatenow, awardedby: mawardedby, awardedon: mawardedon, expireson: mexpireson });
     this.showedititem = false;
+    this.cdkScrollable.scrollTo({ top: 0 });
     console.log(key + ' edited');
   }
 
@@ -125,15 +131,18 @@ export class CertificationsLicensesComponent implements OnInit {
   onShowAddForm(): void {
     this.showedititem = false;
     this.showadditem = true;
+    this.cdkScrollable.scrollTo({ top: 0 });
   }
 
   onHideAddForm(): void {
     this.showadditem = false;
+    this.cdkScrollable.scrollTo({ top: 0 });
   }
 
   onShowEditForm(key): void {
     this.showadditem = false;
     this.showedititem = true;
+    this.cdkScrollable.scrollTo({ top: 0 });
 
     //Define Observable
     this.item = this.db.object('/users/' + this.fbuser.id + '/certifications/' + key).valueChanges();
@@ -149,6 +158,7 @@ export class CertificationsLicensesComponent implements OnInit {
   onHideEditForm(): void {
     this.showedititem = false;
     this.model = new Certification();
+    this.cdkScrollable.scrollTo({ top: 0 });
   }
 
   openConfirmationDialog(key): void {

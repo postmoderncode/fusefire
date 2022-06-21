@@ -1,4 +1,5 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { CdkScrollable } from '@angular/cdk/scrolling';
 import { AngularFireDatabase, AngularFireList } from '@angular/fire/compat/database';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
@@ -17,6 +18,9 @@ export class SkillCatalogComponent implements OnInit {
 
   //Current User
   fbuser = JSON.parse(localStorage.getItem('fbuser'));
+
+  //Scroll element
+  @ViewChild(CdkScrollable) cdkScrollable: CdkScrollable;
 
   //Confirmation Dialog
   dialogconfigForm: FormGroup;
@@ -201,6 +205,8 @@ export class SkillCatalogComponent implements OnInit {
 
     }
 
+    this.cdkScrollable.scrollTo({ top: 0 });
+
   }
 
   onEdit(key): void {
@@ -216,6 +222,7 @@ export class SkillCatalogComponent implements OnInit {
     //   .update({ name: mname, description: mdescription, created: mdatenow, modified: mdatenow, user: this.fbuser.id });
     // this.showedititem = false;
 
+    this.cdkScrollable.scrollTo({ top: 0 });
     console.log(key + ' edited');
   }
 
@@ -231,17 +238,19 @@ export class SkillCatalogComponent implements OnInit {
   onShowAddForm(type: string): void {
     this.showedititem = false;
     this.showadditem = true;
-    console.log(type + ' Form Open');
+    this.cdkScrollable.scrollTo({ top: 0 });
   }
 
   onHideAddForm(): void {
     this.showadditem = false;
+    this.cdkScrollable.scrollTo({ top: 0 });
   }
 
   onShowEditForm(key): void {
 
     this.showadditem = false;
     this.showedititem = true;
+    this.cdkScrollable.scrollTo({ top: 0 });
 
     // //Define Observable
     // this.item = this.db.object('/users/' + this.fbuser.id + '/talents/' + key).valueChanges();
@@ -256,7 +265,8 @@ export class SkillCatalogComponent implements OnInit {
 
   onHideEditForm(): void {
     this.showedititem = false;
-    this.model = new Skill('', '', '', '', '', '');
+    this.model = new Skill();
+    this.cdkScrollable.scrollTo({ top: 0 });
   }
 
   openConfirmationDialog(key): void {
