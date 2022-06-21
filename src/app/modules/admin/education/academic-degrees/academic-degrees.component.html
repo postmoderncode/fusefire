@@ -413,8 +413,8 @@
 
                         <div class="form-group mt-10">
 
-                            <mat-form-field appearance="fill"  class="min-w-50">
-                                <mat-label>{{gradDate}}</mat-label>
+                            <mat-form-field appearance="fill"  class="min-w-80">
+                                <mat-label>{{gradDate}}: {{model.awardedon| date: 'MM/dd/yyyy'}}</mat-label>
                                 <input matInput [matDatepicker]="editpicker" 
                                 (dateChange)="onDateChange($event, editpicker)"
                                 [(ngModel)]="editDate"
