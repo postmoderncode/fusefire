@@ -118,6 +118,17 @@ export class AcademicDegreesComponent implements OnInit {
   onShowEditForm(key): void {
     this.showadditem = false;
     this.showedititem = true;
+    this.degreetypesfilteredData = this.degreetypes;
+
+    //Define Observable
+    this.item = this.db.object('/users/' + this.fbuser.id + '/degrees/' + key).valueChanges();
+
+    //Subscribe to Observable
+    this.item.subscribe((item) => {
+      this.model = new Education(key, item.state, item.institution, item.degreelevel, item.degreetype, item.major, item.minor, item.completed, item.awardedon, item.created, item.modeified, item.user);
+    });
+
+    console.log(key + 'has been selected to edit');
 
   }
 
@@ -163,6 +174,22 @@ export class AcademicDegreesComponent implements OnInit {
     });
 
   }
+
+  onEdit(key): void {
+
+    // //Cast model to variable for formReset
+    // const mname: string = this.model.name;
+    // const mdescription: string = this.model.description;
+    // const mdatenow = Math.floor(Date.now());
+
+    // this.db.object('/users/' + this.fbuser.id + '/talents' + '/' + key)
+    //   .update({ name: mname, description: mdescription, modified: mdatenow });
+    // this.db.object('/talents/' + this.fbuser.id + '/' + key)
+    //   .update({ name: mname, description: mdescription, modified: mdatenow });
+    // this.showedititem = false;
+    console.log(key + ' edited');
+  }
+
 
   onDelete(key): void {
     this.db.object('/users/' + this.fbuser.id + '/degrees/' + key).remove();

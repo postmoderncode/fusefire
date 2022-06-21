@@ -59,7 +59,6 @@ export class SkillCatalogComponent implements OnInit {
   goback(): void {
     switch (this.selectedIndex) {
       case 1: {
-        console.log('goback 1');
         this.tabTitle = 'Area';
         this.selectedIndex = 0;
         this.catmodel.currentCategory = '';
@@ -67,7 +66,6 @@ export class SkillCatalogComponent implements OnInit {
         break;
       }
       case 2: {
-        console.log('goback 2');
         this.tabTitle = 'Category';
         this.selectedIndex = 1;
         this.catmodel.currentSkill = '';
@@ -117,12 +115,12 @@ export class SkillCatalogComponent implements OnInit {
 
     console.log(categoryId);
 
-    //Populate Categories - Firebase List w/ Sort&Filter Query
+    //Populate Skills - Firebase List w/ Sort&Filter Query
     this.db.list('/skillcatalog/skills/', ref => ref
       .orderByChild('category')
       .equalTo(categoryId))
       .snapshotChanges().subscribe(
-        (results: object) => { this.skills = results; }
+        (results: any[]) => { this.skills = results; }
       );
 
     this.tabTitle = 'Skill';
@@ -146,7 +144,6 @@ export class SkillCatalogComponent implements OnInit {
     else {
       type = this.tabTitle.toLowerCase() + 's'
     }
-
 
     //Set Firebase Path
     this.listRef = this.db.list('/skillcatalog/' + type);
@@ -277,8 +274,9 @@ export class SkillCatalogComponent implements OnInit {
   ngOnInit(): void {
 
     //Populate Areas - Firebase List Object
-    this.areas = this.db.list('/skillcatalog/areas/').snapshotChanges();
-
+    this.areas = this.db.list('/skillcatalog/areas/', ref => ref
+      .orderByChild('name'))
+      .snapshotChanges();
 
     //Formbuilder for Dialog Popup
     this.dialogconfigForm = this._formBuilder.group({

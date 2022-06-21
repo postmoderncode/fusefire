@@ -251,11 +251,223 @@
                 </form>
             </div>  
 
-            <form #editItemForm="ngForm">
-            </form>
+
+            <!-- Edit Form -->
+            <div [hidden]="!showedititem">
+
+                <h2 class="text-2xl md:text-2xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate mb-5">
+                    Edit Academic Degree
+                </h2>
+
+                <form #editItemForm="ngForm">
+
+                    <fuse-card class="flex flex-col w-full p-8 filter-info mb-3 drop-shadow-lg bg-orange-50">
+
+                        <div class="form-group">
+                      
+                            <mat-form-field appearance="fill" class="min-w-50 mr-5">
+                                <mat-label>State</mat-label>
+                                <mat-select   
+                                (selectionChange)="onStateChange($event)"
+                                #name="ngModel"
+                                [(ngModel)]="model.state"
+                                name="state"
+                                required >
+                                  <mat-option *ngFor="let state of states" [value]="state.abbreviation">
+                                    {{state.name}}
+                                  </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+
+                            <mat-form-field class="fuse-mat-no-subscript w-full">
+                                <mat-label>Name of Institution</mat-label>
+                                <mat-icon
+                                    class="icon-size-5"
+                                    [svgIcon]="'heroicons_outline:office-building'"
+                                    matPrefix></mat-icon>
+                                    <input type="text"
+                                    id="institution" 
+                                    class="form-control"
+                                    placeholder="Start Typing for Suggestions" 
+                                    #name="ngModel"
+                                    (ngModelChange)="applyFilterSchools($event)"
+                                    [(ngModel)]="model.institution" 
+                                    name="institution"
+                                    [matAutocomplete]="autocomeditschool"
+                                    required
+                                    matInput>
+                                    <mat-autocomplete #autocomeditschool="matAutocomplete">
+                                        <mat-option *ngFor="let option of schoolfilteredData" [value]="option.name">
+                                            {{option.name}}
+                                        </mat-option>
+                                    </mat-autocomplete>
+                            </mat-form-field>                    
+                        </div>                
+                    </fuse-card>
+
+                    <fuse-card class="flex flex-col w-full p-8 filter-info mb-3 drop-shadow-lg bg-orange-50">
+
+                        <div class="form-group">
+
+                            <mat-form-field appearance="fill" class="mr-5 min-w-50">
+                                <mat-label>Degree Level</mat-label>
+                                <mat-select 
+                                (selectionChange)="onDegreeLevelChanged($event)"  
+                                #name="ngModel"
+                                [(ngModel)]="model.degreelevel"
+                                name="degreelevel"
+                                required>
+                                  <mat-option *ngFor="let degreelevel of degreelevels" [value]="degreelevel.level">
+                                    {{degreelevel.name}}
+                                  </mat-option>
+                                </mat-select>
+                              </mat-form-field>
+
+                              <mat-form-field appearance="fill" class="w-100">
+                                <mat-label>Degree Type</mat-label>
+                                <mat-select
+                                #name="ngModel"
+                                [(ngModel)]="model.degreetype" 
+                                name="degreetype"                              
+                                required>
+                                  <mat-option *ngFor="let degreetype of degreetypesfilteredData" [value]="degreetype.name">
+                                    {{degreetype.name}}
+                                  </mat-option>
+                                </mat-select>
+                              </mat-form-field>
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <mat-form-field class="fuse-mat-no-subscript w-full">
+                                <mat-label>Major Field of Study</mat-label>
+                                <mat-icon
+                                    class="icon-size-5"
+                                    [svgIcon]="'heroicons_outline:academic-cap'"
+                                    matPrefix></mat-icon>
+                                    <input type="text"
+                                    id="major" 
+                                    class="form-control"
+                                    placeholder="Start Typing for Suggestions" 
+                                    #name="ngModel"
+                                    (ngModelChange)="applyFilterFields($event)"
+                                    [(ngModel)]="model.major" 
+                                    name="major"
+                                    [matAutocomplete]="autocomeditmajor"
+                                    required
+                                    matInput>
+                                    <!-- [formControl]="myControl" -->
+                                    <mat-autocomplete #autocomeditmajor="matAutocomplete">
+                                        <mat-option *ngFor="let option of fieldfilteredData" [value]="option">
+                                            {{option}}
+                                        </mat-option>
+                                    </mat-autocomplete>
+                            </mat-form-field>
+
+
+                        </div>
+
+                        <div class="form-group mt-5">
+
+                            <mat-form-field class="fuse-mat-no-subscript w-full">
+                                <mat-label>Minor Field of Study</mat-label>
+                                <mat-icon
+                                    class="icon-size-5"
+                                    [svgIcon]="'heroicons_outline:book-open'"
+                                    matPrefix></mat-icon>
+                                    <input type="text"
+                                    id="minor" 
+                                    class="form-control"
+                                    placeholder="Start Typing for Suggestions" 
+                                    #name="ngModel"
+                                    (ngModelChange)="applyFilterFields($event)"
+                                    [(ngModel)]="model.minor" 
+                                    name="minor"
+                                    [matAutocomplete]="autocomeditminor"
+                                    matInput>
+                                    <!-- [formControl]="myControl" -->
+                                    <mat-autocomplete #autocomeditminor="matAutocomplete">
+                                        <mat-option *ngFor="let option of fieldfilteredData" [value]="option">
+                                            {{option}}
+                                        </mat-option>
+                                    </mat-autocomplete>
+                            </mat-form-field>
+
+                        </div>
+
+                    </fuse-card>
+
+                    <fuse-card class="flex flex-col w-full p-8 filter-info mb-3 drop-shadow-lg bg-orange-50">
+
+                        <div class="form-group mt-5">
+
+                            <mat-checkbox      
+                            [checked]= "model.completed"
+                            name="reqcompleted"
+                            id="reqcompleted"
+                            class="form-control"
+                            (change)="onCompletedChecked($event)">Academic Requirements Completed</mat-checkbox>
+                        
+                        </div>
+
+                        <div class="form-group mt-10">
+
+                            <mat-form-field appearance="fill"  class="min-w-50">
+                                <mat-label>{{gradDate}}</mat-label>
+                                <input matInput [matDatepicker]="editpicker" 
+                                (dateChange)="onDateChange($event, editpicker)"
+                                name="awardedon"  
+                                id="awardedon"
+                                class="form-control"
+                                required>
+                                <mat-hint>MM/DD/YYYY</mat-hint>
+                                <mat-datepicker-toggle matSuffix [for]="editpicker"></mat-datepicker-toggle>
+                                <mat-datepicker #editpicker startView="year"></mat-datepicker>
+                            </mat-form-field>
+            
+                        </div>
+
+                                <!-- Spacer -->
+                                <div class="mt-5"></div>
+
+
+
+
+
+
+                        <!-- Actions -->
+                        <div class="flex shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
+
+                            <button  
+                                (click)="onHideEditForm(); addItemForm.resetForm(); editItemForm.resetForm();"
+                                class="ml-4"
+                                mat-stroked-button
+                                type="button"
+                                [color]="'primary'">
+                                Cancel
+                            </button>
+
+                            <button  
+                                (click)="onEdit(model.key); addItemForm.resetForm(); editItemForm.resetForm();"
+                                [disabled]="!addItemForm.form.valid" 
+                                class="ml-4"
+                                mat-flat-button
+                                type="button"
+                                [color]="'primary'">
+                                Submit Education
+                            </button>
+
+                        </div>                       
+
+                    </fuse-card>
+
+                </form>
 
             <!-- Spacer -->
             <div class="mt-10"></div>
+
+            </div>
 
             <!-- Card View -->
             <div class="flex flex-wrap items-center">
