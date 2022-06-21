@@ -3,7 +3,7 @@ import { AngularFireDatabase, AngularFireList } from '@angular/fire/compat/datab
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { Observable } from 'rxjs';
-import _ from 'lodash';
+
 
 @Component({
   selector: 'app-skill-catalog',
@@ -139,17 +139,17 @@ export class SkillCatalogComponent implements OnInit {
 
     //Switch catalog path based on item type
     if (this.tabTitle.toLowerCase() === 'category') {
-      type = 'categories'
+      type = 'categories';
     }
     else {
-      type = this.tabTitle.toLowerCase() + 's'
+      type = this.tabTitle.toLowerCase() + 's';
     }
 
     //Set Firebase Path
     this.listRef = this.db.list('/skillcatalog/' + type);
 
     //Define and call Promise to add Item with hierachial attributes
-    if (this.tabTitle.toLowerCase() == 'area') {
+    if (this.tabTitle.toLowerCase() === 'area') {
 
       //Cast model to variable for formReset
       const mname: string = this.model.name;
@@ -165,7 +165,7 @@ export class SkillCatalogComponent implements OnInit {
         .catch(err => console.log(err, 'Error Submitting Item!'));
 
     }
-    else if (this.tabTitle.toLowerCase() == 'category') {
+    else if (this.tabTitle.toLowerCase() === 'category') {
 
       //Cast model to variable for formReset
       const mname: string = this.model.name;

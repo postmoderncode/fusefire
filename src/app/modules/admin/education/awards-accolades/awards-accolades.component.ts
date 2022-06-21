@@ -4,7 +4,6 @@ import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { Observable } from 'rxjs';
-import _ from 'lodash';
 
 @Component({
   selector: 'app-awards-accolades',

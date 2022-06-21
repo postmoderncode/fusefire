@@ -3,7 +3,7 @@ import { AngularFireDatabase, AngularFireList } from '@angular/fire/compat/datab
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { Observable } from 'rxjs';
-import _ from 'lodash';
+
 
 @Component({
   selector: 'app-my-skills',
@@ -101,23 +101,23 @@ export class MySkillsComponent implements OnInit {
     this.qresults1 = this.db.list('/skillcatalog/skills/', ref => ref
       .orderByChild('value')
       .startAt(this.onConvertName(queryText))
-      .endAt(this.onConvertName(queryText) + '\uf8ff')).snapshotChanges()
+      .endAt(this.onConvertName(queryText) + '\uf8ff')).snapshotChanges();
 
 
 
     this.qresults2 = this.db.list('/users/', ref => ref
       .orderByChild('name')
       .startAt(queryText)
-      .endAt(queryText + '\uf8ff')).snapshotChanges()
+      .endAt(queryText + '\uf8ff')).snapshotChanges();
 
     this.qresults1.subscribe((searchskill) => {
       this.qresults2.subscribe((searchuser) => {
 
         this.searchresults = searchskill.concat(searchuser);
 
-      })
+      });
 
-    })
+    });
 
   }
 

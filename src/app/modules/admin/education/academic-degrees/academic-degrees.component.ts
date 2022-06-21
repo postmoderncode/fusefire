@@ -158,7 +158,7 @@ export class AcademicDegreesComponent implements OnInit {
     const mawardedon: string = this.model.awardedon;
     const mdatenow = Math.floor(Date.now());
 
-    //Define Promise 
+    //Define Promise
     const promiseAddItem = this.listRef
       .push({ state: mstate, institution: minstitution, degreelevel: mdegreelevel, degreetype: mdegreetype, major: mmajor, minor: mminor, completed: mcompleted, awardedon: mawardedon, created: mdatenow, modified: mdatenow, user: this.fbuser.id });
 
@@ -222,6 +222,7 @@ export class AcademicDegreesComponent implements OnInit {
 
   }
 
+
   //Calendar Change Event to set Model
   onDateChange(event: MatDatepickerInputEvent<any>, control: AbstractControl): void {
 
@@ -229,11 +230,13 @@ export class AcademicDegreesComponent implements OnInit {
 
   }
 
+
   //Degree Completed Checkbox
   onCompletedChecked($event): void {
     if ($event.checked === true) { this.gradDate = 'Date of Completion'; this.model.completed = true; }
     else { this.gradDate = 'Expected Graduation Date'; this.model.completed = false; }
   }
+
 
   //Filter for Field of Study Autocomplete
   applyFilterFields(evt: string): void {
@@ -244,6 +247,7 @@ export class AcademicDegreesComponent implements OnInit {
     }
   }
 
+
   //Filter for Institution Autocomplete
   applyFilterSchools(evt: string): void {
     evt = evt + '';
@@ -253,12 +257,14 @@ export class AcademicDegreesComponent implements OnInit {
     }
   }
 
+
   //Change fileter of degree types based on degree level dropdown
   onDegreeLevelChanged(ob): void {
 
     this.degreetypesfilteredData = this.degreetypes.filter(degreetypes => degreetypes.degreeLevel === ob.value.toString());
 
   }
+
 
   //State Dropdown Change Event
   onStateChange(ob): void {
@@ -268,7 +274,7 @@ export class AcademicDegreesComponent implements OnInit {
     const selectedState = ob.value;
 
     this.db.list('/institutions/', ref => ref
-      .orderByChild("state")
+      .orderByChild('state')
       .equalTo(selectedState))
       .valueChanges().subscribe(
         (
@@ -330,10 +336,10 @@ export class AcademicDegreesComponent implements OnInit {
     //this.schoolfilteredData = this.schooloptions;
     //this.degreetypesfilteredData = this.degreetypes;
 
-
   }
 
 }
+
 
 // Empty Education class
 export class Education {
