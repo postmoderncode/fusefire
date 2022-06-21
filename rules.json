@@ -78,7 +78,7 @@
             },
             
             "skills": {
-            ".indexOn": ["catagory", "value"], 
+            ".indexOn": ["category", "value"], 
             },      
             
           }
