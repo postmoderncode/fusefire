@@ -63,6 +63,8 @@
 
     <div *ngFor="let searchresult of searchresults">
         Search Results:{{searchresult.payload.val().name}}
+        <span *ngIf="searchresult.payload.val().email?.length > 5">Email Address: {{searchresult.payload.val().email}}</span>
+
     </div>
 
     <!-- Add Form -->

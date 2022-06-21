@@ -99,9 +99,10 @@ export class MySkillsComponent implements OnInit {
     //.startAt(this.onConvertName(queryText))
 
     this.qresults1 = this.db.list('/skillcatalog/skills/', ref => ref
-      .orderByChild('name')
-      .startAt(queryText)
-      .endAt(queryText + '\uf8ff')).snapshotChanges()
+      .orderByChild('value')
+      .startAt(this.onConvertName(queryText))
+      .endAt(this.onConvertName(queryText) + '\uf8ff')).snapshotChanges()
+
 
 
     this.qresults2 = this.db.list('/users/', ref => ref
