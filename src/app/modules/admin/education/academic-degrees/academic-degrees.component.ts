@@ -21,6 +21,7 @@ export class AcademicDegreesComponent implements OnInit {
   //Confirmation Dialog
   dialogconfigForm: FormGroup;
 
+  //Controls Edit Datepicker
   editDate: any;
 
   //Empty Model
@@ -38,7 +39,6 @@ export class AcademicDegreesComponent implements OnInit {
   showadditem = false;
   showedititem = false;
   stateselected = false;
-
 
   //Autocomplete Data
   schoolfilteredData;
