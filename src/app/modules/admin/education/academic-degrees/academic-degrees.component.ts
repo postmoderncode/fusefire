@@ -21,6 +21,8 @@ export class AcademicDegreesComponent implements OnInit {
   //Confirmation Dialog
   dialogconfigForm: FormGroup;
 
+  editDate: any;
+
   //Empty Model
   model = new Education();
 
@@ -120,12 +122,16 @@ export class AcademicDegreesComponent implements OnInit {
     this.showedititem = true;
     this.degreetypesfilteredData = this.degreetypes;
 
+
+
     //Define Observable
     this.item = this.db.object('/users/' + this.fbuser.id + '/degrees/' + key).valueChanges();
 
     //Subscribe to Observable
     this.item.subscribe((item) => {
       this.model = new Education(key, item.state, item.institution, item.degreelevel, item.degreetype, item.major, item.minor, item.completed, item.awardedon, item.created, item.modeified, item.user);
+      this.editDate = item.awardedon;
+      console.log(this.editDate);
     });
 
     console.log(key + 'has been selected to edit');
@@ -248,6 +254,8 @@ export class AcademicDegreesComponent implements OnInit {
 
   //State Dropdown Change Event
   onStateChange(ob): void {
+
+    this.model.institution = '';
 
     const selectedState = ob.value;
 
