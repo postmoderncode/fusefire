@@ -2,7 +2,7 @@
   "rules": {
     
     "users": {
-      ".indexOn": "name, email",
+      ".indexOn": ["name","email"],
       ".read": "auth !== null",
         "$id": {
             ".read": "auth !== null",
@@ -78,7 +78,7 @@
             },
             
             "skills": {
-            ".indexOn": "catagory, name"
+            ".indexOn": ["catagory", "value"], 
             },      
             
           }

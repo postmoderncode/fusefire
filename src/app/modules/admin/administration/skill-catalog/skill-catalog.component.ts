@@ -218,6 +218,7 @@ export class SkillCatalogComponent implements OnInit {
     // this.db.object('/talents/' + this.fbuser.id + '/' + key)
     //   .update({ name: mname, description: mdescription, created: mdatenow, modified: mdatenow, user: this.fbuser.id });
     // this.showedititem = false;
+
     console.log(key + ' edited');
   }
 
