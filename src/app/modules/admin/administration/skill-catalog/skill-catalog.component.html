@@ -249,7 +249,7 @@
                     <span *ngFor="let area of (areas | async)" >
                     <a (click)="onAreaSelect(area.key)">
                         <div class="flex items-center py-3 px-5 border-t-2 border-slate-100 hover:bg-slate-100">
-                            <button mat-mini-fab color="basic" matTooltip="edit" class="mr-5" (click)="onShowEditForm('9');">
+                            <button mat-mini-fab color="basic" matTooltip="edit" class="mr-5" (click)="onShowEditForm(area.key);">
                                 <mat-icon>edit</mat-icon>
                             </button> 
                             <div class="flex-1"> {{ area.payload.val().name }}</div>
@@ -274,7 +274,7 @@
                     <span *ngFor="let category of categories" >
                         <a (click)="onCategorySelect(category.key)">
                             <div class="flex items-center py-4 px-5 border-t-2 border-slate-100 hover:bg-slate-100">
-                                <button mat-mini-fab color="basic" matTooltip="edit" class="mr-5" (click)="onShowEditForm('9');">
+                                <button mat-mini-fab color="basic" matTooltip="edit" class="mr-5" (click)="onShowEditForm(category.key);">
                                     <mat-icon>edit</mat-icon>
                                 </button> 
                                 <div class="flex-1"> {{ category.payload.val().name }}</div>
@@ -299,7 +299,7 @@
                     <span *ngFor="let skill of skills" >
                         <a (click)="selectSkill(skill.key)">
                             <div class="flex items-center py-4 px-5 border-t-2 border-slate-100 hover:bg-slate-100">
-                                <button mat-mini-fab color="basic" matTooltip="edit" class="mr-5" (click)="onShowEditForm('9');">
+                                <button mat-mini-fab color="basic" matTooltip="edit" class="mr-5" (click)="onShowEditForm(skill.key);">
                                     <mat-icon>edit</mat-icon>
                                 </button> 
                                 <div class="flex-1"> {{ skill.payload.val().name }}</div>

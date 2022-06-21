@@ -27,6 +27,7 @@ export class SkillCatalogComponent implements OnInit {
 
   //Firebase Observables
   listRef: AngularFireList<any>;
+  item: Observable<any>;
 
   //Form Visibility Modifiers
   showadditem = false;
@@ -146,8 +147,11 @@ export class SkillCatalogComponent implements OnInit {
       type = this.tabTitle.toLowerCase() + 's'
     }
 
+
+    //Set Firebase Path
     this.listRef = this.db.list('/skillcatalog/' + type);
 
+    //Define and call Promise to add Item with hierachial attributes
     if (this.tabTitle.toLowerCase() == 'area') {
 
       //Cast model to variable for formReset
@@ -198,10 +202,7 @@ export class SkillCatalogComponent implements OnInit {
         .then(_ => this.showadditem = false)
         .catch(err => console.log(err, 'Error Submitting Item!'));
 
-
-
     }
-
 
   }
 
@@ -221,17 +222,8 @@ export class SkillCatalogComponent implements OnInit {
   }
 
   onDelete(key): void {
-    // this.db.object('/users/' + this.fbuser.id + '/talents/' + key).remove();
-    // this.db.object('/talents/' + this.fbuser.id + '/' + key).remove();
 
-    // //Decrement Count
-    // this.db.object('/counts/' + this.fbuser.id + '/talents').query.ref.transaction(likes => {
-    //   if (likes === null) {
-    //     return likes = 0;
-    //   } else {
-    //     return likes - 1;
-    //   }
-    // })
+    //this.db.object('/skillcatalog/' + this.fbuser.id + '/talents/' + key).remove();
 
     console.log(key + ' deleted');
 
@@ -249,7 +241,7 @@ export class SkillCatalogComponent implements OnInit {
   }
 
   onShowEditForm(key): void {
-    console.log('edit form shown');
+
     this.showadditem = false;
     this.showedititem = true;
 
