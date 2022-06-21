@@ -25,6 +25,9 @@ export class SkillCatalogComponent implements OnInit {
   model = new Skill();
   catmodel = new CatalogState();
 
+  //Firebase Observables
+  listRef: AngularFireList<any>;
+
   //Form Visibility Modifiers
   showadditem = false;
   showedititem = false;
@@ -132,7 +135,74 @@ export class SkillCatalogComponent implements OnInit {
   }
 
   onAdd(): void {
-    console.log('add clicked');
+
+    let type: string;
+
+    //Switch catalog path based on item type
+    if (this.tabTitle.toLowerCase() === 'category') {
+      type = 'categories'
+    }
+    else {
+      type = this.tabTitle.toLowerCase() + 's'
+    }
+
+    this.listRef = this.db.list('/skillcatalog/' + type);
+
+    if (this.tabTitle.toLowerCase() == 'area') {
+
+      //Cast model to variable for formReset
+      const mname: string = this.model.name;
+      const mdescription: string = this.model.description;
+      const mvalue: string = this.onConvertName(this.model.name);
+
+      //Define Promise
+      const promiseAddItem = this.listRef.push({ name: mname, value: mvalue, description: mdescription });
+
+      //Call Promise
+      promiseAddItem
+        .then(_ => this.showadditem = false)
+        .catch(err => console.log(err, 'Error Submitting Item!'));
+
+    }
+    else if (this.tabTitle.toLowerCase() == 'category') {
+
+      //Cast model to variable for formReset
+      const mname: string = this.model.name;
+      const mdescription: string = this.model.description;
+      const mvalue: string = this.onConvertName(this.model.name);
+      const marea: string = this.catmodel.currentArea;
+
+      //Define Promise
+      const promiseAddItem = this.listRef.push({ area: marea, name: mname, value: mvalue, description: mdescription });
+
+      //Call Promise
+      promiseAddItem
+        .then(_ => this.showadditem = false)
+        .catch(err => console.log(err, 'Error Submitting Item!'));
+
+
+    }
+    else { //this is a skill
+
+      //Cast model to variable for formReset
+      const mname: string = this.model.name;
+      const mdescription: string = this.model.description;
+      const mvalue: string = this.onConvertName(this.model.name);
+      const mcategory: string = this.catmodel.currentCategory;
+
+      //Define Promise
+      const promiseAddItem = this.listRef.push({ category: mcategory, name: mname, value: mvalue, description: mdescription });
+
+      //Call Promise
+      promiseAddItem
+        .then(_ => this.showadditem = false)
+        .catch(err => console.log(err, 'Error Submitting Item!'));
+
+
+
+    }
+
+
   }
 
   onEdit(key): void {
