@@ -156,7 +156,6 @@ export class AcademicDegreesComponent implements OnInit {
     const mminor: string = this.model.minor;
     const mcompleted: boolean = this.model.completed;
     const mawardedon: string = this.model.awardedon;
-
     const mdatenow = Math.floor(Date.now());
 
     //Define Promise 
@@ -183,16 +182,25 @@ export class AcademicDegreesComponent implements OnInit {
 
   onEdit(key): void {
 
-    // //Cast model to variable for formReset
-    // const mname: string = this.model.name;
-    // const mdescription: string = this.model.description;
-    // const mdatenow = Math.floor(Date.now());
+    //Cast model to variable for formReset
+    const mstate: string = this.model.state;
+    const minstitution: string = this.model.institution;
+    const mdegreelevel: string = this.model.degreelevel;
+    const mdegreetype: string = this.model.degreetype;
+    const mmajor: string = this.model.major;
+    const mminor: string = this.model.minor;
+    const mcompleted: boolean = this.model.completed;
+    const mawardedon: string = this.model.awardedon;
+    const mdatenow = Math.floor(Date.now());
 
-    // this.db.object('/users/' + this.fbuser.id + '/talents' + '/' + key)
-    //   .update({ name: mname, description: mdescription, modified: mdatenow });
-    // this.db.object('/talents/' + this.fbuser.id + '/' + key)
-    //   .update({ name: mname, description: mdescription, modified: mdatenow });
-    // this.showedititem = false;
+    this.db.object('/degrees/' + this.fbuser.id + '/' + key)
+      .update({ state: mstate, institution: minstitution, degreelevel: mdegreelevel, degreetype: mdegreetype, major: mmajor, minor: mminor, completed: mcompleted, awardedon: mawardedon, modified: mdatenow, user: this.fbuser.id });
+
+    this.db.object('/users/' + this.fbuser.id + '/degrees' + '/' + key)
+      .update({ state: mstate, institution: minstitution, degreelevel: mdegreelevel, degreetype: mdegreetype, major: mmajor, minor: mminor, completed: mcompleted, awardedon: mawardedon, modified: mdatenow, user: this.fbuser.id });
+
+    this.showedititem = false;
+
     console.log(key + ' edited');
   }
 
