@@ -143,8 +143,8 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 link: 'administration/admin-reports'
             },
             {
-                id: 'positionss',
-                title: 'Positionss',
+                id: 'positions',
+                title: 'Positions',
                 type: 'basic',
                 icon: 'heroicons_outline:users',
                 link: 'administration/positions'

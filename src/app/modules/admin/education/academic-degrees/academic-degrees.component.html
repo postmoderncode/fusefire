@@ -36,6 +36,7 @@
         </div>
 
     </div>
+    
 
 
     <!-- Main -->
@@ -470,7 +471,9 @@
             <!-- Card View -->
             <div class="flex flex-wrap items-center">
                 <div [hidden]="showadditem||showedititem">
-
+                    <div class="w-2/4 mb-5">
+                        If you have a degree or degrees from a higher education or academic institution, you can list it here. Most higher eduction institutions are allready pre-loaded, so just pick your college or institution and add your degree.
+                    </div>
                     <div class="flex flex-wrap items-center mt-6 sm:mt-0 sm:ml-4">
                 
                         <div *ngFor="let item of items | async">

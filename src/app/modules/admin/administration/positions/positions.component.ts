@@ -145,6 +145,18 @@ export class PositionsComponent implements OnInit {
     this.cdkScrollable.scrollTo({ top: 0 });
   }
 
+  //Compensation Checkbox
+  onFilledChecked($event): void {
+    if ($event.checked === true) { }
+    else { }
+  }
+
+  //Compensation Checkbox
+  onCompensationChecked($event): void {
+    if ($event.checked === true) { }
+    else { }
+  }
+
   ngOnInit(): void {
   }
 
@@ -160,8 +172,14 @@ export class Position {
     public created: string = '',
     public modified: string = '',
     public user: string = '',
-    public awardedby: string = '',
+    public reportsto: string = '',
     public awardedon: string = '',
+    public filled: boolean = false,
+    public heldby: string = '',
+    public compensation: boolean = false,
+    public complower: string = '',
+    public compupper: string = '',
+
 
   ) { }
 
