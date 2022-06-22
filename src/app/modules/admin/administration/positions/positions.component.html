@@ -77,7 +77,7 @@
                                 <!-- Spacer -->
                                 <div class="mt-5"></div>
 
-                                <mat-form-field class="fuse-mat-no-subscript w-full">
+                                <mat-form-field class="fuse-mat-no-subscript w-2/4">
                                     <mat-label>Reports To</mat-label>
                                     <mat-icon
                                         class="icon-size-5"
@@ -115,32 +115,6 @@
                                     </mat-form-field>
                                 </div>
 
-                             <!-- Spacer -->
-                             <div class="mt-5"></div>
-
-                             <mat-checkbox      
-                             [checked]= "model.filled"
-                             name="posfilled"
-                             id="posfilled"
-                             class="form-control"
-                             (change)="onFilledChecked($event)">Filled</mat-checkbox>
-
-                             <mat-form-field class="fuse-mat-no-subscript w-2/4 ml-10">
-                                <mat-label>Held By</mat-label>
-                                <mat-icon
-                                    class="icon-size-5"
-                                    [svgIcon]="'mat_outline:badge'"
-                                    matPrefix></mat-icon>
-                                    <input type="text"
-                                    id="heldby" 
-                                    class="form-control" 
-                                    #name="ngModel"
-                                    [(ngModel)]="model.heldby" 
-                                    name="heldby"
-                                    placeholder="optional"
-                                    matInput>
-                            </mat-form-field>
-
                             <!-- Spacer -->
                             <div class="mt-10"></div>
 
@@ -154,35 +128,64 @@
                             <!-- Spacer -->
                             <div class="mt-5"></div>
 
-                            <mat-form-field class="fuse-mat-no-subscript w-2/4">
-                                <mat-label>Lower</mat-label>
-                                <mat-icon
-                                    class="icon-size-5"
-                                    [svgIcon]="'feather:trending-down'"
-                                    matPrefix></mat-icon>
-                                    <input type="text"
-                                    id="complower" 
-                                    class="form-control" 
-                                    #name="ngModel"
-                                    [(ngModel)]="model.complower" 
-                                    name="complower"
-                                    placeholder="optional"
-                                    matInput>
-                            </mat-form-field>
+                            <div [hidden]="!showcompensation">
+                                <mat-form-field class="fuse-mat-no-subscript w-2/4">
+                                    <mat-label>Lower</mat-label>
+                                    <mat-icon
+                                        class="icon-size-5"
+                                        [svgIcon]="'feather:trending-down'"
+                                        matPrefix></mat-icon>
+                                        <input type="text"
+                                        id="complower" 
+                                        class="form-control" 
+                                        #name="ngModel"
+                                        [(ngModel)]="model.complower" 
+                                        name="complower"
+                                        placeholder="optional"
+                                        matInput>
+                                </mat-form-field>
 
-                            <mat-form-field class="fuse-mat-no-subscript w-2/4">
-                                <mat-label>Upper</mat-label>
+                                <mat-form-field class="fuse-mat-no-subscript w-2/4">
+                                    <mat-label>Upper</mat-label>
+                                    <mat-icon
+                                        class="icon-size-5"
+                                        [svgIcon]="'feather:trending-up'"
+                                        matPrefix></mat-icon>
+                                        <input type="text"
+                                        id="compupper" 
+                                        class="form-control" 
+                                        #name="ngModel"
+                                        [(ngModel)]="model.compupper" 
+                                        name="compupper"
+                                        placeholder="optional"
+                                        matInput>
+                                </mat-form-field>
+                            </div>
+
+                             <!-- Spacer -->
+                             <div class="mt-10"></div>
+
+                             <mat-checkbox      
+                             [checked]= "model.filled"
+                             name="posfilled"
+                             id="posfilled"
+                             class="form-control"
+                             (change)="onFilledChecked($event)">Filled</mat-checkbox>
+
+                             <mat-form-field class="fuse-mat-no-subscript w-2/4 ml-10">
+                                <mat-label>Held By</mat-label>
                                 <mat-icon
                                     class="icon-size-5"
-                                    [svgIcon]="'feather:trending-up'"
+                                    [svgIcon]="'mat_outline:assignment_ind'"
                                     matPrefix></mat-icon>
                                     <input type="text"
-                                    id="compupper" 
+                                    id="heldby" 
                                     class="form-control" 
                                     #name="ngModel"
-                                    [(ngModel)]="model.compupper" 
-                                    name="compupper"
+                                    [(ngModel)]="model.heldby" 
+                                    name="heldby"
                                     placeholder="optional"
+                                    [disabled]="!positionfilled"
                                     matInput>
                             </mat-form-field>
 

@@ -39,6 +39,8 @@ export class PositionsComponent implements OnInit {
   //Form Visibility Modifiers
   showadditem = false;
   showedititem = false;
+  positionfilled = false;
+  showcompensation = false;
 
   /**
    * Constructor
@@ -139,14 +141,14 @@ export class PositionsComponent implements OnInit {
 
   //Compensation Checkbox
   onFilledChecked($event): void {
-    if ($event.checked === true) { }
-    else { }
+    if ($event.checked === true) { this.positionfilled = true }
+    else { this.positionfilled = false }
   }
 
   //Compensation Checkbox
   onCompensationChecked($event): void {
-    if ($event.checked === true) { }
-    else { }
+    if ($event.checked === true) { this.showcompensation = true }
+    else { this.showcompensation = false }
   }
 
   openConfirmationDialog(key): void {
