@@ -16,11 +16,11 @@ export class AwardsAccoladesComponent implements OnInit {
   //Initialize Varables
   //-------------------
 
-  //Current User
-  fbuser = JSON.parse(localStorage.getItem('fbuser'));
-
   //Scroll element
   @ViewChild(CdkScrollable) cdkScrollable: CdkScrollable;
+
+  //Current User
+  fbuser = JSON.parse(localStorage.getItem('fbuser'));
 
   //Confirmation Dialog
   dialogconfigForm: FormGroup;
