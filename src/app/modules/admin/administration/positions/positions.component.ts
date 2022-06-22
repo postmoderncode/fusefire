@@ -28,6 +28,14 @@ export class PositionsComponent implements OnInit {
   //Empty Model
   model = new Position();
 
+  //Table Control
+  displayedColumns = ['name', 'description', 'created', 'delete', 'edit'];
+
+  //Firebase Observables
+  item: Observable<any>;
+  items: Observable<any[]>;
+  listRef: AngularFireList<any>;
+
   //Form Visibility Modifiers
   showadditem = false;
   showedititem = false;
@@ -44,34 +52,27 @@ export class PositionsComponent implements OnInit {
 
   onAdd(): void {
 
-    // this.listRef = this.db.list('/users/' + this.fbuser.id + '/training');
+    this.listRef = this.db.list('/positions');
 
-    // //Cast model to variable for formReset
-    // const mname: string = this.model.name;
-    // const mdescription: string = this.model.description;
-    // const mawardedby: string = this.model.awardedby;
-    // const mawardedon: string = this.model.awardedon;
-    // const mdatenow = Math.floor(Date.now());
+    //Cast model to variable for formReset
+    const mname: string = this.model.name;
+    const mreportsto: string = this.model.reportsto;
+    const mdescription: string = this.model.description;
+    const mfilled: boolean = this.model.filled;
+    const mheldby: string = this.model.heldby;
+    const mcompensation: boolean = this.model.compensation;
+    const mcomplower: string = this.model.complower;
+    const mcompupper: string = this.model.compupper;
+    const mdatenow = Math.floor(Date.now());
 
-    // //Define Promise
-    // const promiseAddItem = this.listRef
-    //   .push({ name: mname, description: mdescription, created: mdatenow, modified: mdatenow, user: this.fbuser.id, awardedby: mawardedby, awardedon: mawardedon });
+    //Define Promise
+    const promiseAddItem = this.listRef
+      .push({ name: mname, reportsto: mreportsto, description: mdescription, filled: mfilled, heldby: mheldby, compensation: mcompensation, complower: mcomplower, compupper: mcompupper, created: mdatenow, modified: mdatenow, user: this.fbuser.id });
 
-    // //Call Promise
-    // promiseAddItem
-    //   .then(_ => this.db.object('/training/' + this.fbuser.id + '/' + _.key)
-    //     .update({ name: mname, description: mdescription, created: mdatenow, modified: mdatenow, user: this.fbuser.id, awardedby: mawardedby, awardedon: mawardedon }))
-    //   .then(_ => this.showadditem = false)
-    //   .catch(err => console.log(err, 'Error Submitting Talent!'));
-
-    // //Increment Count
-    // this.db.object('/counts/' + this.fbuser.id + '/training').query.ref.transaction((likes) => {
-    //   if (likes === null) {
-    //     return likes = 1;
-    //   } else {
-    //     return likes + 1;
-    //   }
-    // });
+    //Call Promise
+    promiseAddItem
+      .then(_ => this.showadditem = false)
+      .catch(err => console.log(err, 'Error Submitting Position!'));
 
     this.cdkScrollable.scrollTo({ top: 0 });
 
@@ -96,17 +97,8 @@ export class PositionsComponent implements OnInit {
   }
 
   onDelete(key): void {
-    // this.db.object('/users/' + this.fbuser.id + '/training/' + key).remove();
-    // this.db.object('/training/' + this.fbuser.id + '/' + key).remove();
+    this.db.object('/positions/' + key).remove();
 
-    // //Decrement Count
-    // this.db.object('/counts/' + this.fbuser.id + '/training').query.ref.transaction((likes) => {
-    //   if (likes === null) {
-    //     return likes = 0;
-    //   } else {
-    //     return likes - 1;
-    //   }
-    // });
 
     console.log(key + ' deleted');
 
@@ -157,10 +149,50 @@ export class PositionsComponent implements OnInit {
     else { }
   }
 
+  openConfirmationDialog(key): void {
+    //Open the dialog and save the reference of it
+    const dialogRef = this._fuseConfirmationService.open(this.dialogconfigForm.value);
+
+    //Subscribe to afterClosed from the dialog reference
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result === 'confirmed') {
+        //Call Actual Delete
+        this.onDelete(key);
+      }
+    });
+  }
+
   ngOnInit(): void {
+
+    this.items = this.db.list('/positions').snapshotChanges();
+
+    //Formbuilder for Dialog Popup
+    this.dialogconfigForm = this._formBuilder.group({
+      title: 'Remove Item',
+      message: 'Are you sure you want to remove this item permanently? <span class="font-medium">This action cannot be undone!</span>',
+      icon: this._formBuilder.group({
+        show: true,
+        name: 'heroicons_outline:exclamation',
+        color: 'warn'
+      }),
+      actions: this._formBuilder.group({
+        confirm: this._formBuilder.group({
+          show: true,
+          label: 'Remove',
+          color: 'warn'
+        }),
+        cancel: this._formBuilder.group({
+          show: true,
+          label: 'Cancel'
+        })
+      }),
+      dismissible: false
+    });
+
   }
 
 }
+
 
 // Empty Training class
 export class Position {
