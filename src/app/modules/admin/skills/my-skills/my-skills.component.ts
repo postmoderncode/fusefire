@@ -9,6 +9,7 @@ import { Observable } from 'rxjs';
 @Component({
   selector: 'app-my-skills',
   templateUrl: './my-skills.component.html',
+  styleUrls: ['./my-skills.component.scss']
 })
 export class MySkillsComponent implements OnInit {
 
@@ -49,6 +50,7 @@ export class MySkillsComponent implements OnInit {
   searchresults: object;
   qresults1;
   qresults2;
+  qresults3;
 
   /**
    * Constructor
@@ -98,29 +100,45 @@ export class MySkillsComponent implements OnInit {
   //Function to search through skills for filtered querytext
   onSearch(queryText: string): void {
 
-    //Move to value and following filter once value field is added to skill for unique search
-    //.startAt(this.onConvertName(queryText))
 
-    this.qresults1 = this.db.list('/skillcatalog/skills/', ref => ref
-      .orderByChild('value')
-      .startAt(this.onConvertName(queryText))
-      .endAt(this.onConvertName(queryText) + '\uf8ff')).snapshotChanges();
+    //Only search if search term exists
+    if (queryText.length > 1) {
 
+      //Searh Skills by Unique Value
+      this.qresults1 = this.db.list('/skillcatalog/skills/', ref => ref
+        .orderByChild('value')
+        .startAt(this.onConvertName(queryText))
+        .endAt(this.onConvertName(queryText) + '\uf8ff')).snapshotChanges();
 
+      //Search User by Name
+      this.qresults2 = this.db.list('/users/', ref => ref
+        .orderByChild('name')
+        .startAt(queryText)
+        .endAt(queryText + '\uf8ff')).snapshotChanges();
 
-    this.qresults2 = this.db.list('/users/', ref => ref
-      .orderByChild('name')
-      .startAt(queryText)
-      .endAt(queryText + '\uf8ff')).snapshotChanges();
+      //Search User by Email
+      this.qresults3 = this.db.list('/users/', ref => ref
+        .orderByChild('email')
+        .startAt(queryText)
+        .endAt(queryText + '\uf8ff')).snapshotChanges();
 
-    this.qresults1.subscribe((searchskill) => {
-      this.qresults2.subscribe((searchuser) => {
+      //Combine search results
+      this.qresults1.subscribe((searchskill) => {
+        this.qresults2.subscribe((searchuser) => {
+          this.qresults3.subscribe((searchemail) => {
 
-        this.searchresults = searchskill.concat(searchuser);
+            let results
+
+            results = searchskill.concat(searchuser);
+            this.searchresults = results.concat(searchemail);
+
+          });
+
+        });
 
       });
 
-    });
+    }
 
   }
 
