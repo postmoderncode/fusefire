@@ -1,27 +1,140 @@
 <div class="absolute inset-0 flex flex-col min-w-0 overflow-y-auto" cdkScrollable>
 
     <!-- Header -->
-<div class="flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between p-6 pb-22 sm:pt-3 sm:pb-20 sm:px-10 bg-default dark:bg-transparent">
-<div class="flex-1 min-w-0">
+    <div class="flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between p-6 pb-22 sm:pt-3 sm:pb-20 sm:px-10 bg-sky-100 dark:bg-transparent">
+        <div class="flex-1 min-w-0">
+            <!-- Title -->
+            <div class="mt-2">
+                <h2 class="text-3xl md:text-3xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate">
+                    Positions
+                </h2>
+            </div>
+        </div>
+        <!-- Actions -->
+        <div class="flex shrink-0 items-center mt-3">
 
-    <!-- Title -->
-    <div class="mt-2">
-        <h2 class="text-3xl md:text-3xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate">
-            Positions
-        </h2>
+            <div [hidden]="!showadditem">
+                <button  
+                    (click)="onHideAddForm(); addItemForm.resetForm(); editItemForm.resetForm();"
+                    class="ml-4"
+                    mat-stroked-button
+                    type="button"
+                    [color]="'primary'">
+                    Cancel
+                </button>
+            </div>
+            <button  
+                (click)="onShowAddForm(); addItemForm.resetForm(); editItemForm.resetForm();"
+                [disabled]="showadditem"
+                class="ml-4"
+                mat-flat-button
+                type="button"
+                [color]="'primary'">
+                Add Position
+            </button>
+        </div>
     </div>
+
+
+
+    <!-- Main -->
+    <div class="flex-auto -mt-16 p-6 sm:p-10 shadow bg-card">
+
+    <!-- CONTENT GOES HERE -->
+    <div class="h-400 min-h-400 max-h-400">
+
+
+
+                <!-- Add Form -->
+                <div [hidden]="!showadditem">
+                    <fuse-card class="flex flex-col w-full p-8 filter-info mb-3 drop-shadow-lg bg-orange-50">
+                        <h2 class="text-2xl md:text-2xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate mb-5">
+                            Add Position
+                        </h2>
+
+                        <form #addItemForm="ngForm">
+    
+                            <!-- Spacer -->
+                            <div class="mt-5"></div>
+
+                            <!-- Actions -->
+                            <div class="flex shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
+
+                                <button  
+                                    (click)="onHideAddForm(); addItemForm.resetForm(); editItemForm.resetForm();"
+                                    class="ml-4"
+                                    mat-stroked-button
+                                    type="button"
+                                    [color]="'primary'">
+                                    Cancel
+                                </button>
+
+                                <button  
+                                    (click)="onAdd(); addItemForm.resetForm(); editItemForm.resetForm();"
+                                    [disabled]="!addItemForm.form.valid" 
+                                    class="ml-4"
+                                    mat-flat-button
+                                    type="button"
+                                    [color]="'primary'">
+                                    Submit Training
+                                </button>
+                
+                            </div>
+
+                        </form>
+                    
+                    </fuse-card>
+
+                </div>
+
+                <!-- Edit Form -->
+                <div [hidden]="!showedititem">
+                    <fuse-card class="flex flex-col w-full p-8 filter-info mb-3 drop-shadow-lg bg-orange-50">
+                        <h2 class="text-2xl md:text-2xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate mb-5">
+                            Edit Position
+                        </h2>
+
+                        <form #editItemForm="ngForm">
+
+                            <!-- Spacer -->
+                            <div class="mt-5"></div>
+
+                            <!-- Actions -->
+                            <div class="flex shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
+
+                                <button  
+                                    (click)="onHideEditForm(); editItemForm.resetForm(); addItemForm.resetForm()"
+                                    class="ml-4"
+                                    mat-stroked-button
+                                    type="button"
+                                    [color]="'primary'">
+                                    Cancel
+                                </button>
+
+                                <button  
+                                    (click)="onEdit(model.key); editItemForm.resetForm(); addItemForm.resetForm()"
+                                    [disabled]="!editItemForm.form.valid" 
+                                    class="ml-4"
+                                    mat-flat-button
+                                    type="button"
+                                    [color]="'primary'">
+                                    Accept Edits
+                                </button>
+                
+                            </div>
+
+                        </form>
+                        
+                    </fuse-card>
+
+                </div>
+
+
+
+
+
+    </div>
+
 </div>
-</div>
 
 
-<!-- Main -->
-<div class="flex-auto -mt-16 p-6 sm:p-10 shadow bg-card">
-
-<!-- CONTENT GOES HERE -->
-<div class="h-400 min-h-400 max-h-400"></div>
-
-
-
-</div>
-
-</div>
