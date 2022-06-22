@@ -84,9 +84,9 @@
                                         [svgIcon]="'feather:user-check'"
                                         matPrefix></mat-icon>
                                         <input type="email"
-                                        [class.is-invalid] = "emailRef.invalid && emailRef.touched"
+                                        [class.is-invalid] = "emailRefreportsto.invalid && emailRefreportsto.touched"
                                         pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" 
-                                        #emailRef="ngModel"
+                                        #emailRefreportsto="ngModel"
                                         id="reportsto" 
                                         class="form-control" 
                                         #name="ngModel"
@@ -96,9 +96,9 @@
                                         matInput>
                                 </mat-form-field>
 
-                                <div *ngIf="(emailRef.invalid && emailRef.touched) || emailRef.dirty">
-                                    <span style="color:red;" *ngIf="emailRef.errors?.required">Email address is required</span>
-                                    <span style="color:red;" *ngIf="emailRef.errors?.pattern">Email address is invalid</span>
+                                <div *ngIf="(emailRefreportsto.invalid && emailRefreportsto.touched) || emailRefreportsto.dirty">
+                                    <span style="color:red;" *ngIf="emailRefreportsto.errors?.required">Email address is required</span>
+                                    <span style="color:red;" *ngIf="emailRefreportsto.errors?.pattern">Email address is invalid</span>
                                 </div>
 
                                 <!-- Spacer -->
@@ -186,7 +186,10 @@
                                     class="icon-size-5"
                                     [svgIcon]="'mat_outline:assignment_ind'"
                                     matPrefix></mat-icon>
-                                    <input type="text"
+                                    <input type="email"
+                                    [class.is-invalid] = "emailRefheldby.invalid && emailRefheldby.touched"
+                                    pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" 
+                                    #emailRefheldby="ngModel"
                                     id="heldby" 
                                     class="form-control" 
                                     #name="ngModel"
@@ -196,6 +199,11 @@
                                     [disabled]="!positionfilled"
                                     matInput>
                             </mat-form-field>
+
+                            <div *ngIf="(emailRefheldby.invalid && emailRefheldby.touched) || emailRefheldby.dirty">
+                                <span style="color:red;" *ngIf="emailRefheldby.errors?.required">Email address is required</span>
+                                <span style="color:red;" *ngIf="emailRefheldby.errors?.pattern">Email address is invalid</span>
+                            </div>
 
                             <!-- Spacer -->
                             <div class="mt-10"></div>
@@ -238,6 +246,28 @@
                         </h2>
 
                         <form #editItemForm="ngForm">
+
+                            <h3 class="text-lg md:text-lg font-extrabold tracking-tight leading-7 sm:leading-10 truncate mb-5">
+                                Degrees
+                            </h3>
+                            
+                            <h3 class="text-lg md:text-lg font-extrabold tracking-tight leading-7 sm:leading-10 truncate mb-5">
+                                Certifications/Licenses
+                            </h3>
+
+                            <h3 class="text-lg md:text-lg font-extrabold tracking-tight leading-7 sm:leading-10 truncate mb-5">
+                                Training
+                            </h3>
+
+                            <h3 class="text-lg md:text-lg font-extrabold tracking-tight leading-7 sm:leading-10 truncate mb-5">
+                                Skills
+                            </h3>
+
+                            <h3 class="text-lg md:text-lg font-extrabold tracking-tight leading-7 sm:leading-10 truncate mb-5">
+                                Duties
+                            </h3>
+
+
 
                             <!-- Spacer -->
                             <div class="mt-5"></div>
