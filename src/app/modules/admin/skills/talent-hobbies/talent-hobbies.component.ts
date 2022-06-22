@@ -9,6 +9,7 @@ import { Observable } from 'rxjs';
 @Component({
   selector: 'app-talents',
   templateUrl: './talent-hobbies.component.html',
+  styleUrls: ['./talent-hobbies.component.scss'],
 })
 export class TalentHobbiesComponent implements OnInit {
 

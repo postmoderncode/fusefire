@@ -10,6 +10,7 @@ import { Observable } from 'rxjs';
 @Component({
   selector: 'app-certifications-licenses',
   templateUrl: './certifications-licenses.component.html',
+  styleUrls: ['./certifications-licenses.component.scss'],
 })
 export class CertificationsLicensesComponent implements OnInit {
 
