@@ -67,6 +67,11 @@
       ".write": "auth !== null"
         },
           
+    "positions": {
+      ".read": "auth !== null",
+      ".write": "auth !== null"
+        },
+          
           
       "skillcatalog": {
           ".read": "auth !== null",

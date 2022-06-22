@@ -32,7 +32,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 link: 'home/my-settings'
             }
         ]
-        },
+    },
     {
         id: 'skills',
         title: 'skills',
@@ -142,7 +142,14 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 icon: 'heroicons_outline:chart-pie',
                 link: 'administration/admin-reports'
             },
-                        {
+            {
+                id: 'positionss',
+                title: 'Positionss',
+                type: 'basic',
+                icon: 'heroicons_outline:users',
+                link: 'administration/positions'
+            },
+            {
                 id: 'global-settings',
                 title: 'Global Settings',
                 type: 'basic',
@@ -156,7 +163,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
 
 ];
 export const compactNavigation: FuseNavigationItem[] = [
-   {
+    {
         id: 'home',
         title: 'Home',
         subtitle: 'Home Area',
@@ -184,7 +191,7 @@ export const compactNavigation: FuseNavigationItem[] = [
                 link: 'home/my-settings'
             }
         ]
-        },
+    },
     {
         id: 'skills',
         title: 'skills',
@@ -294,7 +301,7 @@ export const compactNavigation: FuseNavigationItem[] = [
                 icon: 'heroicons_outline:chart-pie',
                 link: 'administration/administration-reports'
             },
-                        {
+            {
                 id: 'global-settings',
                 title: 'Global Settings',
                 type: 'basic',
@@ -335,7 +342,7 @@ export const futuristicNavigation: FuseNavigationItem[] = [
                 link: 'home/my-settings'
             }
         ]
-        },
+    },
     {
         id: 'skills',
         title: 'skills',
@@ -445,7 +452,7 @@ export const futuristicNavigation: FuseNavigationItem[] = [
                 icon: 'heroicons_outline:chart-pie',
                 link: 'administration/admin-reports'
             },
-                        {
+            {
                 id: 'global-settings',
                 title: 'Global Settings',
                 type: 'basic',
@@ -458,7 +465,7 @@ export const futuristicNavigation: FuseNavigationItem[] = [
     },
 ];
 export const horizontalNavigation: FuseNavigationItem[] = [
-   {
+    {
         id: 'home',
         title: 'Home',
         subtitle: 'Home Area',
@@ -486,7 +493,7 @@ export const horizontalNavigation: FuseNavigationItem[] = [
                 link: 'home/my-settings'
             }
         ]
-        },
+    },
     {
         id: 'skills',
         title: 'skills',
@@ -594,7 +601,7 @@ export const horizontalNavigation: FuseNavigationItem[] = [
                 icon: 'heroicons_outline:chart-pie',
                 link: 'administration/administration-reports'
             },
-                        {
+            {
                 id: 'global-settings',
                 title: 'Global Settings',
                 type: 'basic',

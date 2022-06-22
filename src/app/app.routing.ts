@@ -117,6 +117,7 @@ export const appRoutes: Route[] = [
                     { path: 'admin-reports', loadChildren: () => import('app/modules/admin/administration/admin-reports/admin-reports.module').then(m => m.AdminReportsModule) },
                     { path: 'global-settings', loadChildren: () => import('app/modules/admin/administration/global-settings/global-settings.module').then(m => m.GlobalSettingsModule) },
                     { path: 'skill-catalog', loadChildren: () => import('app/modules/admin/administration/skill-catalog/skill-catalog.module').then(m => m.SkillCatalogModule) },
+                    { path: 'positions', loadChildren: () => import('app/modules/admin/administration/positions/positions.module').then(m => m.PositionsModule) }
                 ]
             },
         ]
