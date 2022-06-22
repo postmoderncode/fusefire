@@ -78,12 +78,15 @@
                                 <div class="mt-5"></div>
 
                                 <mat-form-field class="fuse-mat-no-subscript w-2/4">
-                                    <mat-label>Reports To</mat-label>
+                                    <mat-label>Reports To (email address)</mat-label>
                                     <mat-icon
                                         class="icon-size-5"
                                         [svgIcon]="'feather:user-check'"
                                         matPrefix></mat-icon>
-                                        <input type="text"
+                                        <input type="email"
+                                        [class.is-invalid] = "emailRef.invalid && emailRef.touched"
+                                        pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" 
+                                        #emailRef="ngModel"
                                         id="reportsto" 
                                         class="form-control" 
                                         #name="ngModel"
@@ -92,6 +95,11 @@
                                         placeholder="optional"
                                         matInput>
                                 </mat-form-field>
+
+                                <div *ngIf="(emailRef.invalid && emailRef.touched) || emailRef.dirty">
+                                    <span style="color:red;" *ngIf="emailRef.errors?.required">Email address is required</span>
+                                    <span style="color:red;" *ngIf="emailRef.errors?.pattern">Email address is invalid</span>
+                                </div>
 
                                 <!-- Spacer -->
                                 <div class="mt-5"></div>
