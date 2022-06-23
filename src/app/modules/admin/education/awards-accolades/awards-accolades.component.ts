@@ -30,7 +30,7 @@ export class AwardsAccoladesComponent implements OnInit {
   model = new Award();
 
   //Table Control
-  displayedColumns = ['name', 'description', 'created', 'delete', 'edit'];
+  displayedColumns = ['name', 'created', 'delete', 'edit'];
 
   //Firebase Observables
   item: Observable<any>;

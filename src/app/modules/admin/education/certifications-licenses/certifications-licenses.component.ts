@@ -30,7 +30,7 @@ export class CertificationsLicensesComponent implements OnInit {
   model = new Certification();
 
   //Table Control
-  displayedColumns = ['name', 'description', 'created', 'delete', 'edit'];
+  displayedColumns = ['name', 'created', 'delete', 'edit'];
 
   //Firebase Observables
   item: Observable<any>;

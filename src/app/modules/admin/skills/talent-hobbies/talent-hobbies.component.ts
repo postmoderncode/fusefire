@@ -29,7 +29,7 @@ export class TalentHobbiesComponent implements OnInit {
   model = new Talent();
 
   //Table Control
-  displayedColumns = ['name', 'description', 'created', 'delete', 'edit'];
+  displayedColumns = ['name', 'created', 'delete', 'edit'];
 
   //Firebase Observables
   listRef: AngularFireList<any>;
