@@ -24,8 +24,7 @@ import { FuseCardModule } from '@fuse/components/card';
 import { FuseConfirmationModule } from '@fuse/services/confirmation';
 
 
-
-const reportcatalogRoutes: Route[] = [
+const positionsRoutes: Route[] = [
   {
     path: '',
     component: PositionsComponent
@@ -60,7 +59,7 @@ const reportcatalogRoutes: Route[] = [
     ReactiveFormsModule,
     FormsModule,
     SharedModule,
-    RouterModule.forChild(reportcatalogRoutes)
+    RouterModule.forChild(positionsRoutes)
   ]
 })
 export class PositionsModule { }

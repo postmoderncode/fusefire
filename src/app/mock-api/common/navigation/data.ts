@@ -302,6 +302,13 @@ export const compactNavigation: FuseNavigationItem[] = [
                 link: 'administration/administration-reports'
             },
             {
+                id: 'positions',
+                title: 'Positions',
+                type: 'basic',
+                icon: 'heroicons_outline:users',
+                link: 'administration/positions'
+            },
+            {
                 id: 'global-settings',
                 title: 'Global Settings',
                 type: 'basic',
@@ -453,6 +460,13 @@ export const futuristicNavigation: FuseNavigationItem[] = [
                 link: 'administration/admin-reports'
             },
             {
+                id: 'positions',
+                title: 'Positions',
+                type: 'basic',
+                icon: 'heroicons_outline:users',
+                link: 'administration/positions'
+            },
+            {
                 id: 'global-settings',
                 title: 'Global Settings',
                 type: 'basic',
@@ -600,6 +614,13 @@ export const horizontalNavigation: FuseNavigationItem[] = [
                 type: 'basic',
                 icon: 'heroicons_outline:chart-pie',
                 link: 'administration/administration-reports'
+            },
+            {
+                id: 'positions',
+                title: 'Positions',
+                type: 'basic',
+                icon: 'heroicons_outline:users',
+                link: 'administration/positions'
             },
             {
                 id: 'global-settings',

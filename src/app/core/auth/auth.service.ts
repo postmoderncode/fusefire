@@ -205,7 +205,7 @@ export class AuthService {
                     console.log('ATTN RESULTS ARE:');
                     console.log(result);
 
-                    const fbuser = new FirebaseUser('', '', '', false);
+                    const fbuser = new FirebaseUser();
                     fbuser.id = result.user.uid;
                     fbuser.name = result.user.displayName;
                     fbuser.email = result.user.email;
@@ -361,14 +361,14 @@ export class AuthService {
     }
 }
 
-// Empty Award class
+// Empty User class
 export class FirebaseUser {
 
     constructor(
-        public id: string,
-        public name: string,
-        public email: string,
-        public isadmin: boolean,
+        public id: string = '',
+        public name: string = '',
+        public email: string = '',
+        public isadmin: boolean = false,
 
     ) { }
 
