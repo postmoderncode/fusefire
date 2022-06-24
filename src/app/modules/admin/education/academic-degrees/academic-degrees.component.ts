@@ -130,8 +130,6 @@ export class AcademicDegreesComponent implements OnInit {
     this.degreetypesfilteredData = this.degreetypes;
     this.cdkScrollable.scrollTo({ top: 0 });
 
-
-
     //Define Observable
     this.item = this.db.object('/users/' + this.fbuser.id + '/degrees/' + key).valueChanges();
 

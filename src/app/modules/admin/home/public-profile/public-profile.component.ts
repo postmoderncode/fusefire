@@ -1,10 +1,5 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { AngularFireDatabase, AngularFireList } from '@angular/fire/compat/database';
-import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
-import { FuseConfirmationService } from '@fuse/services/confirmation';
-import { MatDatepickerInputEvent } from '@angular/material/datepicker';
-import { Observable, map } from 'rxjs';
-
+import { Component, OnInit } from '@angular/core';
+import { AngularFireDatabase } from '@angular/fire/compat/database';
 
 @Component({
   selector: 'app-public-profile',
@@ -20,10 +15,7 @@ export class PublicProfileComponent implements OnInit {
   fbuser = JSON.parse(localStorage.getItem('fbuser'));
 
   //Firebase Observables
-  item: Observable<any>;
-  items: Observable<any[]>;
-  listRef: AngularFireList<any>;
-
+  user;
 
   /**
    * Constructor
@@ -34,7 +26,14 @@ export class PublicProfileComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.item = this.db.object('/users/' + this.fbuser.id).valueChanges();
+    this.db.object('/users/' + this.fbuser.id)
+      .valueChanges().subscribe(
+        (results: any[]) => {
+          console.log(results);
+          this.user = results;
+        }
+
+      );
 
   }
 

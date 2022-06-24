@@ -247,17 +247,24 @@
                     
                     <!--Repeat for Each Area-->
                     <span *ngFor="let area of (areas | async)" >
-                    <a (click)="onAreaSelect(area.key)">
-                        <div class="flex items-center py-3 px-5 border-t-2 border-slate-100 hover:bg-slate-100">
-                            <button mat-mini-fab color="basic" matTooltip="edit" class="mr-5" (click)="onShowEditForm(area.key);">
-                                <mat-icon>edit</mat-icon>
-                            </button> 
-                            <div class="flex-1"> {{ area.payload.val().name }}</div>
-                            <div class="flex-none pt-1">
-                                <mat-icon svgIcon="mat_solid:chevron_right"></mat-icon>
-                            </div>
+
+                        <div class="flex">
+                            <div class="flex-none">
+                                <button mat-mini-fab color="basic" matTooltip="edit" class="mr-5" (click)="onShowEditForm(area.key);">
+                                    <mat-icon>edit</mat-icon>
+                                </button> 
+                            </div> 
+                            <a (click)="onAreaSelect(area.key)">
+                                <div class="flex items-center py-3 px-5 border-t-2 border-slate-100 hover:bg-slate-100 w-full">
+                           
+                                    <div class="flex-1 w-100"> {{ area.payload.val().name }}</div>
+                                        <div class="flex-none pt-1">
+                                            <mat-icon svgIcon="mat_solid:chevron_right"></mat-icon>
+                                        </div>  
+                                </div>
+                            </a>
                         </div>
-                    </a>
+                    
                     </span>
                     
                     <!--Bottom Division Line-->
