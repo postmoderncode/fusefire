@@ -8,6 +8,7 @@
         <h2 class="text-3xl md:text-3xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate">
             Skill Catalog
         </h2>
+        Catalog_State: {{this.catmodel.currentArea}} | {{this.catmodel.currentCategory}} | {{this.catmodel.currentSkill}}
     </div>
 </div>
 <!-- Actions -->
@@ -219,7 +220,6 @@
     <!-- SELECTOR WRAPPER -->
     <div class="container mx-auto sm:max-w-[500px] md:max-w-[600px] lg:max-w-[700px] xl:max-w-[800px] " [hidden]="showadditem||showedititem">
 
-        Catalog_State: {{this.catmodel.currentArea}} | {{this.catmodel.currentCategory}} | {{this.catmodel.currentSkill}}
 
         <!-- SELECTOR TITLE -->
         <div class="flex items-center h-15">
@@ -250,9 +250,12 @@
 
                         <div class="flex">
                             <div class="flex-none">
-                                <button mat-mini-fab color="basic" matTooltip="edit" class="mr-5" (click)="onShowEditForm(area.key);">
+                                <button mat-icon-button color="default" matTooltip="edit" class="mr-5" (click)="onShowEditForm(area.key);">
                                     <mat-icon>edit</mat-icon>
-                                </button> 
+                                  </button>
+                                  <button mat-icon-button color="default" matTooltip="edit" class="mr-5" (click)="onHideItem(area.key);">
+                                    <mat-icon [svgIcon]="'heroicons_outline:eye-off'"></mat-icon>
+                                  </button>
                             </div> 
                             <a (click)="onAreaSelect(area.key)">
                                 <div class="flex items-center py-3 px-5 border-t-2 border-slate-100 hover:bg-slate-100 w-full">
@@ -279,17 +282,27 @@
 
                     <!--Repeat for Each Category-->
                     <span *ngFor="let category of categories" >
-                        <a (click)="onCategorySelect(category.key)">
-                            <div class="flex items-center py-4 px-5 border-t-2 border-slate-100 hover:bg-slate-100">
-                                <button mat-mini-fab color="basic" matTooltip="edit" class="mr-5" (click)="onShowEditForm(category.key);">
+
+                        <div class="flex">
+                            <div class="flex-none">
+                                <button mat-icon-button color="default" matTooltip="edit" class="mr-5" (click)="onShowEditForm(category.key);">
                                     <mat-icon>edit</mat-icon>
-                                </button> 
-                                <div class="flex-1"> {{ category.payload.val().name }}</div>
-                                <div class="flex-none pt-1">
-                                    <mat-icon svgIcon="mat_solid:chevron_right"></mat-icon>
+                                  </button>
+                                  <button mat-icon-button color="default" matTooltip="edit" class="mr-5" (click)="onHideItem(category.key);">
+                                    <mat-icon [svgIcon]="'heroicons_outline:eye-off'"></mat-icon>
+                                  </button>
+                            </div> 
+                            <a (click)="onCategorySelect(category.key)">
+                                <div class="flex items-center py-3 px-5 border-t-2 border-slate-100 hover:bg-slate-100 w-full">
+                           
+                                    <div class="flex-1 w-100"> {{ category.payload.val().name }}</div>
+                                        <div class="flex-none pt-1">
+                                            <mat-icon svgIcon="mat_solid:chevron_right"></mat-icon>
+                                        </div>  
                                 </div>
-                            </div>
-                        </a>
+                            </a>
+                        </div>
+                    
                     </span>
                         
                     <!--Bottom Division Line-->
@@ -304,17 +317,27 @@
 
                     <!--Repeat for Each Skill-->
                     <span *ngFor="let skill of skills" >
-                        <a (click)="selectSkill(skill.key)">
-                            <div class="flex items-center py-4 px-5 border-t-2 border-slate-100 hover:bg-slate-100">
-                                <button mat-mini-fab color="basic" matTooltip="edit" class="mr-5" (click)="onShowEditForm(skill.key);">
+
+                        <div class="flex">
+                            <div class="flex-none">
+                                <button mat-icon-button color="default" matTooltip="edit" class="mr-5" (click)="onShowEditForm(skill.key);">
                                     <mat-icon>edit</mat-icon>
-                                </button> 
-                                <div class="flex-1"> {{ skill.payload.val().name }}</div>
-                                <div class="flex-none pt-1">
-                                    <mat-icon svgIcon="mat_solid:chevron_right"></mat-icon>
+                                  </button>
+                                  <button mat-icon-button color="default" matTooltip="edit" class="mr-5" (click)="onHideItem(skill.key);">
+                                    <mat-icon [svgIcon]="'heroicons_outline:eye-off'"></mat-icon>
+                                  </button>
+                            </div> 
+                            <a (click)="selectSkill(skill.key)">
+                                <div class="flex items-center py-3 px-5 border-t-2 border-slate-100 hover:bg-slate-100 w-full">
+                           
+                                    <div class="flex-1 w-100"> {{ skill.payload.val().name }}</div>
+                                        <div class="flex-none pt-1">
+                                            <mat-icon svgIcon="mat_solid:chevron_right"></mat-icon>
+                                        </div>  
                                 </div>
-                            </div>
-                        </a>
+                            </a>
+                        </div>
+                    
                     </span>
 
                     <!--Bottom Division Line-->

@@ -209,7 +209,7 @@ export class SkillCatalogComponent implements OnInit {
 
   }
 
-  onEdit(key): void {
+  onEdit(key: string): void {
 
     // //Cast model to variable for formReset
     // const mname: string = this.model.name;
@@ -226,7 +226,7 @@ export class SkillCatalogComponent implements OnInit {
     console.log(key + ' edited');
   }
 
-  onDelete(key): void {
+  onDelete(key: string): void {
 
     //this.db.object('/skillcatalog/' + this.fbuser.id + '/talents/' + key).remove();
 
@@ -261,6 +261,12 @@ export class SkillCatalogComponent implements OnInit {
     // });
 
     console.log(key + 'has been selected to edit');
+  }
+
+  onHideItem(key: string): void {
+
+    console.log('This ' + this.tabTitle + ' is hidden: ' + key)
+
   }
 
   onHideEditForm(): void {
