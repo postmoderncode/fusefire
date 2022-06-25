@@ -71,50 +71,25 @@
     <div [hidden]="!showadditem">
         <fuse-card class="flex flex-col w-full p-8 filter-info mb-3 drop-shadow-lg bg-orange-50">
             <h2 class="text-2xl md:text-2xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate mb-5">
-                Add {{tabTitle}}
+                Add {{tabTitle}} : {{model?.name}}
             </h2>
             <form #addItemForm="ngForm">
                 <div class="form-group">
-                    <mat-form-field class="fuse-mat-no-subscript w-full">
-                        <mat-label>{{tabTitle}} Name</mat-label>
-                        <mat-icon
-                            class="icon-size-5"
-                            [svgIcon]="'heroicons_outline:clipboard-list'"
-                            matPrefix></mat-icon>
-                            <input type="text"
-                            id="name" 
-                            class="form-control" 
-                            #name="ngModel"
-                            [(ngModel)]="model.name" 
-                            name="name"
-                            required
-                            matInput>
-                    </mat-form-field>
 
-                    <div [hidden]="name.valid || name.pristine" class="alert alert-danger">
-                        <span style="color:red;">Name is required</span>
+                    <div class="mb-10">
+                        <mat-label class="mr-5 text-lg"><strong>Skill Rating:</strong> {{model.rating}}</mat-label>
                     </div>
-                    </div>
-
-                    <!-- Spacer -->
-                    <div class="mt-5"></div>
-                    <div class="form-group">
-                        <mat-form-field class="fuse-mat-no-subscript w-full">
-                        <mat-label>Description</mat-label>
-                        <mat-icon
-                            class="icon-size-5"
-                            [svgIcon]="'heroicons_outline:annotation'"
-                            matPrefix></mat-icon>
-                            <textarea type="text"
-                            id="description" 
-                            class="form-control" 
-                            #name="ngModel"
-                            [(ngModel)]="model.description" 
-                            name="description"
-                            matInput>
-                            </textarea>
-                    </mat-form-field>
-                    </div>
+        
+                    <mat-slider
+                     thumbLabel
+                     id ="rating"
+                     name="rating"
+                     [(ngModel)]="model.rating"
+                     #name="ngModel"
+                      min="0" max="100" step="5" value="50" style="min-width:300px;"></mat-slider>
+        
+        
+                </div>
     
                     <!-- Spacer -->
                     <div class="mt-5"></div>
@@ -138,12 +113,12 @@
                             mat-flat-button
                             type="button"
                             [color]="'primary'">
-                            Submit {{tabTitle}}
+                            Add Skill
                         </button>
         
                     </div>
 
-                </form>
+            </form>
         </fuse-card>
 
     </div>
@@ -176,27 +151,6 @@
                 <div [hidden]="name.valid || name.pristine" class="alert alert-danger">
                     <span style="color:red;">Name is required</span>
                 </div>
-                </div>
-
-                <!-- Spacer -->
-                <div class="mt-5"></div>
-
-                <div class="form-group">
-                    <mat-form-field class="fuse-mat-no-subscript w-full">
-                    <mat-label>Description</mat-label>
-                    <mat-icon
-                        class="icon-size-5"
-                        [svgIcon]="'heroicons_outline:annotation'"
-                        matPrefix></mat-icon>
-                        <textarea type="text"
-                        id="description" 
-                        class="form-control" 
-                        #name="ngModel"
-                        [(ngModel)]="model.description" 
-                        name="description"
-                        matInput>
-                        </textarea>
-                </mat-form-field>
                 </div>
 
                 <!-- Spacer -->
@@ -315,11 +269,11 @@
 
                     <!--Repeat for Each Skill-->
                     <span *ngFor="let skill of skills" >
-                        <a (click)="selectSkill(skill.key)">
+                        <a (click)="selectSkill(skill.key, skill.payload.val().name)">
                             <div class="flex items-center py-4 px-5 border-t-2 border-slate-100 hover:bg-slate-100">
                                 <div class="flex-1"> {{ skill.payload.val().name }}</div>
                                 <div class="flex-none pt-1">
-                                    <mat-icon svgIcon="mat_solid:add_circle_outline"></mat-icon>
+                                    <mat-icon svgIcon="heroicons_solid:plus"></mat-icon>
                                 </div>
                             </div>
                         </a>

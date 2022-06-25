@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { CdkScrollable } from '@angular/cdk/scrolling';
-import { AngularFireDatabase } from '@angular/fire/compat/database';
+import { AngularFireDatabase, AngularFireList } from '@angular/fire/compat/database';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { Observable } from 'rxjs';
@@ -26,8 +26,11 @@ export class MySkillsComponent implements OnInit {
   dialogconfigForm: FormGroup;
 
   //Empty Model
-  model = new Skill();
+  model = new UserSkill();
   catmodel = new CatalogState();
+
+  //Firebase Observables
+  listRef: AngularFireList<any>;
 
   //Form Visibility Modifiers
   showadditem = false;
@@ -183,14 +186,50 @@ export class MySkillsComponent implements OnInit {
     this.catmodel.currentCategory = categoryId;
   }
 
-  //Function to call when a category is selected
-  selectSkill(skillId): void {
+  //Function to call when a skill is selected
+  selectSkill(skillId, skillName): void {
     this.catmodel.currentSkill = skillId;
+    console.log(skillId + ' ' + skillName);
+    this.model.key = skillId;
+    this.model.name = skillName;
+    this.showedititem = false;
+    this.showadditem = true;
+
   }
 
   onAdd(): void {
-    this.cdkScrollable.scrollTo({ top: 0 });
+
+
+    this.listRef = this.db.list('/users/' + this.fbuser.id + '/skills');
+
+    //Cast model to variable for formReset
+    const mkey: string = this.model.key;
+    const mname: string = this.model.name;
+    const mrating: number = this.model.rating;
+    const mdatenow = Math.floor(Date.now());
+
+    //Define Promise
+    const promiseAddItem = this.listRef.push({ key: mkey, name: mname, rating: mrating, created: mdatenow, modified: mdatenow, user: this.fbuser.id });
+
+    //Call Promise
+    promiseAddItem
+      .then(_ => this.db.object('/skills/' + this.fbuser.id + '/' + _.key)
+        .update({ key: mkey, name: mname, rating: mrating, created: mdatenow, modified: mdatenow, user: this.fbuser.id }))
+      .then(_ => this.showadditem = false)
+      .catch(err => console.log(err, 'Error Submitting Talent!'));
+
+    //Increment Count
+    this.db.object('/counts/' + this.fbuser.id + '/skills').query.ref.transaction((likes) => {
+      if (likes === null) {
+        return likes = 1;
+      } else {
+        return likes + 1;
+      }
+    });
+
     console.log('add clicked');
+
+    this.cdkScrollable.scrollTo({ top: 0 });
   }
 
   onEdit(key): void {
@@ -205,22 +244,22 @@ export class MySkillsComponent implements OnInit {
     // this.db.object('/talents/' + this.fbuser.id + '/' + key)
     //   .update({ name: mname, description: mdescription, created: mdatenow, modified: mdatenow, user: this.fbuser.id });
     // this.showedititem = false;
-    this.cdkScrollable.scrollTo({ top: 0 });
     console.log(key + ' edited');
+    this.cdkScrollable.scrollTo({ top: 0 });
   }
 
   onDelete(key): void {
-    // this.db.object('/users/' + this.fbuser.id + '/talents/' + key).remove();
-    // this.db.object('/talents/' + this.fbuser.id + '/' + key).remove();
+    this.db.object('/users/' + this.fbuser.id + '/skills/' + key).remove();
+    this.db.object('/skills/' + this.fbuser.id + '/' + key).remove();
 
-    // //Decrement Count
-    // this.db.object('/counts/' + this.fbuser.id + '/talents').query.ref.transaction(likes => {
-    //   if (likes === null) {
-    //     return likes = 0;
-    //   } else {
-    //     return likes - 1;
-    //   }
-    // })
+    //Decrement Count
+    this.db.object('/counts/' + this.fbuser.id + '/skills').query.ref.transaction(likes => {
+      if (likes === null) {
+        return likes = 0;
+      } else {
+        return likes - 1;
+      }
+    })
 
     console.log(key + ' deleted');
 
@@ -257,7 +296,7 @@ export class MySkillsComponent implements OnInit {
 
   onHideEditForm(): void {
     this.showedititem = false;
-    this.model = new Skill();
+    this.model = new UserSkill();
     this.cdkScrollable.scrollTo({ top: 0 });
   }
 
@@ -306,13 +345,14 @@ export class MySkillsComponent implements OnInit {
 
 }
 
-// Empty Skill class
-export class Skill {
+// Empty UserSkill class
+export class UserSkill {
 
   constructor(
     public key: string = '',
     public name: string = '',
-    public description: string = '',
+    public rating: number = 0,
+    public priority: number = 0,
     public created: string = '',
     public modified: string = '',
     public user: string = '',

@@ -132,8 +132,9 @@ export class SkillCatalogComponent implements OnInit {
     this.catmodel.currentCategory = categoryId;
   }
 
-  //Function to call when a category is selected
+  //Function to call when a skill is selected
   selectSkill(skillId): void {
+
     this.catmodel.currentSkill = skillId;
   }
 
