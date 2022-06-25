@@ -37,64 +37,78 @@
         <div class="h-400 min-h-400 max-h-400">
 
 
-           {{user?.name}}
-
-           {{user?.email}}
+            {{user?.name}}
+            <br />
+            {{user?.email}}
+            <br />
 
            <!-- Awards -->
+           <fuse-card class="flex flex-col w-full p-8 filter-info mb-3 drop-shadow-lg bg-orange-50">
             <div *ngFor="let award of (user?.awards | keyvalue)">
-                {{user?.awards[award.key]?.name}}
-                {{user?.awards[award.key]?.description}}
-                {{user?.awards[award.key]?.awardedby}}
-                {{user?.awards[award.key]?.awardedon | date: 'MM/dd/yyyy' }}
-                {{user?.awards[award.key]?.created | date: 'MM/dd/yyyy' }}
-                {{user?.awards[award.key]?.modified | date: 'MM/dd/yyyy' }}
+                {{user?.awards[award.key]?.name}} <br />
+                {{user?.awards[award.key]?.description}} <br />
+                {{user?.awards[award.key]?.awardedby}} <br />
+                {{user?.awards[award.key]?.awardedon | date: 'MM/dd/yyyy' }} <br />
+                {{user?.awards[award.key]?.created | date: 'MM/dd/yyyy' }} <br />
+                {{user?.awards[award.key]?.modified | date: 'MM/dd/yyyy' }} <br />
+                <hr />
             </div>
+           </fuse-card>
 
            <!-- Talents -->
+           <fuse-card class="flex flex-col w-full p-8 filter-info mb-3 drop-shadow-lg bg-orange-50">
             <div *ngFor="let talent of (user?.talents | keyvalue)">
-                {{user?.talents[talent.key]?.name}}
-                {{user?.talents[talent.key]?.description}}
-                {{user?.talents[talent.key]?.created | date: 'MM/dd/yyyy' }}
-                {{user?.talents[talent.key]?.modified | date: 'MM/dd/yyyy' }}
+                {{user?.talents[talent.key]?.name}} <br />
+                {{user?.talents[talent.key]?.description}} <br />
+                {{user?.talents[talent.key]?.created | date: 'MM/dd/yyyy' }} <br />
+                {{user?.talents[talent.key]?.modified | date: 'MM/dd/yyyy' }} <br />
+                <hr />
             </div>
+           </fuse-card>
 
            <!-- Training -->
+           <fuse-card class="flex flex-col w-full p-8 filter-info mb-3 drop-shadow-lg bg-orange-50">
             <div *ngFor="let training of (user?.training| keyvalue)">
-                {{user?.training[training.key]?.name}}
-                {{user?.training[training.key]?.description}}
-                {{user?.training[training.key]?.awardedby}}
-                {{user?.training[training.key]?.awardedon | date: 'MM/dd/yyyy' }}
-                {{user?.training[training.key]?.created | date: 'MM/dd/yyyy' }}
-                {{user?.training[training.key]?.modified | date: 'MM/dd/yyyy' }}
+                {{user?.training[training.key]?.name}} <br />
+                {{user?.training[training.key]?.description}} <br />
+                {{user?.training[training.key]?.awardedby}} <br />
+                {{user?.training[training.key]?.awardedon | date: 'MM/dd/yyyy' }} <br />
+                {{user?.training[training.key]?.created | date: 'MM/dd/yyyy' }} <br />
+                {{user?.training[training.key]?.modified | date: 'MM/dd/yyyy' }} <br />
+                <hr />
             </div>
-
+            </fuse-card>
 
            <!-- Certifications -->
+           <fuse-card class="flex flex-col w-full p-8 filter-info mb-3 drop-shadow-lg bg-orange-50">
             <div *ngFor="let certification of (user?.certifications | keyvalue)">
-                {{user?.certifications[certification.key]?.name}}
-                {{user?.certifications[certification.key]?.description}}
-                {{user?.certifications[certification.key]?.awardedby}}
-                {{user?.certifications[certification.key]?.awardedon | date: 'MM/dd/yyyy' }}
-                {{user?.certifications[certification.key]?.expireson | date: 'MM/dd/yyyy' }}
-                {{user?.certifications[certification.key]?.created | date: 'MM/dd/yyyy' }}
-                {{user?.certifications[certification.key]?.modifed | date: 'MM/dd/yyyy' }}
+                {{user?.certifications[certification.key]?.name}} <br />
+                {{user?.certifications[certification.key]?.description}} <br />
+                {{user?.certifications[certification.key]?.awardedby}} <br />
+                {{user?.certifications[certification.key]?.awardedon | date: 'MM/dd/yyyy' }} <br />
+                {{user?.certifications[certification.key]?.expireson | date: 'MM/dd/yyyy' }} <br />
+                {{user?.certifications[certification.key]?.created | date: 'MM/dd/yyyy' }} <br />
+                {{user?.certifications[certification.key]?.modifed | date: 'MM/dd/yyyy' }} <br />
+                <hr />
             </div>
+            </fuse-card>
 
            <!-- Degrees -->
+           <fuse-card class="flex flex-col w-full p-8 filter-info mb-3 drop-shadow-lg bg-orange-50">
             <div *ngFor="let degree of (user?.degrees | keyvalue)">
-                {{user?.degrees[degree.key]?.state}}
-                {{user?.degrees[degree.key]?.institution}}
-                {{user?.degrees[degree.key]?.degreelevel}}
-                {{user?.degrees[degree.key]?.degreetype}}
-                {{user?.degrees[degree.key]?.major}}
+                {{user?.degrees[degree.key]?.state}} <br />
+                {{user?.degrees[degree.key]?.institution}} <br />
+                {{user?.degrees[degree.key]?.degreelevel}} <br />
+                {{user?.degrees[degree.key]?.degreetype}} <br />
+                {{user?.degrees[degree.key]?.major}} <br />
                 {{user?.degrees[degree.key]?.minor}}            
-                {{user?.degrees[degree.key]?.completed}}
-                {{user?.degrees[degree.key]?.awardedon | date: 'MM/dd/yyyy' }}
-                {{user?.degrees[degree.key]?.created | date: 'MM/dd/yyyy' }}
-                {{user?.degrees[degree.key]?.modifed | date: 'MM/dd/yyyy' }}
-
+                {{user?.degrees[degree.key]?.completed}} <br />
+                {{user?.degrees[degree.key]?.awardedon | date: 'MM/dd/yyyy' }} <br />
+                {{user?.degrees[degree.key]?.created | date: 'MM/dd/yyyy' }} <br />
+                {{user?.degrees[degree.key]?.modifed | date: 'MM/dd/yyyy' }} <br />
+                <hr />
             </div>
+           </fuse-card>
 
         </div>
         

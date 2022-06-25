@@ -1,18 +1,23 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { AngularFireDatabase, AngularFireList } from '@angular/fire/compat/database';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { FuseConfirmationService } from '@fuse/services/confirmation';
-import { Observable } from 'rxjs';
+import { Component, OnInit } from '@angular/core';
+import { AngularFireDatabase } from '@angular/fire/compat/database';
 
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  encapsulation: ViewEncapsulation.None
+  styleUrls: ['./dashboard.component.scss']
+
 })
 export class DashboardComponent implements OnInit {
 
+  //Initialize Varables
+  //-------------------
+
+  //Current User
   fbuser = JSON.parse(localStorage.getItem('fbuser'));
+
+  //Firebase Observables
+  counts;
 
 
   /**
@@ -25,8 +30,16 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
 
+    this.db.object('/counts/' + this.fbuser.id)
+      .valueChanges().subscribe(
+        (results: any[]) => {
+          console.log(results);
+          this.counts = results;
+        }
+
+      );
+
   }
 
 }
-
 
