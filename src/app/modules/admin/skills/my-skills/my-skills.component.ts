@@ -252,6 +252,11 @@ export class MySkillsComponent implements OnInit {
     this.db.object('/users/' + this.fbuser.id + '/skills/' + key).remove();
     this.db.object('/skills/' + this.fbuser.id + '/' + key).remove();
 
+    this.showedititem = false;
+    this.showadditem = false;
+    this.showsearch = false;
+    this.showcatalog = false;
+
     //Decrement Count
     this.db.object('/counts/' + this.fbuser.id + '/skills').query.ref.transaction((likes) => {
       if (likes === null) {

@@ -302,7 +302,7 @@
             <button mat-icon-button color="default" matTooltip="edit" class="mr-5" (click)="onShowEditForm(skill.key);">
                 <mat-icon>edit</mat-icon>
             </button>
-          {{skill.payload.val().name}} : {{skill.payload.val().rating}}</li> 
+          {{skill?.payload.val().name}} : {{skill?.payload.val().rating}}</li> 
         </div>
         </ul>
 

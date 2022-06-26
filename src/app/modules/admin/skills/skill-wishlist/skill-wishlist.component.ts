@@ -253,6 +253,11 @@ export class SkillWishlistComponent implements OnInit {
     this.db.object('/users/' + this.fbuser.id + '/wishlists/' + key).remove();
     this.db.object('/wishlists/' + this.fbuser.id + '/' + key).remove();
 
+    this.showedititem = false;
+    this.showadditem = false;
+    this.showsearch = false;
+    this.showcatalog = false;
+
     //Decrement Count
     this.db.object('/counts/' + this.fbuser.id + '/wishlists').query.ref.transaction((likes) => {
       if (likes === null) {

@@ -329,12 +329,12 @@
         </h2>
 
         <ul>
-        <div *ngFor="let skill of (items | async)">
+        <div *ngFor="let wishlist of (items | async)">
            <li>                                
-            <button mat-icon-button color="default" matTooltip="edit" class="mr-5" (click)="onShowEditForm(skill.key);">
+            <button mat-icon-button color="default" matTooltip="edit" class="mr-5" (click)="onShowEditForm(wishlist.key);">
                 <mat-icon>edit</mat-icon>
             </button>
-          {{skill.payload.val().name}} : {{skill.payload.val().rating}}</li> 
+          {{wishlist?.payload.val().name}} : {{wishlist?.payload.val().rating}}</li> 
         </div>
         </ul>
 
