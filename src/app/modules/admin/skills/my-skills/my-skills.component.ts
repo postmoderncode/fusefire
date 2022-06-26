@@ -221,7 +221,7 @@ export class MySkillsComponent implements OnInit {
       .then(_ => this.db.object('/skills/' + this.fbuser.id + '/' + _.key)
         .update({ key: mkey, name: mname, rating: mrating, created: mdatenow, modified: mdatenow, user: this.fbuser.id }))
       .then(_ => this.showadditem = false)
-      .catch(err => console.log(err, 'Error Submitting Talent!'));
+      .catch(err => console.log(err, 'Error Submitting Skill!'));
 
     //Increment Count
     this.db.object('/counts/' + this.fbuser.id + '/skills').query.ref.transaction((likes) => {

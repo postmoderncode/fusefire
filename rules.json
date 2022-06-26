@@ -89,6 +89,11 @@
           }
 
       },
+
+      "skills": {
+        ".read": "auth !== null",
+        ".write": "auth !== null"
+          },
         
       "talents": {
           ".read": "auth !== null",
@@ -104,7 +109,12 @@
             ".read": "auth !== null",
             ".write": "auth !== null" 
               }  
-        }
+        },
+    
+    "wishlists": {
+      ".read": "auth !== null",
+      ".write": "auth !== null"
+        },
 
   }
 }
