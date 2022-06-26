@@ -189,7 +189,6 @@ export class MySkillsComponent implements OnInit {
   //Function to call when a skill is selected
   selectSkill(skillId, skillName): void {
     this.catmodel.currentSkill = skillId;
-    console.log(skillId + ' ' + skillName);
     this.model.key = skillId;
     this.model.name = skillName;
     this.showedititem = false;
@@ -266,7 +265,7 @@ export class MySkillsComponent implements OnInit {
   }
 
   //Contextual Button based on tabTitle
-  onShowAddForm(type: string): void {
+  onShowAddForm(): void {
     this.showedititem = false;
     this.showadditem = true;
     this.cdkScrollable.scrollTo({ top: 0 });

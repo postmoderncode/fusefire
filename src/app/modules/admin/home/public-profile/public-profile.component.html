@@ -42,6 +42,18 @@
             {{user?.email}}
             <br />
 
+           <!-- Skills -->
+           <fuse-card class="flex flex-col w-full p-8 filter-info mb-3 drop-shadow-lg bg-orange-50">
+            <div *ngFor="let skill of (user?.skills | keyvalue)">
+                {{user?.skills[skill.key]?.name}} <br />
+                {{user?.skills[skill.key]?.rating}} <br />
+                {{user?.skills[skill.key]?.awardedby}} <br />
+                {{user?.skills[skill.key]?.created | date: 'MM/dd/yyyy' }} <br />
+                {{user?.skills[skill.key]?.modified | date: 'MM/dd/yyyy' }} <br />
+                <hr />
+            </div>
+           </fuse-card>
+
            <!-- Awards -->
            <fuse-card class="flex flex-col w-full p-8 filter-info mb-3 drop-shadow-lg bg-orange-50">
             <div *ngFor="let award of (user?.awards | keyvalue)">
