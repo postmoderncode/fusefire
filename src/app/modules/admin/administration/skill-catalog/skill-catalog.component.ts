@@ -26,7 +26,7 @@ export class SkillCatalogComponent implements OnInit {
   dialogconfigForm: FormGroup;
 
   //Empty Model
-  model = new Skill();
+  model = new CatItem();
   catmodel = new CatalogState();
 
   //Firebase Observables
@@ -206,11 +206,22 @@ export class SkillCatalogComponent implements OnInit {
 
     }
 
-    this.cdkScrollable.scrollTo({ top: 0 });
-
   }
 
   onEdit(key: string): void {
+
+    let type: string;
+
+    //Switch catalog path based on item type
+    if (this.tabTitle.toLowerCase() === 'category') {
+      type = 'categories';
+    }
+    else {
+      type = this.tabTitle.toLowerCase() + 's';
+    }
+
+    //Set Firebase Path
+    this.listRef = this.db.list('/skillcatalog/' + type);
 
     // //Cast model to variable for formReset
     // const mname: string = this.model.name;
@@ -223,7 +234,6 @@ export class SkillCatalogComponent implements OnInit {
     //   .update({ name: mname, description: mdescription, created: mdatenow, modified: mdatenow, user: this.fbuser.id });
     // this.showedititem = false;
 
-    this.cdkScrollable.scrollTo({ top: 0 });
     console.log(key + ' edited');
   }
 
@@ -239,29 +249,57 @@ export class SkillCatalogComponent implements OnInit {
   onShowAddForm(type: string): void {
     this.showedititem = false;
     this.showadditem = true;
-    this.cdkScrollable.scrollTo({ top: 0 });
+
   }
 
   onHideAddForm(): void {
     this.showadditem = false;
-    this.cdkScrollable.scrollTo({ top: 0 });
+
   }
 
-  onShowEditForm(key): void {
+  onShowEditForm(key: string): void {
 
     this.showadditem = false;
     this.showedititem = true;
-    this.cdkScrollable.scrollTo({ top: 0 });
 
-    // //Define Observable
-    // this.item = this.db.object('/users/' + this.fbuser.id + '/talents/' + key).valueChanges();
 
-    // //Subscribe to Observable
-    // this.item.subscribe((item) => {
-    //   this.model = new Talent(key, item.name, item.description, item.created, item.modified, item.user);
-    // });
+    //Define and call Promise to add Item with hierachial attributes
+    if (this.tabTitle.toLowerCase() === 'area') {
 
-    console.log(key + 'has been selected to edit');
+      //Define Observable
+      this.item = this.db.object('/skillcatalog/areas/' + key).valueChanges();
+
+      //Subscribe to Observable
+      this.item.subscribe((item) => {
+        this.model = new CatItem(key, item.name, item.value, item.description);
+      });
+
+    }
+    else if (this.tabTitle.toLowerCase() === 'category') {
+
+      //Define Observable
+      this.item = this.db.object('/skillcatalog/categories/' + key).valueChanges();
+
+      //Subscribe to Observable
+      this.item.subscribe((item) => {
+        this.model = new CatItem(key, item.name, item.value, item.description, item.area);
+      });
+
+    }
+    else { //this is a skill
+
+      //Define Observable
+      this.item = this.db.object('/skillcatalog/skills/' + key).valueChanges();
+
+      //Subscribe to Observable
+      this.item.subscribe((item) => {
+        this.model = new CatItem(key, item.name, item.value, item.description, item.category);
+      });
+
+    }
+
+    console.log(this.model);
+
   }
 
   onHideItem(key: string): void {
@@ -272,8 +310,8 @@ export class SkillCatalogComponent implements OnInit {
 
   onHideEditForm(): void {
     this.showedititem = false;
-    this.model = new Skill();
-    this.cdkScrollable.scrollTo({ top: 0 });
+    this.model = new CatItem();
+
   }
 
   openConfirmationDialog(key): void {
@@ -322,16 +360,17 @@ export class SkillCatalogComponent implements OnInit {
 
 }
 
-// Empty Skill class
-export class Skill {
+
+// Empty Catalog Item class
+export class CatItem {
 
   constructor(
     public key: string = '',
     public name: string = '',
+    public value: string = '',
     public description: string = '',
-    public created: string = '',
-    public modified: string = '',
-    public user: string = '',
+    public area?,
+    public category?,
 
   ) { }
 

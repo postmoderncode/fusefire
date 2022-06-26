@@ -127,7 +127,7 @@
     <div [hidden]="!showedititem">
         <fuse-card class="flex flex-col w-full p-8 filter-info mb-3 drop-shadow-lg bg-orange-50">
             <h2 class="text-2xl md:text-2xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate mb-5">
-                Edit Custom{{tabTitle}}
+                Edit Custom {{tabTitle}}
             </h2>
 
             <form #editItemForm="ngForm">
@@ -202,10 +202,6 @@
                 </div>
 
                 <div class="float-right text-right mt-3">
-                    created:{{model.created | date: 'MM/dd/yy h:mm a'}}
-                    <br />
-                    modified:{{model.modified | date: 'MM/dd/yy h:mm a'}}
-                    <br />
                     <button mat-mini-fab color="warn" matTooltip="delete" class="mt-2" (click)="openConfirmationDialog(model.key)">
                         <mat-icon>delete</mat-icon>
                     </button>
