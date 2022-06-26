@@ -31,10 +31,13 @@ export class MySkillsComponent implements OnInit {
 
   //Firebase Observables
   listRef: AngularFireList<any>;
+  items: Observable<any[]>;
 
   //Form Visibility Modifiers
   showadditem = false;
   showedititem = false;
+  showsearch = false;
+  showcatalog = false;
 
   //Object to Hold All Areas.
   areas: Observable<any>;
@@ -130,7 +133,7 @@ export class MySkillsComponent implements OnInit {
         this.qresults2.subscribe((searchuser) => {
           this.qresults3.subscribe((searchemail) => {
 
-            let results
+            let results;
 
             results = searchskill.concat(searchuser);
             this.searchresults = results.concat(searchemail);
@@ -193,6 +196,8 @@ export class MySkillsComponent implements OnInit {
     this.model.name = skillName;
     this.showedititem = false;
     this.showadditem = true;
+    this.showsearch = false;
+    this.showcatalog = false;
 
   }
 
@@ -252,7 +257,7 @@ export class MySkillsComponent implements OnInit {
     this.db.object('/skills/' + this.fbuser.id + '/' + key).remove();
 
     //Decrement Count
-    this.db.object('/counts/' + this.fbuser.id + '/skills').query.ref.transaction(likes => {
+    this.db.object('/counts/' + this.fbuser.id + '/skills').query.ref.transaction((likes) => {
       if (likes === null) {
         return likes = 0;
       } else {
@@ -268,6 +273,8 @@ export class MySkillsComponent implements OnInit {
   onShowAddForm(): void {
     this.showedititem = false;
     this.showadditem = true;
+    this.showsearch = false;
+    this.showcatalog = false;
     this.cdkScrollable.scrollTo({ top: 0 });
   }
 
@@ -276,9 +283,20 @@ export class MySkillsComponent implements OnInit {
     this.cdkScrollable.scrollTo({ top: 0 });
   }
 
+  onCancelAdd(): void {
+
+    this.showedititem = false;
+    this.showadditem = false;
+    this.showsearch = false;
+    this.showcatalog = false;
+
+  }
+
   onShowEditForm(key): void {
     console.log('edit form shown');
     this.showadditem = false;
+    this.showsearch = false;
+    this.showcatalog = false;
     this.showedititem = true;
     this.cdkScrollable.scrollTo({ top: 0 });
 
@@ -299,6 +317,14 @@ export class MySkillsComponent implements OnInit {
     this.cdkScrollable.scrollTo({ top: 0 });
   }
 
+  onShowCatalog(): void {
+    this.showadditem = false;
+    this.showedititem = false;
+    this.showsearch = false;
+    this.showcatalog = true;
+
+  }
+
   openConfirmationDialog(key): void {
     // Open the dialog and save the reference of it
     const dialogRef = this._fuseConfirmationService.open(this.dialogconfigForm.value);
@@ -315,6 +341,9 @@ export class MySkillsComponent implements OnInit {
 
     //Populate Areas - Firebase List Object
     this.areas = this.db.list('/skillcatalog/areas/').snapshotChanges();
+
+    //Populate User Skills - Firebase List Object
+    this.items = this.db.list('/users/' + this.fbuser.id + '/skills').snapshotChanges();
 
 
     //Formbuilder for Dialog Popup

@@ -2,56 +2,37 @@
 
     <!-- Header -->
 <div class="flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between p-6 pb-22 sm:pt-3 sm:pb-20 sm:px-10 bg-sky-100 dark:bg-transparent">
-<div class="flex-1 min-w-0">
-    <!-- Title -->
-    <div class="mt-2">
-        <h2 class="text-3xl md:text-3xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate">
-            Add Skills
-        </h2>
+    <div class="flex-1 min-w-0">
+        <!-- Title -->
+        <div class="mt-2">
+            <h2 class="text-3xl md:text-3xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate">
+                Add Skills
+            </h2>
+        </div>
     </div>
-</div>
-<!-- Actions -->
-<div class="flex shrink-0 items-center mt-3">
+    <!-- Actions -->
+    <div class="flex shrink-0 items-center mt-3">
 
-
-    <form #editItemForm="ngForm">
-        <input #searchbox type="text" placeholder="search">
+        <div [hidden]="!showadditem && !showcatalog && !showsearch">
+            <button  
+                (click)="onCancelAdd(); addItemForm.resetForm(); editItemForm.resetForm();"
+                class="ml-4"
+                mat-stroked-button
+                type="button"
+                [color]="'primary'">
+                Cancel
+            </button>
+        </div>
         <button  
-            (click)="onSearch(searchbox.value);"
+            (click)="onShowCatalog();"
+            [disabled]="showadditem || showcatalog || showsearch || showedititem"
             class="ml-4"
-            mat-stroked-button
+            mat-flat-button
             type="button"
             [color]="'primary'">
-        Search
-        </button>
-    </form>
-
-    
-
-    <div [hidden]="!showadditem">
-
-    <div [hidden]="!showadditem">
-        <button  
-            (click)="onHideAddForm(); addItemForm.resetForm(); editItemForm.resetForm();"
-            class="ml-4"
-            mat-stroked-button
-            type="button"
-            [color]="'primary'">
-            Cancel
+            Add Skill
         </button>
     </div>
-    <button  
-        (click)="onShowAddForm();"
-        [disabled]="showadditem"
-        class="ml-4"
-        mat-flat-button
-        type="button"
-        [color]="'primary'">
-        Add Skill
-    </button>
-</div>
-
-</div>
 
 </div>
 
@@ -60,12 +41,6 @@
 
 <!-- CONTENT GOES HERE -->
 <div class="h-400 min-h-400 max-h-400">
-
-    <div *ngFor="let searchresult of searchresults">
-        Search Results:{{searchresult.payload.val().name}}
-        <span *ngIf="searchresult.payload.val().email?.length > 5">Email Address: {{searchresult.payload.val().email}}</span>
-
-    </div>
 
     <!-- Add Form -->
     <div [hidden]="!showadditem">
@@ -196,8 +171,31 @@
 
     </div>
 
+    <!-- Search -->
+    <div [hidden]="!showcatalog">
+
+        <form #editItemForm="ngForm">
+            <input #searchbox type="text" placeholder="search">
+            <button  
+                (click)="onSearch(searchbox.value);"
+                class="ml-4"
+                mat-stroked-button
+                type="button"
+                [color]="'primary'">
+            Search
+            </button>
+        </form>
+
+        <div *ngFor="let searchresult of searchresults">
+            Search Results:{{searchresult.payload.val().name}}
+            <span *ngIf="searchresult.payload.val().email?.length > 5">Email Address: {{searchresult.payload.val().email}}</span>
+    
+        </div>
+
+    </div>
+
     <!-- SELECTOR WRAPPER -->
-    <div class="container mx-auto sm:max-w-[500px] md:max-w-[600px] lg:max-w-[700px] xl:max-w-[800px] " [hidden]="showadditem||showedititem">
+    <div class="container mx-auto sm:max-w-[500px] md:max-w-[600px] lg:max-w-[700px] xl:max-w-[800px] " [hidden]="!showcatalog">
 
         <!-- SELECTOR TITLE -->
         <div class="flex items-center h-15">
@@ -288,6 +286,22 @@
             </mat-tab-group>
         </div>
     
+    </div>
+
+    <!--Default View-->
+    <div [hidden]="showadditem||showedititem||showsearch||showcatalog">
+
+        <h2 class="text-2xl md:text-2xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate mb-5">
+            My Skills
+        </h2>
+
+        <ul>
+        <div *ngFor="let skill of (items | async)">
+           <li>{{skill.payload.val().name}}</li> 
+        </div>
+        </ul>
+
+
     </div>
     
 
