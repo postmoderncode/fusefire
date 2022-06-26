@@ -265,7 +265,7 @@ export class SkillWishlistComponent implements OnInit {
       } else {
         return likes - 1;
       }
-    })
+    });
 
   }
 
