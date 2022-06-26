@@ -186,7 +186,6 @@ export class SkillCatalogComponent implements OnInit {
         .then(_ => this.showadditem = false)
         .catch(err => console.log(err, 'Error Submitting Item!'));
 
-
     }
     else { //this is a skill
 
@@ -210,31 +209,33 @@ export class SkillCatalogComponent implements OnInit {
 
   onEdit(key: string): void {
 
-    let type: string;
+    //Cast model to variable for formReset
+    const mname: string = this.model.name;
+    const mdescription: string = this.model.description;
+    const mvalue: string = this.onConvertName(this.model.name);
 
-    //Switch catalog path based on item type
-    if (this.tabTitle.toLowerCase() === 'category') {
-      type = 'categories';
+    //Define and call Promise to add Item
+    if (this.tabTitle.toLowerCase() === 'area') {
+
+      this.db.object('/skillcatalog/areas/' + key)
+        .update({ name: mname, description: mdescription, value: mvalue });
+
     }
-    else {
-      type = this.tabTitle.toLowerCase() + 's';
+    else if (this.tabTitle.toLowerCase() === 'category') {
+
+      this.db.object('/skillcatalog/categories/' + key)
+        .update({ name: mname, description: mdescription, value: mvalue });
+
+    }
+    else { //this is a skill
+
+      this.db.object('/skillcatalog/skills/' + key)
+        .update({ name: mname, description: mdescription, value: mvalue });
+
     }
 
-    //Set Firebase Path
-    this.listRef = this.db.list('/skillcatalog/' + type);
+    this.showedititem = false;
 
-    // //Cast model to variable for formReset
-    // const mname: string = this.model.name;
-    // const mdescription: string = this.model.description;
-    // const mdatenow = Math.floor(Date.now());
-
-    // this.db.object('/users/' + this.fbuser.id + '/talents' + '/' + key)
-    //   .update({ name: mname, description: mdescription, created: mdatenow, modified: mdatenow, user: this.fbuser.id });
-    // this.db.object('/talents/' + this.fbuser.id + '/' + key)
-    //   .update({ name: mname, description: mdescription, created: mdatenow, modified: mdatenow, user: this.fbuser.id });
-    // this.showedititem = false;
-
-    console.log(key + ' edited');
   }
 
   onDelete(key: string): void {
@@ -263,7 +264,7 @@ export class SkillCatalogComponent implements OnInit {
     this.showedititem = true;
 
 
-    //Define and call Promise to add Item with hierachial attributes
+    //Define and call Promise to add Item
     if (this.tabTitle.toLowerCase() === 'area') {
 
       //Define Observable
@@ -297,8 +298,6 @@ export class SkillCatalogComponent implements OnInit {
       });
 
     }
-
-    console.log(this.model);
 
   }
 

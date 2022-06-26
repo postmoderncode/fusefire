@@ -241,7 +241,7 @@ export class SkillWishlistComponent implements OnInit {
     const mpriority: number = this.model.priority;
     const mdatenow = Math.floor(Date.now());
 
-    this.db.object('/users/' + this.fbuser.id + '/wishlists' + '/' + key)
+    this.db.object('/users/' + this.fbuser.id + '/wishlists/' + key)
       .update({ rating: mrating, priority: mpriority, modified: mdatenow });
     this.db.object('/wishlists/' + this.fbuser.id + '/' + key)
       .update({ rating: mrating, priority: mpriority, modified: mdatenow });

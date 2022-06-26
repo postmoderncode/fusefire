@@ -240,7 +240,7 @@ export class MySkillsComponent implements OnInit {
     const mrating: number = this.model.rating;
     const mdatenow = Math.floor(Date.now());
 
-    this.db.object('/users/' + this.fbuser.id + '/skills' + '/' + key)
+    this.db.object('/users/' + this.fbuser.id + '/skills/' + key)
       .update({ rating: mrating, modified: mdatenow });
     this.db.object('/skills/' + this.fbuser.id + '/' + key)
       .update({ rating: mrating, modified: mdatenow });

@@ -205,7 +205,7 @@ export class AcademicDegreesComponent implements OnInit {
     this.db.object('/degrees/' + this.fbuser.id + '/' + key)
       .update({ state: mstate, institution: minstitution, degreelevel: mdegreelevel, degreetype: mdegreetype, major: mmajor, minor: mminor, completed: mcompleted, awardedon: mawardedon, modified: mdatenow, user: this.fbuser.id });
 
-    this.db.object('/users/' + this.fbuser.id + '/degrees' + '/' + key)
+    this.db.object('/users/' + this.fbuser.id + '/degrees/' + key)
       .update({ state: mstate, institution: minstitution, degreelevel: mdegreelevel, degreetype: mdegreetype, major: mmajor, minor: mminor, completed: mcompleted, awardedon: mawardedon, modified: mdatenow, user: this.fbuser.id });
 
     this.showedititem = false;
