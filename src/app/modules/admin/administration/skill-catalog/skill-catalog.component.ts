@@ -304,7 +304,7 @@ export class SkillCatalogComponent implements OnInit {
 
   onHideItem(key: string): void {
 
-    console.log('This ' + this.tabTitle + ' is hidden: ' + key)
+    console.log('This ' + this.tabTitle + ' is hidden: ' + key);
 
   }
 

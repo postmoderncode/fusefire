@@ -264,7 +264,7 @@ export class MySkillsComponent implements OnInit {
       } else {
         return likes - 1;
       }
-    })
+    });
 
   }
 
