@@ -31,6 +31,7 @@ export class MySkillsComponent implements OnInit {
 
   //Firebase Observables
   listRef: AngularFireList<any>;
+  item: Observable<any>;
   items: Observable<any[]>;
 
   //Form Visibility Modifiers
@@ -231,25 +232,20 @@ export class MySkillsComponent implements OnInit {
       }
     });
 
-    console.log('add clicked');
-
-    this.cdkScrollable.scrollTo({ top: 0 });
   }
 
   onEdit(key): void {
 
-    // //Cast model to variable for formReset
-    // const mname: string = this.model.name;
-    // const mdescription: string = this.model.description;
-    // const mdatenow = Math.floor(Date.now());
+    //Cast model to variable for formReset
+    const mrating: number = this.model.rating;
+    const mdatenow = Math.floor(Date.now());
 
-    // this.db.object('/users/' + this.fbuser.id + '/talents' + '/' + key)
-    //   .update({ name: mname, description: mdescription, created: mdatenow, modified: mdatenow, user: this.fbuser.id });
-    // this.db.object('/talents/' + this.fbuser.id + '/' + key)
-    //   .update({ name: mname, description: mdescription, created: mdatenow, modified: mdatenow, user: this.fbuser.id });
-    // this.showedititem = false;
-    console.log(key + ' edited');
-    this.cdkScrollable.scrollTo({ top: 0 });
+    this.db.object('/users/' + this.fbuser.id + '/skills' + '/' + key)
+      .update({ rating: mrating, modified: mdatenow });
+    this.db.object('/skills/' + this.fbuser.id + '/' + key)
+      .update({ rating: mrating, modified: mdatenow });
+    this.showedititem = false;
+
   }
 
   onDelete(key): void {
@@ -265,8 +261,6 @@ export class MySkillsComponent implements OnInit {
       }
     })
 
-    console.log(key + ' deleted');
-
   }
 
   //Contextual Button based on tabTitle
@@ -280,7 +274,7 @@ export class MySkillsComponent implements OnInit {
 
   onHideAddForm(): void {
     this.showadditem = false;
-    this.cdkScrollable.scrollTo({ top: 0 });
+
   }
 
   onCancelAdd(): void {
@@ -298,15 +292,15 @@ export class MySkillsComponent implements OnInit {
     this.showsearch = false;
     this.showcatalog = false;
     this.showedititem = true;
-    this.cdkScrollable.scrollTo({ top: 0 });
 
-    // //Define Observable
-    // this.item = this.db.object('/users/' + this.fbuser.id + '/talents/' + key).valueChanges();
 
-    // //Subscribe to Observable
-    // this.item.subscribe((item) => {
-    //   this.model = new Talent(key, item.name, item.description, item.created, item.modified, item.user);
-    // });
+    //Define Observable
+    this.item = this.db.object('/users/' + this.fbuser.id + '/skills/' + key).valueChanges();
+
+    //Subscribe to Observable
+    this.item.subscribe((item) => {
+      this.model = new UserSkill(key, item.name, item.rating, item.created, item.modified, item.user);
+    });
 
     console.log(key + 'has been selected to edit');
   }
@@ -314,7 +308,7 @@ export class MySkillsComponent implements OnInit {
   onHideEditForm(): void {
     this.showedititem = false;
     this.model = new UserSkill();
-    this.cdkScrollable.scrollTo({ top: 0 });
+
   }
 
   onShowCatalog(): void {
@@ -380,7 +374,6 @@ export class UserSkill {
     public key: string = '',
     public name: string = '',
     public rating: number = 0,
-    public priority: number = 0,
     public created: string = '',
     public modified: string = '',
     public user: string = '',

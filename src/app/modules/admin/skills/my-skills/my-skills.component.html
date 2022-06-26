@@ -105,31 +105,26 @@
                 Edit Custom{{tabTitle}}
             </h2>
 
-            <form #editItemForm="ngForm">
+            <form #addItemForm="ngForm">
                 <div class="form-group">
-                <mat-form-field class="fuse-mat-no-subscript w-full">
-                    <mat-label>{{tabTitle}} Name</mat-label>
-                    <mat-icon
-                        class="icon-size-5"
-                        [svgIcon]="'heroicons_outline:clipboard-list'"
-                        matPrefix></mat-icon>
-                        <input type="text"
-                        id="name" 
-                        class="form-control" 
-                        #name="ngModel"
-                        [(ngModel)]="model.name" 
-                        name="name"
-                        required
-                        matInput>
-                </mat-form-field>
 
-                <div [hidden]="name.valid || name.pristine" class="alert alert-danger">
-                    <span style="color:red;">Name is required</span>
+                    <div class="mb-10">
+                        <mat-label class="mr-5 text-lg"><strong>Skill Rating:</strong> {{model.rating}}</mat-label>
+                    </div>
+        
+                    <mat-slider
+                     thumbLabel
+                     id ="rating"
+                     name="rating"
+                     [(ngModel)]="model.rating"
+                     #name="ngModel"
+                      min="0" max="100" step="5" value="50" style="min-width:300px;"></mat-slider>
+        
+        
                 </div>
-                </div>
-
-                <!-- Spacer -->
-                <div class="mt-5"></div>
+    
+                    <!-- Spacer -->
+                    <div class="mt-5"></div>
 
                 <!-- Actions -->
                 <div class="flex shrink-0 items-center mt-3 sm:mt-0 sm:ml-4">
@@ -174,22 +169,28 @@
     <!-- Search -->
     <div [hidden]="!showcatalog">
 
-        <form #editItemForm="ngForm">
-            <input #searchbox type="text" placeholder="search">
-            <button  
-                (click)="onSearch(searchbox.value);"
-                class="ml-4"
-                mat-stroked-button
-                type="button"
-                [color]="'primary'">
-            Search
-            </button>
-        </form>
+        <div class="w-full text-right" >
 
-        <div *ngFor="let searchresult of searchresults">
-            Search Results:{{searchresult.payload.val().name}}
-            <span *ngIf="searchresult.payload.val().email?.length > 5">Email Address: {{searchresult.payload.val().email}}</span>
-    
+            <form #editItemForm="ngForm">
+                <input #searchbox type="text" placeholder="search">
+                <button  
+                    (click)="onSearch(searchbox.value);"
+                    class="ml-4"
+                    mat-stroked-button
+                    type="button"
+                    [color]="'primary'">
+                Search
+                </button>
+            </form>
+
+            <div *ngFor="let searchresult of searchresults">
+                <button mat-icon-button color="default" matTooltip="add" class="mr-5" (click)="selectSkill(searchresult.key, searchresult.payload.val().name);">
+                    <mat-icon [svgIcon]="'heroicons_solid:plus'"></mat-icon>
+                </button>
+                {{searchresult.payload.val().name}}
+                <span *ngIf="searchresult.payload.val().email?.length > 5">Email Address: {{searchresult.payload.val().email}}</span>
+        
+            </div>
         </div>
 
     </div>
@@ -297,7 +298,11 @@
 
         <ul>
         <div *ngFor="let skill of (items | async)">
-           <li>{{skill.payload.val().name}}</li> 
+           <li>                                
+            <button mat-icon-button color="default" matTooltip="edit" class="mr-5" (click)="onShowEditForm(skill.key);">
+                <mat-icon>edit</mat-icon>
+            </button>
+          {{skill.payload.val().name}} : {{skill.payload.val().rating}}</li> 
         </div>
         </ul>
 
