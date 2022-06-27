@@ -224,7 +224,7 @@
                     
                     <!--Repeat for Each Area-->
                     <span *ngFor="let area of (areas | async)" >
-                    <a (click)="onAreaSelect(area.key)">
+                    <a (click)="onAreaSelect(area.key)" title="{{ area.payload.val().description }}">
                         <div class="flex items-center py-3 px-5 border-t-2 border-slate-100 hover:bg-slate-100">
                             <div class="flex-1"> {{ area.payload.val().name }}</div>
                             <div class="flex-none pt-1">
@@ -246,7 +246,7 @@
 
                     <!--Repeat for Each Category-->
                     <span *ngFor="let category of categories" >
-                        <a (click)="onCategorySelect(category.key)">
+                        <a (click)="onCategorySelect(category.key)" title="{{ category.payload.val().description }}">
                             <div class="flex items-center py-4 px-5 border-t-2 border-slate-100 hover:bg-slate-100">
                                 <div class="flex-1"> {{ category.payload.val().name }}</div>
                                 <div class="flex-none pt-1">
@@ -268,7 +268,7 @@
 
                     <!--Repeat for Each Skill-->
                     <span *ngFor="let skill of skills" >
-                        <a (click)="selectSkill(skill.key, skill.payload.val().name)">
+                        <a (click)="selectSkill(skill.key, skill.payload.val().name)" title="{{ skill.payload.val().description }}">
                             <div class="flex items-center py-4 px-5 border-t-2 border-slate-100 hover:bg-slate-100">
                                 <div class="flex-1"> {{ skill.payload.val().name }}</div>
                                 <div class="flex-none pt-1">
