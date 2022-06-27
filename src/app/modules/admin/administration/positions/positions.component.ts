@@ -141,14 +141,14 @@ export class PositionsComponent implements OnInit {
 
   //Compensation Checkbox
   onFilledChecked($event): void {
-    if ($event.checked === true) { this.positionfilled = true }
-    else { this.positionfilled = false }
+    if ($event.checked === true) { this.positionfilled = true; }
+    else { this.positionfilled = false; }
   }
 
   //Compensation Checkbox
   onCompensationChecked($event): void {
-    if ($event.checked === true) { this.showcompensation = true }
-    else { this.showcompensation = false }
+    if ($event.checked === true) { this.showcompensation = true; }
+    else { this.showcompensation = false; }
   }
 
   openConfirmationDialog(key): void {
