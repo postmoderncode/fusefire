@@ -38,6 +38,8 @@ export class SkillCatalogComponent implements OnInit {
   showedititem = false;
 
   //Object to Hold All Areas.
+  areasmaster: Observable<any>;
+  customs: Observable<any>;
   areas: Observable<any>;
 
   //Object to Hold Current Category List.
@@ -316,35 +318,15 @@ export class SkillCatalogComponent implements OnInit {
       type = this.tabTitle.toLowerCase() + 's';
     }
 
-    //// Make new in customs
-    // //Set Firebase Path
-    // this.listRef = this.db.list('/customs/' + type);
-
-    // //Define Promise
-    // const promiseAddItem = this.listRef.push({ key: key, hidden: true });
-
-    // //Call Promise
-    // promiseAddItem
-    // // .then(_ => this.showadditem = false)
-    // // .catch(err => console.log(err, 'Error Submitting Item!'));
-
-
-
-    //// Update object method
-    // this.db.object('/skillcatalog/' + type + '/' + key)
-    //   .update({ hidden: true });
-
-
     //If Hidden Exists, Delete. Otherwise set Hidden 
-    this.db.object('/skillcatalog/' + type + '/' + key + '/hidden')
+    this.db.object('/customs/' + type + '/' + key + '/hidden')
       .query.ref.transaction((hidden) => {
         if (hidden === true) {
-          this.db.object('/skillcatalog/' + type + '/' + key + '/hidden').remove();
+          this.db.object('/customs/' + type + '/' + key + '/hidden').remove();
         } else {
           return hidden = true;
         }
       });
-
 
   }
 
@@ -369,26 +351,32 @@ export class SkillCatalogComponent implements OnInit {
   ngOnInit(): void {
 
     //Populate Areas - Firebase List Object
+
     this.areas = this.db.list('/skillcatalog/areas/', ref => ref
       .orderByChild('name'))
       .snapshotChanges();
 
-    // combineLatest({
-    //   sourceOne: this.permitBrowserService.getData('Steve'),
-    //   sourceTwo: this.permitBrowserService.getData('Brandon'),
-    // }).subscribe(console.log);
+    // this.areasmaster = this.db.list('/skillcatalog/areas/', ref => ref
+    //   .orderByChild('name'))
+    //   .snapshotChanges();
+
+    // this.customs = this.db.list('/customs/areas/', ref => ref
+    //   .orderByChild('key'))
+    //   .snapshotChanges();
 
 
     // combineLatest(
-    //   [this.students$, this.address$],
-    //   (students, address) =>
-    //     students.map((s) => ({
+    //   [this.areasmaster, this.customs],
+    //   (areasmaster, customs) =>
+    //     areasmaster.map((s) => ({
     //       ...s,
-    //       address: address.filter((a) => a.sid === s.id),
+    //       customs: customs.filter((a) => a.key === s.key),
     //     })) // combineLatest also takes an optional projection function
-    // ).subscribe(console.log);
-
-
+    // ).subscribe(
+    //   (results) => {
+    //     console.log(results);
+    //   }
+    // );
 
 
     //Formbuilder for Dialog Popup
