@@ -216,7 +216,6 @@
     <!-- SELECTOR WRAPPER -->
     <div class="container mx-auto sm:max-w-[500px] md:max-w-[600px] lg:max-w-[700px] xl:max-w-[800px] " [hidden]="showadditem||showedititem">
 
-
         <!-- SELECTOR TITLE -->
         <div class="flex items-center h-15">
 
@@ -242,20 +241,21 @@
                 <mat-tab label="Areas">
                     
                     <!--Repeat for Each Area-->
-                    <span *ngFor="let area of (areas | async)" >
+                    <span *ngFor="let area of (areas)" >
 
                         <div class="flex">
                             <div class="flex-none">
+                                
                                 <button mat-icon-button color="default" matTooltip="edit" class="mr-5" (click)="onShowEditForm(area.key);">
                                     <mat-icon>edit</mat-icon>
                                   </button>
-
-                                <span *ngIf="area.payload.val().hidden === true">
+                                  
+                                <span *ngIf="area.customs[0]?.payload.val().hidden === true">
                                     <button mat-icon-button color="warn" matTooltip="edit" class="mr-5" (click)="onHideItem(area.key);">
                                         <mat-icon [svgIcon]="'heroicons_outline:eye-off'"></mat-icon>
                                       </button>            
                                     </span>
-                                <span *ngIf="area.payload.val().hidden !== true">
+                                <span *ngIf="area.customs[0]?.payload.val().hidden !== true">
                                     <button mat-icon-button color="default" matTooltip="edit" class="mr-5" (click)="onHideItem(area.key);">
                                         <mat-icon [svgIcon]="'heroicons_outline:eye-off'"></mat-icon>
                                       </button>                                     

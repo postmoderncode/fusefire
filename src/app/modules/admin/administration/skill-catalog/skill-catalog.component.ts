@@ -40,7 +40,7 @@ export class SkillCatalogComponent implements OnInit {
   //Object to Hold All Areas.
   areasmaster: Observable<any>;
   customs: Observable<any>;
-  areas: Observable<any>;
+  areas: Observable<{}>
 
   //Object to Hold Current Category List.
   categories: object;
@@ -352,31 +352,30 @@ export class SkillCatalogComponent implements OnInit {
 
     //Populate Areas - Firebase List Object
 
-    this.areas = this.db.list('/skillcatalog/areas/', ref => ref
-      .orderByChild('name'))
-      .snapshotChanges();
-
-    // this.areasmaster = this.db.list('/skillcatalog/areas/', ref => ref
+    // this.areas = this.db.list('/skillcatalog/areas/', ref => ref
     //   .orderByChild('name'))
     //   .snapshotChanges();
 
-    // this.customs = this.db.list('/customs/areas/', ref => ref
-    //   .orderByChild('key'))
-    //   .snapshotChanges();
+    this.areasmaster = this.db.list('/skillcatalog/areas/', ref => ref
+      .orderByChild('name'))
+      .snapshotChanges();
 
+    this.customs = this.db.list('/customs/areas/', ref => ref
+      .orderByChild('key'))
+      .snapshotChanges();
 
-    // combineLatest(
-    //   [this.areasmaster, this.customs],
-    //   (areasmaster, customs) =>
-    //     areasmaster.map((s) => ({
-    //       ...s,
-    //       customs: customs.filter((a) => a.key === s.key),
-    //     })) // combineLatest also takes an optional projection function
-    // ).subscribe(
-    //   (results) => {
-    //     console.log(results);
-    //   }
-    // );
+    combineLatest(
+      [this.areasmaster, this.customs],
+      (areasmaster, customs) =>
+        areasmaster.map((s) => ({
+          ...s,
+          customs: customs.filter((a) => a.key === s.key),
+        })) // combineLatest also takes an optional projection function
+    ).subscribe(
+      (combinedresults) => {
+        this.areas = combinedresults;
+      }
+    );
 
 
     //Formbuilder for Dialog Popup
