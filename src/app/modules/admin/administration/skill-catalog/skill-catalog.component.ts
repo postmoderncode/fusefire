@@ -3,7 +3,7 @@ import { CdkScrollable } from '@angular/cdk/scrolling';
 import { AngularFireDatabase, AngularFireList } from '@angular/fire/compat/database';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
-import { Observable, combineLatest, forkJoin, of } from 'rxjs';
+import { Observable, combineLatest } from 'rxjs';
 
 
 @Component({
@@ -141,8 +141,7 @@ export class SkillCatalogComponent implements OnInit {
 
     console.log(categoryId);
 
-
-    //Populate Categories - Firebase List w/ Sort&Filter Query
+    //Populate Skills - Firebase List w/ Sort&Filter Query
     this.skillsmaster = this.db.list('/skillcatalog/skills/', ref => ref
       .orderByChild('category')
       .equalTo(categoryId))
@@ -388,11 +387,6 @@ export class SkillCatalogComponent implements OnInit {
   ngOnInit(): void {
 
     //Populate Areas - Firebase List Object
-
-    // this.areas = this.db.list('/skillcatalog/areas/', ref => ref
-    //   .orderByChild('name'))
-    //   .snapshotChanges();
-
     this.areasmaster = this.db.list('/skillcatalog/areas/', ref => ref
       .orderByChild('name'))
       .snapshotChanges();

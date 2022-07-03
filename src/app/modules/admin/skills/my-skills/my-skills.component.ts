@@ -3,7 +3,7 @@ import { CdkScrollable } from '@angular/cdk/scrolling';
 import { AngularFireDatabase, AngularFireList } from '@angular/fire/compat/database';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
-import { Observable } from 'rxjs';
+import { Observable, combineLatest } from 'rxjs';
 
 
 @Component({
@@ -41,12 +41,18 @@ export class MySkillsComponent implements OnInit {
   showcatalog = false;
 
   //Object to Hold All Areas.
-  areas: Observable<any>;
+  areasmaster: Observable<any>;
+  areascustoms: Observable<any>;
+  areas: object;
 
   //Object to Hold Current Category List.
+  categoriesmaster: Observable<any>;
+  categoriescustoms: Observable<any>;
   categories: object;
 
   //Object to Hold Current Skill List.
+  skillsmaster: Observable<any>;
+  skillscustoms: Observable<any>;
   skills: object;
 
   //General Component Variables
@@ -153,12 +159,28 @@ export class MySkillsComponent implements OnInit {
   onAreaSelect(areaId): void {
 
     //Populate Categories - Firebase List w/ Sort&Filter Query
-    this.db.list('/skillcatalog/categories/', ref => ref
+    this.categoriesmaster = this.db.list('/skillcatalog/categories/', ref => ref
       .orderByChild('area')
       .equalTo(areaId))
-      .snapshotChanges().subscribe(
-        (results: object) => { this.categories = results; }
-      );
+      .snapshotChanges();
+
+    this.categoriescustoms = this.db.list('/customs/categories/', ref => ref
+      .orderByChild('key'))
+      .snapshotChanges();
+
+    combineLatest(
+      [this.categoriesmaster, this.categoriescustoms],
+      (master, customs) =>
+        master.map((s) => ({
+          ...s,
+          customs: customs.filter((a) => a.key === s.key),
+        })) // combineLatest also takes an optional projection function
+    ).subscribe(
+      (combinedresults) => {
+        this.categories = combinedresults;
+        console.log(this.categories);
+      }
+    );
 
     //Set the title
     this.tabTitle = 'Category';
@@ -177,13 +199,29 @@ export class MySkillsComponent implements OnInit {
 
     console.log(categoryId);
 
-    //Populate Categories - Firebase List w/ Sort&Filter Query
-    this.db.list('/skillcatalog/skills/', ref => ref
+    //Populate Skills - Firebase List w/ Sort&Filter Query
+    this.skillsmaster = this.db.list('/skillcatalog/skills/', ref => ref
       .orderByChild('category')
       .equalTo(categoryId))
-      .snapshotChanges().subscribe(
-        (results: object) => { this.skills = results; }
-      );
+      .snapshotChanges();
+
+    this.skillscustoms = this.db.list('/customs/skills/', ref => ref
+      .orderByChild('key'))
+      .snapshotChanges();
+
+    combineLatest(
+      [this.skillsmaster, this.skillscustoms],
+      (master, customs) =>
+        master.map((s) => ({
+          ...s,
+          customs: customs.filter((a) => a.key === s.key),
+        })) // combineLatest also takes an optional projection function
+    ).subscribe(
+      (combinedresults) => {
+        this.skills = combinedresults;
+        console.log(this.skills);
+      }
+    );
 
     this.tabTitle = 'Skill';
     this.selectedIndex = 2;
@@ -339,7 +377,27 @@ export class MySkillsComponent implements OnInit {
   ngOnInit(): void {
 
     //Populate Areas - Firebase List Object
-    this.areas = this.db.list('/skillcatalog/areas/').snapshotChanges();
+    this.areasmaster = this.db.list('/skillcatalog/areas/', ref => ref
+      .orderByChild('name'))
+      .snapshotChanges();
+
+    this.areascustoms = this.db.list('/customs/areas/', ref => ref
+      .orderByChild('key'))
+      .snapshotChanges();
+
+    combineLatest(
+      [this.areasmaster, this.areascustoms],
+      (master, customs) =>
+        master.map((s) => ({
+          ...s,
+          customs: customs.filter((a) => a.key === s.key),
+        })) // combineLatest also takes an optional projection function
+    ).subscribe(
+      (combinedresults) => {
+        this.areas = combinedresults;
+        console.log(this.areas);
+      }
+    );
 
     //Populate User Skills - Firebase List Object
     this.items = this.db.list('/users/' + this.fbuser.id + '/skills').snapshotChanges();
