@@ -3,7 +3,7 @@ import { CdkScrollable } from '@angular/cdk/scrolling';
 import { AngularFireDatabase, AngularFireList } from '@angular/fire/compat/database';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
-import { Observable } from 'rxjs';
+import { Observable, combineLatest, forkJoin, of } from 'rxjs';
 
 
 @Component({
@@ -335,11 +335,11 @@ export class SkillCatalogComponent implements OnInit {
     //   .update({ hidden: true });
 
 
+    //If Hidden Exists, Delete. Otherwise set Hidden 
     this.db.object('/skillcatalog/' + type + '/' + key + '/hidden')
       .query.ref.transaction((hidden) => {
         if (hidden === true) {
-          console.log('tis true')
-          return hidden = false;
+          this.db.object('/skillcatalog/' + type + '/' + key + '/hidden').remove();
         } else {
           return hidden = true;
         }
@@ -372,6 +372,24 @@ export class SkillCatalogComponent implements OnInit {
     this.areas = this.db.list('/skillcatalog/areas/', ref => ref
       .orderByChild('name'))
       .snapshotChanges();
+
+    // combineLatest({
+    //   sourceOne: this.permitBrowserService.getData('Steve'),
+    //   sourceTwo: this.permitBrowserService.getData('Brandon'),
+    // }).subscribe(console.log);
+
+
+    // combineLatest(
+    //   [this.students$, this.address$],
+    //   (students, address) =>
+    //     students.map((s) => ({
+    //       ...s,
+    //       address: address.filter((a) => a.sid === s.id),
+    //     })) // combineLatest also takes an optional projection function
+    // ).subscribe(console.log);
+
+
+
 
     //Formbuilder for Dialog Popup
     this.dialogconfigForm = this._formBuilder.group({
