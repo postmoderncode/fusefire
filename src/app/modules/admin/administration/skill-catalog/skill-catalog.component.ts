@@ -39,13 +39,17 @@ export class SkillCatalogComponent implements OnInit {
 
   //Object to Hold All Areas.
   areasmaster: Observable<any>;
-  customs: Observable<any>;
-  areas: Observable<{}>
+  areascustoms: Observable<any>;
+  areas: object;
 
   //Object to Hold Current Category List.
+  categoriesmaster: Observable<any>;
+  categoriescustoms: Observable<any>;
   categories: object;
 
   //Object to Hold Current Skill List.
+  skillsmaster: Observable<any>;
+  skillscustoms: Observable<any>;
   skills: object;
 
   //General Component Variables
@@ -99,12 +103,28 @@ export class SkillCatalogComponent implements OnInit {
   onAreaSelect(areaId): void {
 
     //Populate Categories - Firebase List w/ Sort&Filter Query
-    this.db.list('/skillcatalog/categories/', ref => ref
+    this.categoriesmaster = this.db.list('/skillcatalog/categories/', ref => ref
       .orderByChild('area')
       .equalTo(areaId))
-      .snapshotChanges().subscribe(
-        (results: object) => { this.categories = results; }
-      );
+      .snapshotChanges();
+
+    this.categoriescustoms = this.db.list('/customs/categories/', ref => ref
+      .orderByChild('key'))
+      .snapshotChanges();
+
+    combineLatest(
+      [this.categoriesmaster, this.categoriescustoms],
+      (master, customs) =>
+        master.map((s) => ({
+          ...s,
+          customs: customs.filter((a) => a.key === s.key),
+        })) // combineLatest also takes an optional projection function
+    ).subscribe(
+      (combinedresults) => {
+        this.categories = combinedresults;
+        console.log(this.categories);
+      }
+    );
 
     //Set the title
     this.tabTitle = 'Category';
@@ -121,13 +141,30 @@ export class SkillCatalogComponent implements OnInit {
 
     console.log(categoryId);
 
-    //Populate Skills - Firebase List w/ Sort&Filter Query
-    this.db.list('/skillcatalog/skills/', ref => ref
+
+    //Populate Categories - Firebase List w/ Sort&Filter Query
+    this.skillsmaster = this.db.list('/skillcatalog/skills/', ref => ref
       .orderByChild('category')
       .equalTo(categoryId))
-      .snapshotChanges().subscribe(
-        (results: any[]) => { this.skills = results; }
-      );
+      .snapshotChanges();
+
+    this.skillscustoms = this.db.list('/customs/skills/', ref => ref
+      .orderByChild('key'))
+      .snapshotChanges();
+
+    combineLatest(
+      [this.skillsmaster, this.skillscustoms],
+      (master, customs) =>
+        master.map((s) => ({
+          ...s,
+          customs: customs.filter((a) => a.key === s.key),
+        })) // combineLatest also takes an optional projection function
+    ).subscribe(
+      (combinedresults) => {
+        this.skills = combinedresults;
+        console.log(this.skills);
+      }
+    );
 
     this.tabTitle = 'Skill';
     this.selectedIndex = 2;
@@ -360,20 +397,21 @@ export class SkillCatalogComponent implements OnInit {
       .orderByChild('name'))
       .snapshotChanges();
 
-    this.customs = this.db.list('/customs/areas/', ref => ref
+    this.areascustoms = this.db.list('/customs/areas/', ref => ref
       .orderByChild('key'))
       .snapshotChanges();
 
     combineLatest(
-      [this.areasmaster, this.customs],
-      (areasmaster, customs) =>
-        areasmaster.map((s) => ({
+      [this.areasmaster, this.areascustoms],
+      (master, customs) =>
+        master.map((s) => ({
           ...s,
           customs: customs.filter((a) => a.key === s.key),
         })) // combineLatest also takes an optional projection function
     ).subscribe(
       (combinedresults) => {
         this.areas = combinedresults;
+        console.log(this.areas);
       }
     );
 

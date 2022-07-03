@@ -249,14 +249,14 @@
                                 <button mat-icon-button color="default" matTooltip="edit" class="mr-5" (click)="onShowEditForm(area.key);">
                                     <mat-icon>edit</mat-icon>
                                   </button>
-                                  
+
                                 <span *ngIf="area.customs[0]?.payload.val().hidden === true">
-                                    <button mat-icon-button color="warn" matTooltip="edit" class="mr-5" (click)="onHideItem(area.key);">
+                                    <button mat-icon-button color="warn" matTooltip="unhide" class="mr-5" (click)="onHideItem(area.key);">
                                         <mat-icon [svgIcon]="'heroicons_outline:eye-off'"></mat-icon>
                                       </button>            
                                     </span>
                                 <span *ngIf="area.customs[0]?.payload.val().hidden !== true">
-                                    <button mat-icon-button color="default" matTooltip="edit" class="mr-5" (click)="onHideItem(area.key);">
+                                    <button mat-icon-button color="default" matTooltip="hide" class="mr-5" (click)="onHideItem(area.key);">
                                         <mat-icon [svgIcon]="'heroicons_outline:eye-off'"></mat-icon>
                                       </button>                                     
                                     </span>
@@ -291,17 +291,17 @@
                             <div class="flex-none">
                                 <button mat-icon-button color="default" matTooltip="edit" class="mr-5" (click)="onShowEditForm(category.key);">
                                     <mat-icon>edit</mat-icon>
-                                  </button>
-                                  <span *ngIf="category.payload.val().hidden === true">
-                                    <button mat-icon-button color="warn" matTooltip="edit" class="mr-5" (click)="onHideItem(category.key);">
+                                </button>
+                                <span *ngIf="category.customs[0]?.payload.val().hidden === true">
+                                    <button mat-icon-button color="warn" matTooltip="unhide" class="mr-5" (click)="onHideItem(category.key);">
                                         <mat-icon [svgIcon]="'heroicons_outline:eye-off'"></mat-icon>
-                                      </button>            
-                                    </span>
-                                <span *ngIf="category.payload.val().hidden !== true">
-                                    <button mat-icon-button color="default" matTooltip="edit" class="mr-5" (click)="onHideItem(category.key);">
+                                    </button>            
+                                </span>
+                                 <span *ngIf="category.customs[0]?.payload.val().hidden !== true">
+                                    <button mat-icon-button color="default" matTooltip="hide" class="mr-5" (click)="onHideItem(category.key);">
                                         <mat-icon [svgIcon]="'heroicons_outline:eye-off'"></mat-icon>
-                                      </button>                                     
-                                    </span>
+                                    </button>                                     
+                                </span>
                             </div> 
                             <a (click)="onCategorySelect(category.key)" title="{{ category.payload.val().description }}">
                                 <div class="flex items-center py-3 px-5 border-t-2 border-slate-100 hover:bg-slate-100 w-full">
@@ -333,17 +333,17 @@
                             <div class="flex-none">
                                 <button mat-icon-button color="default" matTooltip="edit" class="mr-5" (click)="onShowEditForm(skill.key);">
                                     <mat-icon>edit</mat-icon>
-                                  </button>
-                                  <span *ngIf="skill.payload.val().hidden === true">
+                                </button>
+                                <span *ngIf="skill.customs[0]?.payload.val().hidden === true">
                                     <button mat-icon-button color="warn" matTooltip="edit" class="mr-5" (click)="onHideItem(skill.key);">
                                         <mat-icon [svgIcon]="'heroicons_outline:eye-off'"></mat-icon>
-                                      </button>            
-                                    </span>
-                                <span *ngIf="skill.payload.val().hidden !== true">
+                                    </button>            
+                                </span>
+                                <span *ngIf="skill.customs[0]?.payload.val().hidden !== true">
                                     <button mat-icon-button color="default" matTooltip="edit" class="mr-5" (click)="onHideItem(skill.key);">
                                         <mat-icon [svgIcon]="'heroicons_outline:eye-off'"></mat-icon>
-                                      </button>                                     
-                                    </span>
+                                    </button>                                     
+                                </span>
                             </div> 
                             <a (click)="selectSkill(skill.key)" title="{{ skill.payload.val().description }}">
                                 <div class="flex items-center py-3 px-5 border-t-2 border-slate-100 hover:bg-slate-100 w-full">
