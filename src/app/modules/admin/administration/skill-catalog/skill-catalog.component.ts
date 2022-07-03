@@ -305,6 +305,47 @@ export class SkillCatalogComponent implements OnInit {
 
     console.log('This ' + this.tabTitle + ' is hidden: ' + key);
 
+    //Write item to Custom skill tree
+    let type: string;
+
+    //Switch catalog path based on item type
+    if (this.tabTitle.toLowerCase() === 'category') {
+      type = 'categories';
+    }
+    else {
+      type = this.tabTitle.toLowerCase() + 's';
+    }
+
+    //// Make new in customs
+    // //Set Firebase Path
+    // this.listRef = this.db.list('/customs/' + type);
+
+    // //Define Promise
+    // const promiseAddItem = this.listRef.push({ key: key, hidden: true });
+
+    // //Call Promise
+    // promiseAddItem
+    // // .then(_ => this.showadditem = false)
+    // // .catch(err => console.log(err, 'Error Submitting Item!'));
+
+
+
+    //// Update object method
+    // this.db.object('/skillcatalog/' + type + '/' + key)
+    //   .update({ hidden: true });
+
+
+    this.db.object('/skillcatalog/' + type + '/' + key + '/hidden')
+      .query.ref.transaction((hidden) => {
+        if (hidden === true) {
+          console.log('tis true')
+          return hidden = false;
+        } else {
+          return hidden = true;
+        }
+      });
+
+
   }
 
   onHideEditForm(): void {
