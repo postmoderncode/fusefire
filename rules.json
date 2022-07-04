@@ -44,10 +44,7 @@
           
     "customs": {
       ".read": "auth !== null",
-        "$id": {
-            ".read": "auth !== null",
-            ".write": "$id == auth.uid" 
-              }  
+      ".write": "auth !== null"
         },
           
       "degrees": {
@@ -92,7 +89,7 @@
             
             "skills": {
             ".indexOn": ["category", "value"] 
-            },      
+            }      
             
           }
 
