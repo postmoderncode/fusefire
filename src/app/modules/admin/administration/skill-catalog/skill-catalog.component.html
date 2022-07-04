@@ -264,7 +264,14 @@
                             <a (click)="onAreaSelect(area.key)" title="{{ area.payload.val().description }}">
                                 <div class="flex items-center py-3 px-5 border-t-2 border-slate-100 hover:bg-slate-100 w-full">
                            
+                                    <span *ngIf="!area.customs[0]?.payload.val().name">
                                     <div class="flex-1 w-100"> {{ area.payload.val().name }}</div>
+                                    </span>
+
+                                    <span *ngIf="area.customs[0]?.payload.val().name">
+                                        <div class="flex-1 w-100"> {{ area.customs[0]?.payload.val().name }}</div>
+                                    </span>
+
                                         <div class="flex-none pt-1">
                                             <mat-icon svgIcon="mat_solid:chevron_right"></mat-icon>
                                         </div>  

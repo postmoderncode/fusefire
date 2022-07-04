@@ -3,7 +3,7 @@ import { CdkScrollable } from '@angular/cdk/scrolling';
 import { AngularFireDatabase, AngularFireList } from '@angular/fire/compat/database';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
-import { Observable, combineLatest } from 'rxjs';
+import { Observable, combineLatest, mapTo, map, merge, forkJoin, zip } from 'rxjs';
 
 
 @Component({
@@ -40,7 +40,8 @@ export class SkillCatalogComponent implements OnInit {
   //Object to Hold All Areas.
   areasmaster: Observable<any>;
   areascustoms: Observable<any>;
-  areas: object;
+  areascombo;
+  areas;
 
   //Object to Hold Current Category List.
   categoriesmaster: Observable<any>;
@@ -189,7 +190,7 @@ export class SkillCatalogComponent implements OnInit {
     }
 
     //Set Firebase Path
-    this.listRef = this.db.list('/skillcatalog/' + type);
+    this.listRef = this.db.list('/customs/' + type);
 
     //Define and call Promise to add Item with hierachial attributes
     if (this.tabTitle.toLowerCase() === 'area') {
@@ -255,19 +256,19 @@ export class SkillCatalogComponent implements OnInit {
     //Define and call Promise to add Item
     if (this.tabTitle.toLowerCase() === 'area') {
 
-      this.db.object('/skillcatalog/areas/' + key)
+      this.db.object('/customs/areas/' + key)
         .update({ name: mname, description: mdescription, value: mvalue });
 
     }
     else if (this.tabTitle.toLowerCase() === 'category') {
 
-      this.db.object('/skillcatalog/categories/' + key)
+      this.db.object('/customs/categories/' + key)
         .update({ name: mname, description: mdescription, value: mvalue });
 
     }
     else { //this is a skill
 
-      this.db.object('/skillcatalog/skills/' + key)
+      this.db.object('/customs/skills/' + key)
         .update({ name: mname, description: mdescription, value: mvalue });
 
     }
@@ -277,8 +278,6 @@ export class SkillCatalogComponent implements OnInit {
   }
 
   onDelete(key: string): void {
-
-    //this.db.object('/skillcatalog/' + this.fbuser.id + '/talents/' + key).remove();
 
     console.log(key + ' deleted');
 
@@ -395,19 +394,84 @@ export class SkillCatalogComponent implements OnInit {
       .orderByChild('key'))
       .snapshotChanges();
 
-    combineLatest(
+
+    this.areascombo = combineLatest(
       [this.areasmaster, this.areascustoms],
-      (master, customs) =>
-        master.map((s) => ({
+      (a, b) =>
+        //map togather on key
+        a.map((s) => ({
           ...s,
-          customs: customs.filter((a) => a.key === s.key),
-        })) // combineLatest also takes an optional projection function
-    ).subscribe(
-      (combinedresults) => {
-        this.areas = combinedresults;
-        console.log(this.areas);
-      }
+          customs: b.filter((a) => a.key === s.key),
+
+        }))
     );
+
+    zip(this.areascombo, this.areascustoms).pipe(
+      map(([a, b]) => ({ a, b })),
+    )
+      .subscribe(x => {
+        this.areas = x.a
+        console.log(this.areas);
+        console.log(x.b);
+      });
+
+
+    // combineLatest(
+    //   [this.areascombo, this.areascustoms],
+    //   (a, b) => {
+    //     // some filter here
+
+    //     const filtered = a.filter(i => !b.includes(i));
+    //     //console.log(...filtered, b);
+    //     return [...filtered, b];
+
+    //     // const res = a.concat.b;
+    //     // return res;
+
+    //     //const combo = merge(master, customs);
+    //     // const combo = a;
+    //     // return combo;
+
+
+    //   }
+    // ).subscribe(
+    //   (res) => {
+    //     this.areas = res;
+    //     console.log(this.areas);
+    //   }
+    // );
+
+
+
+
+    // const combine = forkJoin(this.areasmaster, this.areascustoms).pipe(
+    //   map(([a, b]) => a.concat(b))
+    // );
+
+    //console.log(combine);
+
+    // combineLatest(
+    //   [this.areasmaster, this.areascustoms],
+    //   (master, customs) =>
+    //     //map togather on key
+
+    //     master.map((s) => ({
+    //       ...s,
+    //       //newcustoms: customs,
+    //       customs: customs.filter((a) => a.key === s.key),
+    //     })) // combineLatest also takes an optional projection function
+
+    // ).subscribe(
+    //   (combo) => {
+
+    //     // this.areas = combo.concat(this.areascustoms);
+
+    //     //combinedresults
+
+    //     this.areas = combo;
+    //     console.log(this.areas);
+    //   }
+    // );
 
 
     //Formbuilder for Dialog Popup
