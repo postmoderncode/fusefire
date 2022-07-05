@@ -3,7 +3,7 @@ import { CdkScrollable } from '@angular/cdk/scrolling';
 import { AngularFireDatabase, AngularFireList } from '@angular/fire/compat/database';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
-import { Observable, combineLatest, mapTo, map, merge, forkJoin, zip } from 'rxjs';
+import { Observable, combineLatest, mapTo, map, merge, forkJoin, zip, mergeMap, mergeAll } from 'rxjs';
 
 
 @Component({
@@ -38,8 +38,8 @@ export class SkillCatalogComponent implements OnInit {
   showedititem = false;
 
   //Object to Hold All Areas.
-  areasmaster: Observable<any>;
-  areascustoms: Observable<any>;
+  areasmaster;
+  areascustoms;
   areascombo;
   areas;
 
@@ -386,86 +386,33 @@ export class SkillCatalogComponent implements OnInit {
   ngOnInit(): void {
 
     //Populate Areas - Firebase List Object
-    this.areasmaster = this.db.list('/skillcatalog/areas/', ref => ref
+    const masters = this.db.list('/skillcatalog/areas/', ref => ref
       .orderByChild('name'))
       .snapshotChanges();
 
-    this.areascustoms = this.db.list('/customs/areas/', ref => ref
+    const customs = this.db.list('/customs/areas/', ref => ref
       .orderByChild('key'))
       .snapshotChanges();
 
+    const merged = combineLatest<any[]>([masters, customs]).pipe(
+      map(arr => arr.reduce((acc, cur) => acc.concat(cur))),
+    )
 
-    this.areascombo = combineLatest(
-      [this.areasmaster, this.areascustoms],
+    const areascombo = combineLatest(
+      [merged, customs],
       (a, b) =>
         //map togather on key
         a.map((s) => ({
           ...s,
           customs: b.filter((a) => a.key === s.key),
-
         }),
-
           //next operator
-          // map(([a, b]) => ({ a, b })),
-
-        )
-    );
-    // .subscribe(
-    //   (res) => {
-    //     this.areas = res;
-    //     console.log(this.areas);
-    //   }
-    // );
-
-
-    //Combine search results
-    this.areascombo.subscribe((master) => {
-      this.areascustoms.subscribe((custom) => {
-
-        let results;
-        results = master.concat(custom);
-
-        console.log(results)
-        this.areas = results;
-
-      });
-
-    });
-
-
-    // zip(this.areascombo, this.areascustoms).pipe(
-    //   map(([a, b]) => ({ a, b })),
-    // )
-    //   .subscribe(x => {
-    //     this.areas = x.a
-    //     console.log(this.areas);
-    //     console.log(x.b);
-    //   });
-
-
-    // combineLatest(
-    //   [this.areascombo, this.areascustoms],
-    //   (a, b) => {
-    //     // some filter here
-    //     const filtered = a.filter(i => !b.includes(i));
-    //     //console.log(...filtered, b);
-    //     return [...filtered, b];
-    //     // const res = a.concat.b;
-    //     // return res;
-    //     //const combo = merge(master, customs);
-    //     // const combo = a;
-    //     // return combo;
-
-
-    //   }
-    // ).subscribe(
-    //   (res) => {
-    //     this.areas = res;
-    //     console.log(this.areas);
-    //   }
-    // );
-
-
+        ))
+      .subscribe(
+        (res) => {
+          this.areas = res.filter(area => area.payload.val().name !== '' && area.payload.val().name !== null);
+          // console.log(res);
+        });
 
 
     //Formbuilder for Dialog Popup

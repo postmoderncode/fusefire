@@ -243,7 +243,7 @@
                     <!--Repeat for Each Area-->
                     <span *ngFor="let area of (areas)" >
 
-                        <div class="flex">
+                        <div class="flex" *ngIf="area.payload.val().name?.length > 0">
                             <div class="flex-none">
                                 
                                 <button mat-icon-button color="default" matTooltip="edit" class="mr-5" (click)="onShowEditForm(area.key);">
