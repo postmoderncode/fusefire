@@ -403,31 +403,55 @@ export class SkillCatalogComponent implements OnInit {
           ...s,
           customs: b.filter((a) => a.key === s.key),
 
-        }))
-    );
+        }),
 
-    zip(this.areascombo, this.areascustoms).pipe(
-      map(([a, b]) => ({ a, b })),
-    )
-      .subscribe(x => {
-        this.areas = x.a
-        console.log(this.areas);
-        console.log(x.b);
+          //next operator
+          // map(([a, b]) => ({ a, b })),
+
+        )
+    );
+    // .subscribe(
+    //   (res) => {
+    //     this.areas = res;
+    //     console.log(this.areas);
+    //   }
+    // );
+
+
+    //Combine search results
+    this.areascombo.subscribe((master) => {
+      this.areascustoms.subscribe((custom) => {
+
+        let results;
+        results = master.concat(custom);
+
+        console.log(results)
+        this.areas = results;
+
       });
+
+    });
+
+
+    // zip(this.areascombo, this.areascustoms).pipe(
+    //   map(([a, b]) => ({ a, b })),
+    // )
+    //   .subscribe(x => {
+    //     this.areas = x.a
+    //     console.log(this.areas);
+    //     console.log(x.b);
+    //   });
 
 
     // combineLatest(
     //   [this.areascombo, this.areascustoms],
     //   (a, b) => {
     //     // some filter here
-
     //     const filtered = a.filter(i => !b.includes(i));
     //     //console.log(...filtered, b);
     //     return [...filtered, b];
-
     //     // const res = a.concat.b;
     //     // return res;
-
     //     //const combo = merge(master, customs);
     //     // const combo = a;
     //     // return combo;
@@ -442,36 +466,6 @@ export class SkillCatalogComponent implements OnInit {
     // );
 
 
-
-
-    // const combine = forkJoin(this.areasmaster, this.areascustoms).pipe(
-    //   map(([a, b]) => a.concat(b))
-    // );
-
-    //console.log(combine);
-
-    // combineLatest(
-    //   [this.areasmaster, this.areascustoms],
-    //   (master, customs) =>
-    //     //map togather on key
-
-    //     master.map((s) => ({
-    //       ...s,
-    //       //newcustoms: customs,
-    //       customs: customs.filter((a) => a.key === s.key),
-    //     })) // combineLatest also takes an optional projection function
-
-    // ).subscribe(
-    //   (combo) => {
-
-    //     // this.areas = combo.concat(this.areascustoms);
-
-    //     //combinedresults
-
-    //     this.areas = combo;
-    //     console.log(this.areas);
-    //   }
-    // );
 
 
     //Formbuilder for Dialog Popup
