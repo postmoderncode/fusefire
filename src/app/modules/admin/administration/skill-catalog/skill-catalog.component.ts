@@ -394,7 +394,7 @@ export class SkillCatalogComponent implements OnInit {
       .orderByChild('key'))
       .snapshotChanges();
 
-    const merged = combineLatest<any[]>([masters, customs]).pipe(
+    const merged = combineLatest<any[]>([customs, masters]).pipe(
       map(arr => arr.reduce((acc, cur) => acc.concat(cur))),
     )
 
@@ -405,8 +405,7 @@ export class SkillCatalogComponent implements OnInit {
         a.map((s) => ({
           ...s,
           customs: b.filter((a) => a.key === s.key),
-        }),
-          //next operator
+        })
         ))
       .subscribe(
         (res) => {
