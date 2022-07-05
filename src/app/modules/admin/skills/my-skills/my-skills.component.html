@@ -224,10 +224,18 @@
                     
                     <!--Repeat for Each Area-->
                     <span *ngFor="let area of (areas)" >
-                        <span *ngIf="area.customs[0]?.payload.val().hidden !== true">
+                        <span *ngIf="area.customs[0]?.payload.val().hidden !== true && area.payload.val().name?.length > 0">
                             <a (click)="onAreaSelect(area.key)" title="{{ area.payload.val().description }}">
                                 <div class="flex items-center py-3 px-5 border-t-2 border-slate-100 hover:bg-slate-100">
-                                    <div class="flex-1"> {{ area.payload.val().name }}</div>
+                                    <div class="flex-1">
+                                        <span *ngIf="!area.customs[0]?.payload.val().name">
+                                            <div class="flex-1 w-100"> {{ area.payload.val().name }}</div>
+                                         </span>
+        
+                                        <span *ngIf="area.customs[0]?.payload.val().name">
+                                            <div class="flex-1 w-100"> {{ area.customs[0]?.payload.val().name }}</div>
+                                        </span>                                        
+                                    </div>
                                     <div class="flex-none pt-1">
                                         <mat-icon svgIcon="mat_solid:chevron_right"></mat-icon>
                                     </div>
@@ -248,10 +256,18 @@
 
                     <!--Repeat for Each Category-->
                     <span *ngFor="let category of categories" >
-                        <span *ngIf="category.customs[0]?.payload.val().hidden !== true">
+                        <span *ngIf="category.customs[0]?.payload.val().hidden !== true && category.payload.val().name?.length > 0">
                             <a (click)="onCategorySelect(category.key)" title="{{ category.payload.val().description }}">
                                 <div class="flex items-center py-4 px-5 border-t-2 border-slate-100 hover:bg-slate-100">
-                                    <div class="flex-1"> {{ category.payload.val().name }}</div>
+                                    <div class="flex-1">
+                                        <span *ngIf="!category.customs[0]?.payload.val().name">
+                                            <div class="flex-1 w-100"> {{ category.payload.val().name }}</div>
+                                        </span>
+        
+                                        <span *ngIf="category.customs[0]?.payload.val().name">
+                                             <div class="flex-1 w-100"> {{ category.customs[0]?.payload.val().name }}</div>
+                                         </span>                                        
+                                    </div>
                                     <div class="flex-none pt-1">
                                         <mat-icon svgIcon="mat_solid:chevron_right"></mat-icon>
                                     </div>
@@ -272,10 +288,18 @@
 
                     <!--Repeat for Each Skill-->
                     <span *ngFor="let skill of skills" >
-                        <span *ngIf="skill.customs[0]?.payload.val().hidden !== true">
+                        <span *ngIf="skill.customs[0]?.payload.val().hidden !== true && skill.payload.val().name?.length > 0">
                             <a (click)="selectSkill(skill.key, skill.payload.val().name)" title="{{ skill.payload.val().description }}">
                                 <div class="flex items-center py-4 px-5 border-t-2 border-slate-100 hover:bg-slate-100">
-                                    <div class="flex-1"> {{ skill.payload.val().name }}</div>
+                                    <div class="flex-1">
+                                        <span *ngIf="!skill.customs[0]?.payload.val().name">
+                                            <div class="flex-1 w-100"> {{ skill.payload.val().name }}</div>
+                                        </span>
+    
+                                        <span *ngIf="skill.customs[0]?.payload.val().name">
+                                                <div class="flex-1 w-100"> {{ skill.customs[0]?.payload.val().name }}</div>
+                                        </span>                                        
+                                    </div>
                                     <div class="flex-none pt-1">
                                         <mat-icon svgIcon="heroicons_solid:plus"></mat-icon>
                                     </div>

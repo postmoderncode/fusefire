@@ -294,7 +294,7 @@
                     <!--Repeat for Each Category-->
                     <span *ngFor="let category of categories" >
 
-                        <div class="flex">
+                        <div class="flex" *ngIf="category.payload.val().name?.length > 0">
                             <div class="flex-none">
                                 <button mat-icon-button color="default" matTooltip="edit" class="mr-5" (click)="onShowEditForm(category.key);">
                                     <mat-icon>edit</mat-icon>
@@ -343,7 +343,7 @@
                     <!--Repeat for Each Skill-->
                     <span *ngFor="let skill of skills" >
 
-                        <div class="flex">
+                        <div class="flex" *ngIf="skill.payload.val().name?.length > 0">
                             <div class="flex-none">
                                 <button mat-icon-button color="default" matTooltip="edit" class="mr-5" (click)="onShowEditForm(skill.key);">
                                     <mat-icon>edit</mat-icon>

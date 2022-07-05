@@ -3,7 +3,7 @@ import { CdkScrollable } from '@angular/cdk/scrolling';
 import { AngularFireDatabase, AngularFireList } from '@angular/fire/compat/database';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
-import { Observable, combineLatest, mapTo, map, merge, forkJoin, zip, mergeMap, mergeAll } from 'rxjs';
+import { Observable, combineLatest, map } from 'rxjs';
 
 
 @Component({
@@ -38,20 +38,13 @@ export class SkillCatalogComponent implements OnInit {
   showedititem = false;
 
   //Object to Hold All Areas.
-  areasmaster;
-  areascustoms;
-  areascombo;
   areas;
 
   //Object to Hold Current Category List.
-  categoriesmaster: Observable<any>;
-  categoriescustoms: Observable<any>;
-  categories: object;
+  categories;
 
   //Object to Hold Current Skill List.
-  skillsmaster: Observable<any>;
-  skillscustoms: Observable<any>;
-  skills: object;
+  skills;
 
   //General Component Variables
   selectedIndex = 0;
@@ -104,28 +97,31 @@ export class SkillCatalogComponent implements OnInit {
   onAreaSelect(areaId): void {
 
     //Populate Categories - Firebase List w/ Sort&Filter Query
-    this.categoriesmaster = this.db.list('/skillcatalog/categories/', ref => ref
+    const masters = this.db.list('/skillcatalog/categories/', ref => ref
       .orderByChild('area')
       .equalTo(areaId))
       .snapshotChanges();
 
-    this.categoriescustoms = this.db.list('/customs/categories/', ref => ref
+    const customs = this.db.list('/customs/categories/', ref => ref
       .orderByChild('key'))
       .snapshotChanges();
 
+    const merged = combineLatest<any[]>([customs, masters]).pipe(
+      map(arr => arr.reduce((acc, cur) => acc.concat(cur))),
+    )
+
     combineLatest(
-      [this.categoriesmaster, this.categoriescustoms],
-      (master, customs) =>
-        master.map((s) => ({
+      [merged, customs],
+      (a, b) =>
+        a.map((s) => ({
           ...s,
-          customs: customs.filter((a) => a.key === s.key),
-        })) // combineLatest also takes an optional projection function
-    ).subscribe(
-      (combinedresults) => {
-        this.categories = combinedresults;
-        console.log(this.categories);
-      }
-    );
+          customs: b.filter((a) => a.key === s.key),
+        })
+        ))
+      .subscribe(
+        (res) => {
+          this.categories = res.filter(catagory => catagory.payload.val().name !== '' && catagory.payload.val().name !== null);
+        });
 
     //Set the title
     this.tabTitle = 'Category';
@@ -143,28 +139,32 @@ export class SkillCatalogComponent implements OnInit {
     console.log(categoryId);
 
     //Populate Skills - Firebase List w/ Sort&Filter Query
-    this.skillsmaster = this.db.list('/skillcatalog/skills/', ref => ref
+    const masters = this.db.list('/skillcatalog/skills/', ref => ref
       .orderByChild('category')
       .equalTo(categoryId))
       .snapshotChanges();
 
-    this.skillscustoms = this.db.list('/customs/skills/', ref => ref
+    const customs = this.db.list('/customs/skills/', ref => ref
       .orderByChild('key'))
       .snapshotChanges();
 
+    const merged = combineLatest<any[]>([customs, masters]).pipe(
+      map(arr => arr.reduce((acc, cur) => acc.concat(cur))),
+    )
+
     combineLatest(
-      [this.skillsmaster, this.skillscustoms],
-      (master, customs) =>
-        master.map((s) => ({
+      [merged, customs],
+      (a, b) =>
+        a.map((s) => ({
           ...s,
-          customs: customs.filter((a) => a.key === s.key),
-        })) // combineLatest also takes an optional projection function
-    ).subscribe(
-      (combinedresults) => {
-        this.skills = combinedresults;
-        console.log(this.skills);
-      }
-    );
+          customs: b.filter((a) => a.key === s.key),
+        })
+        ))
+      .subscribe(
+        (res) => {
+          this.skills = res.filter(skill => skill.payload.val().name !== '' && skill.payload.val().name !== null);
+        });
+
 
     this.tabTitle = 'Skill';
     this.selectedIndex = 2;
@@ -398,10 +398,9 @@ export class SkillCatalogComponent implements OnInit {
       map(arr => arr.reduce((acc, cur) => acc.concat(cur))),
     )
 
-    const areascombo = combineLatest(
+    combineLatest(
       [merged, customs],
       (a, b) =>
-        //map togather on key
         a.map((s) => ({
           ...s,
           customs: b.filter((a) => a.key === s.key),
@@ -410,7 +409,6 @@ export class SkillCatalogComponent implements OnInit {
       .subscribe(
         (res) => {
           this.areas = res.filter(area => area.payload.val().name !== '' && area.payload.val().name !== null);
-          // console.log(res);
         });
 
 
