@@ -1,5 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { CdkScrollable } from '@angular/cdk/scrolling';
+import { Component, OnInit } from '@angular/core';
 import { AngularFireDatabase, AngularFireList } from '@angular/fire/compat/database';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
@@ -15,9 +14,6 @@ export class MySkillsComponent implements OnInit {
 
   //Initialize Varables
   //-------------------
-
-  //Scroll element
-  @ViewChild(CdkScrollable) cdkScrollable: CdkScrollable;
 
   //Current User
   fbuser = JSON.parse(localStorage.getItem('fbuser'));
@@ -159,7 +155,8 @@ export class MySkillsComponent implements OnInit {
       .snapshotChanges();
 
     const customs = this.db.list('/customs/categories/', ref => ref
-      .orderByChild('key'))
+      .orderByChild('area')
+      .equalTo(areaId))
       .snapshotChanges();
 
     const merged = combineLatest<any[]>([customs, masters]).pipe(
@@ -203,7 +200,8 @@ export class MySkillsComponent implements OnInit {
       .snapshotChanges();
 
     const customs = this.db.list('/customs/skills/', ref => ref
-      .orderByChild('key'))
+      .orderByChild('category')
+      .equalTo(categoryId))
       .snapshotChanges();
 
     const merged = combineLatest<any[]>([customs, masters]).pipe(
@@ -312,7 +310,7 @@ export class MySkillsComponent implements OnInit {
     this.showadditem = true;
     this.showsearch = false;
     this.showcatalog = false;
-    this.cdkScrollable.scrollTo({ top: 0 });
+
   }
 
   onHideAddForm(): void {

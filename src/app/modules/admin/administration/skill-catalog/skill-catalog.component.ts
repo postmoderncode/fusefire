@@ -1,5 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { CdkScrollable } from '@angular/cdk/scrolling';
+import { Component, OnInit } from '@angular/core';
 import { AngularFireDatabase, AngularFireList } from '@angular/fire/compat/database';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
@@ -15,9 +14,6 @@ export class SkillCatalogComponent implements OnInit {
 
   //Initialize Varables
   //-------------------
-
-  //Scroll element
-  @ViewChild(CdkScrollable) cdkScrollable: CdkScrollable;
 
   //Current User
   fbuser = JSON.parse(localStorage.getItem('fbuser'));
@@ -103,7 +99,8 @@ export class SkillCatalogComponent implements OnInit {
       .snapshotChanges();
 
     const customs = this.db.list('/customs/categories/', ref => ref
-      .orderByChild('key'))
+      .orderByChild('area')
+      .equalTo(areaId))
       .snapshotChanges();
 
     const merged = combineLatest<any[]>([customs, masters]).pipe(
@@ -145,7 +142,8 @@ export class SkillCatalogComponent implements OnInit {
       .snapshotChanges();
 
     const customs = this.db.list('/customs/skills/', ref => ref
-      .orderByChild('key'))
+      .orderByChild('category')
+      .equalTo(categoryId))
       .snapshotChanges();
 
     const merged = combineLatest<any[]>([customs, masters]).pipe(
@@ -184,8 +182,7 @@ export class SkillCatalogComponent implements OnInit {
     //Switch catalog path based on item type
     if (this.tabTitle.toLowerCase() === 'category') {
       type = 'categories';
-    }
-    else {
+    } else {
       type = this.tabTitle.toLowerCase() + 's';
     }
 
@@ -201,15 +198,14 @@ export class SkillCatalogComponent implements OnInit {
       const mvalue: string = this.onConvertName(this.model.name);
 
       //Define Promise
-      const promiseAddItem = this.listRef.push({ name: mname, value: mvalue, description: mdescription });
+      const promiseAddItem = this.listRef.push({ name: mname, value: mvalue, description: mdescription, customtype: 'new' });
 
       //Call Promise
       promiseAddItem
         .then(_ => this.showadditem = false)
         .catch(err => console.log(err, 'Error Submitting Item!'));
 
-    }
-    else if (this.tabTitle.toLowerCase() === 'category') {
+    } else if (this.tabTitle.toLowerCase() === 'category') {
 
       //Cast model to variable for formReset
       const mname: string = this.model.name;
@@ -218,15 +214,14 @@ export class SkillCatalogComponent implements OnInit {
       const marea: string = this.catmodel.currentArea;
 
       //Define Promise
-      const promiseAddItem = this.listRef.push({ area: marea, name: mname, value: mvalue, description: mdescription });
+      const promiseAddItem = this.listRef.push({ area: marea, name: mname, value: mvalue, description: mdescription, customtype: 'new' });
 
       //Call Promise
       promiseAddItem
         .then(_ => this.showadditem = false)
         .catch(err => console.log(err, 'Error Submitting Item!'));
 
-    }
-    else { //this is a skill
+    } else { //this is a skill
 
       //Cast model to variable for formReset
       const mname: string = this.model.name;
@@ -235,7 +230,7 @@ export class SkillCatalogComponent implements OnInit {
       const mcategory: string = this.catmodel.currentCategory;
 
       //Define Promise
-      const promiseAddItem = this.listRef.push({ category: mcategory, name: mname, value: mvalue, description: mdescription });
+      const promiseAddItem = this.listRef.push({ category: mcategory, name: mname, value: mvalue, description: mdescription, customtype: 'new' });
 
       //Call Promise
       promiseAddItem
@@ -256,20 +251,57 @@ export class SkillCatalogComponent implements OnInit {
     //Define and call Promise to add Item
     if (this.tabTitle.toLowerCase() === 'area') {
 
-      this.db.object('/customs/areas/' + key)
-        .update({ name: mname, description: mdescription, value: mvalue });
+      this.db.object('/skillcatalog/areas/' + key).query.ref.transaction((ref) => {
+        if (ref === null) {
+
+          this.db.object('/customs/areas/' + key)
+            .update({ name: mname, description: mdescription, value: mvalue });
+
+
+        } else {
+
+          this.db.object('/customs/areas/' + key)
+            .update({ name: mname, description: mdescription, value: mvalue, customtype: 'rename' });
+
+        }
+      });
 
     }
     else if (this.tabTitle.toLowerCase() === 'category') {
 
-      this.db.object('/customs/categories/' + key)
-        .update({ name: mname, description: mdescription, value: mvalue });
+      this.db.object('/skillcatalog/categories/' + key).query.ref.transaction((ref) => {
+        if (ref === null) {
+
+          this.db.object('/customs/categories/' + key)
+            .update({ name: mname, description: mdescription, value: mvalue });
+
+
+        } else {
+
+          this.db.object('/customs/categories/' + key)
+            .update({ name: mname, description: mdescription, value: mvalue, customtype: 'rename' });
+
+        }
+      });
 
     }
     else { //this is a skill
 
-      this.db.object('/customs/skills/' + key)
-        .update({ name: mname, description: mdescription, value: mvalue });
+
+      this.db.object('/skillcatalog/skills/' + key).query.ref.transaction((ref) => {
+        if (ref === null) {
+
+          this.db.object('/customs/skills/' + key)
+            .update({ name: mname, description: mdescription, value: mvalue });
+
+
+        } else {
+
+          this.db.object('/customs/skills/' + key)
+            .update({ name: mname, description: mdescription, value: mvalue, customtype: 'rename' });
+
+        }
+      });
 
     }
 
@@ -295,17 +327,23 @@ export class SkillCatalogComponent implements OnInit {
 
   }
 
-  onShowEditForm(key: string): void {
+  onShowEditForm(key: string, obj): void {
 
     this.showadditem = false;
     this.showedititem = true;
 
-
     //Define and call Promise to add Item
     if (this.tabTitle.toLowerCase() === 'area') {
 
-      //Define Observable
-      this.item = this.db.object('/skillcatalog/areas/' + key).valueChanges();
+      //Is this a new custom or a renamed master
+      if (obj.customs[0]?.payload.val().customtype === 'new' || obj.customs[0]?.payload.val().customtype === 'rename') {
+        //Define Observable
+        this.item = this.db.object('/customs/areas/' + key).valueChanges();
+      }
+      else {
+        //Define Observable
+        this.item = this.db.object('/skillcatalog/areas/' + key).valueChanges();
+      }
 
       //Subscribe to Observable
       this.item.subscribe((item) => {
@@ -315,8 +353,15 @@ export class SkillCatalogComponent implements OnInit {
     }
     else if (this.tabTitle.toLowerCase() === 'category') {
 
-      //Define Observable
-      this.item = this.db.object('/skillcatalog/categories/' + key).valueChanges();
+      //Is this a new custom or a renamed master  
+      if (obj.customs[0]?.payload.val().customtype === 'new' || obj.customs[0]?.payload.val().customtype === 'rename') {
+        //Define Observable
+        this.item = this.db.object('/customs/categories/' + key).valueChanges();
+      }
+      else {
+        //Define Observable
+        this.item = this.db.object('/skillcatalog/categories/' + key).valueChanges();
+      }
 
       //Subscribe to Observable
       this.item.subscribe((item) => {
@@ -326,8 +371,15 @@ export class SkillCatalogComponent implements OnInit {
     }
     else { //this is a skill
 
-      //Define Observable
-      this.item = this.db.object('/skillcatalog/skills/' + key).valueChanges();
+      //Is this a new custom or a renamed master
+      if (obj.customs[0]?.payload.val().customtype === 'new' || obj.customs[0]?.payload.val().customtype === 'rename') {
+        //Define Observable
+        this.item = this.db.object('/customs/skills/' + key).valueChanges();
+      }
+      else {
+        //Define Observable
+        this.item = this.db.object('/skillcatalog/skills/' + key).valueChanges();
+      }
 
       //Subscribe to Observable
       this.item.subscribe((item) => {
