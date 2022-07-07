@@ -1,25 +1,37 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { CdkScrollable } from '@angular/cdk/scrolling';
-import { AngularFireDatabase, AngularFireList } from '@angular/fire/compat/database';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { AngularFireDatabase } from '@angular/fire/compat/database';
+import { FormBuilder, FormGroup, NgForm } from '@angular/forms';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { Observable } from 'rxjs';
 
-
 @Component({
-  selector: 'app-talents',
+  selector: 'app-talent-hobbies',
   templateUrl: './talent-hobbies.component.html',
-  styleUrls: ['./talent-hobbies.component.scss'],
+  styleUrls: ['./talent-hobbies.component.scss']
 })
+
 export class TalentHobbiesComponent implements OnInit {
 
-  //Initialize Varables
-  //-------------------
+  //Initialize Variables
+  //---------------------
 
   //Scroll element
   @ViewChild(CdkScrollable) cdkScrollable: CdkScrollable;
 
-  //Current User
+  //Page View State (Default is "Loading..")
+  viewState = 0;
+
+  //Form Mode State (Add vs. Edit Mode)
+  formMode = '';
+
+  //Container to hold a list of items
+  items: object;
+
+  //Container to hold a single item
+  item: Observable<any>;
+
+  //Container to hold Current User
   fbuser = JSON.parse(localStorage.getItem('fbuser'));
 
   //Confirmation Dialog
@@ -28,31 +40,63 @@ export class TalentHobbiesComponent implements OnInit {
   //Empty Model
   model = new Talent();
 
-  //Table Control
-  displayedColumns = ['name', 'created', 'delete', 'edit'];
-
-  //Firebase Observables
-  listRef: AngularFireList<any>;
-  item: Observable<any>;
-  items: Observable<any[]>;
-
-  //Form Visibility Modifiers
-  showadditem = false;
-  showedititem = false;
-
-
-  /**
-   * Constructor
-   */
+  //Constructor
+  //---------------------
   constructor(
     private _formBuilder: FormBuilder,
     private _fuseConfirmationService: FuseConfirmationService,
     public db: AngularFireDatabase
   ) { }
 
-  onAdd(): void {
+  //Functions
+  //---------------------
 
-    this.listRef = this.db.list('/users/' + this.fbuser.id + '/talents');
+  //Fuction - Show the Add Form
+  onShowAddForm(): void {
+
+    //Set the View State
+    this.viewState = 3;
+
+    //Set the Form Mode
+    this.formMode = 'add';
+  }
+
+  //Fuction - Show the Edit Form
+  onShowEditForm(key): void {
+
+    //Set the View State
+    this.viewState = 3;
+
+    //Set the Form Mode
+    this.formMode = 'edit';
+
+    //Define Observable
+    this.item = this.db.object('/users/' + this.fbuser.id + '/talents/' + key).valueChanges();
+
+    //Subscribe to Observable
+    this.item.subscribe((item) => {
+      this.model = new Talent(key, item.name, item.description, item.created, item.modified, item.user);
+    });
+
+  }
+
+  //Function - Show the Delete Conf.
+  onShowDelete(key): void {
+
+    //Open the dialog and save the reference of it
+    const dialogRef = this._fuseConfirmationService.open(this.dialogconfigForm.value);
+
+    //Subscribe to afterClosed from the dialog reference
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result === 'confirmed') {
+        //Call Actual Delete
+        this.onDelete(key);
+      }
+    });
+  }
+
+  //Function - Add New Item to DB
+  onAdd(form: NgForm): void {
 
     //Cast model to variable for formReset
     const mname: string = this.model.name;
@@ -60,13 +104,14 @@ export class TalentHobbiesComponent implements OnInit {
     const mdatenow = Math.floor(Date.now());
 
     //Define Promise
-    const promiseAddItem = this.listRef.push({ name: mname, description: mdescription, created: mdatenow, modified: mdatenow, user: this.fbuser.id });
+    const promiseAddItem = this.db.list('/users/' + this.fbuser.id + '/talents')
+      .push({ name: mname, description: mdescription, created: mdatenow, modified: mdatenow, user: this.fbuser.id });
 
     //Call Promise
     promiseAddItem
       .then(_ => this.db.object('/talents/' + this.fbuser.id + '/' + _.key)
         .update({ name: mname, description: mdescription, created: mdatenow, modified: mdatenow, user: this.fbuser.id }))
-      .then(_ => this.showadditem = false)
+      .then(_ => form.resetForm())
       .catch(err => console.log(err, 'Error Submitting Talent!'));
 
     //Increment Count
@@ -82,6 +127,7 @@ export class TalentHobbiesComponent implements OnInit {
 
   }
 
+  //Function - Update Item in DB
   onEdit(key): void {
 
     //Cast model to variable for formReset
@@ -93,11 +139,12 @@ export class TalentHobbiesComponent implements OnInit {
       .update({ name: mname, description: mdescription, modified: mdatenow });
     this.db.object('/talents/' + this.fbuser.id + '/' + key)
       .update({ name: mname, description: mdescription, modified: mdatenow });
-    this.showedititem = false;
+
     this.cdkScrollable.scrollTo({ top: 0 });
-    console.log(key + ' edited');
+
   }
 
+  //Function - Delete Item in DB
   onDelete(key): void {
     this.db.object('/users/' + this.fbuser.id + '/talents/' + key).remove();
     this.db.object('/talents/' + this.fbuser.id + '/' + key).remove();
@@ -115,54 +162,35 @@ export class TalentHobbiesComponent implements OnInit {
 
   }
 
-  onShowAddForm(): void {
-    this.showedititem = false;
-    this.showadditem = true;
-    this.cdkScrollable.scrollTo({ top: 0 });
-  }
-
-  onHideAddForm(): void {
-    this.showadditem = false;
-    this.cdkScrollable.scrollTo({ top: 0 });
-  }
-
-  onShowEditForm(key): void {
-    this.showadditem = false;
-    this.showedititem = true;
-    this.cdkScrollable.scrollTo({ top: 0 });
-
-    //Define Observable
-    this.item = this.db.object('/users/' + this.fbuser.id + '/talents/' + key).valueChanges();
-
-    //Subscribe to Observable
-    this.item.subscribe((item) => {
-      this.model = new Talent(key, item.name, item.description, item.created, item.modified, item.user);
-    });
-
-    console.log(key + 'has been selected to edit');
-  }
-
-  onHideEditForm(): void {
-    this.showedititem = false;
-    this.model = new Talent();
-    this.cdkScrollable.scrollTo({ top: 0 });
-  }
-
-  openConfirmationDialog(key): void {
-    //Open the dialog and save the reference of it
-    const dialogRef = this._fuseConfirmationService.open(this.dialogconfigForm.value);
-
-    //Subscribe to afterClosed from the dialog reference
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result === 'confirmed') {
-        this.onDelete(key);
-      }
-    });
+  //Function - Cancel the Add or Edit Form
+  onCancelForm(form: NgForm): void {
+    form.resetForm();
+    this.viewState = 1;
   }
 
   ngOnInit(): void {
 
-    this.items = this.db.list('/users/' + this.fbuser.id + '/talents').snapshotChanges();
+    //Call the Firebase Database and get the initial data.
+    this.db.list('/users/' + this.fbuser.id + '/talents').snapshotChanges().subscribe(
+      (results: object) => {
+
+        //Put the results of the DB call into an object.
+        this.items = results;
+
+        console.log(this.items);
+
+        //Check if the results object is empty
+        if (Object.keys(this.items).length === 0) {
+          //It's empty, so set the view state to "No Data" mode.
+          this.viewState = 2;
+        }
+        else {
+          //It's not empty, so set the view state to "Show Data" mode.
+          this.viewState = 1;
+        };
+
+      }
+    );
 
     //Formbuilder for Dialog Popup
     this.dialogconfigForm = this._formBuilder.group({
@@ -205,5 +233,3 @@ export class Talent {
   ) { }
 
 }
-
-

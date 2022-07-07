@@ -1,26 +1,38 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { CdkScrollable } from '@angular/cdk/scrolling';
-import { AngularFireDatabase, AngularFireList } from '@angular/fire/compat/database';
-import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
+import { AngularFireDatabase } from '@angular/fire/compat/database';
+import { AbstractControl, FormBuilder, FormGroup, NgForm } from '@angular/forms';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { Observable } from 'rxjs';
-
 
 @Component({
   selector: 'app-academic-degrees',
   templateUrl: './academic-degrees.component.html',
   styleUrls: ['./academic-degrees.component.scss']
 })
+
 export class AcademicDegreesComponent implements OnInit {
 
-  //Initialize Varables
-  //-------------------
+  //Initialize Variables
+  //---------------------
 
   //Scroll element
   @ViewChild(CdkScrollable) cdkScrollable: CdkScrollable;
 
-  //Current User
+  //Page View State (Default is "Loading..")
+  viewState = 0;
+
+  //Form Mode State (Add vs. Edit Mode)
+  formMode = '';
+
+  //Container to hold a list of items
+  items: object;
+
+  //Container to hold a single item
+  item: Observable<any>;
+
+  //Container to hold Current User
   fbuser = JSON.parse(localStorage.getItem('fbuser'));
 
   //Confirmation Dialog
@@ -33,17 +45,7 @@ export class AcademicDegreesComponent implements OnInit {
   model = new Education();
 
   //Graduation Label Text
-  gradDate = 'Date of Completion';
-
-  //Firebase Observables
-  item: Observable<any>;
-  items: Observable<any[]>;
-  listRef: AngularFireList<any>;
-
-  //Form Visibility Modifiers
-  showadditem = false;
-  showedititem = false;
-  stateselected = false;
+  gradDate = 'Date Completed';
 
   //Autocomplete Data
   schoolfilteredData;
@@ -100,59 +102,66 @@ export class AcademicDegreesComponent implements OnInit {
     ];
 
 
-  /**
-   * Constructor
-   */
+  //Constructor
+  //---------------------
   constructor(
     private _formBuilder: FormBuilder,
     private _fuseConfirmationService: FuseConfirmationService,
     public db: AngularFireDatabase
   ) { }
 
-  //Form Visibility Modifiers
 
+  //Functions
+  //---------------------
+
+  //Fuction - Show the Add Form
   onShowAddForm(): void {
-    this.showedititem = false;
-    this.showadditem = true;
-    this.cdkScrollable.scrollTo({ top: 0 });
 
+    //Set the View State
+    this.viewState = 3;
+
+    //Set the Form Mode
+    this.formMode = 'add';
   }
 
-  onHideAddForm(): void {
-    this.showadditem = false;
-    this.cdkScrollable.scrollTo({ top: 0 });
-
-  }
-
+  //Fuction - Show the Edit Form
   onShowEditForm(key): void {
-    this.showadditem = false;
-    this.showedititem = true;
-    this.degreetypesfilteredData = this.degreetypes;
-    this.cdkScrollable.scrollTo({ top: 0 });
 
-    //Define Observable
+    //Set the View State
+    this.viewState = 3;
+
+    //Set the Form Mode
+    this.formMode = 'edit';
+
+    //Define Observable Item based on the Key
     this.item = this.db.object('/users/' + this.fbuser.id + '/degrees/' + key).valueChanges();
 
     //Subscribe to Observable
     this.item.subscribe((item) => {
       this.model = new Education(key, item.state, item.institution, item.degreelevel, item.degreetype, item.major, item.minor, item.completed, item.awardedon, item.created, item.modeified, item.user);
       this.editDate = item.awardedon;
-      console.log(this.editDate);
+
     });
 
-    console.log(key + 'has been selected to edit');
-
   }
 
-  onHideEditForm(): void {
-    this.showedititem = false;
-    this.cdkScrollable.scrollTo({ top: 0 });
+  //Function - Show the Delete Conf. 
+  onShowDelete(key): void {
 
+    //Open the dialog and save the reference of it
+    const dialogRef = this._fuseConfirmationService.open(this.dialogconfigForm.value);
+
+    //Subscribe to afterClosed from the dialog reference
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result === 'confirmed') {
+        //Call Actual Delete
+        this.onDelete(key);
+      }
+    });
   }
 
-  onAdd(): void {
-
-    this.listRef = this.db.list('/users/' + this.fbuser.id + '/degrees');
+  //Function - Add New Item to DB
+  onAdd(form: NgForm): void {
 
     //Cast model to variable for formReset
     const mstate: string = this.model.state;
@@ -166,14 +175,14 @@ export class AcademicDegreesComponent implements OnInit {
     const mdatenow = Math.floor(Date.now());
 
     //Define Promise
-    const promiseAddItem = this.listRef
+    const promiseAddItem = this.db.list('/users/' + this.fbuser.id + '/degrees')
       .push({ state: mstate, institution: minstitution, degreelevel: mdegreelevel, degreetype: mdegreetype, major: mmajor, minor: mminor, completed: mcompleted, awardedon: mawardedon, created: mdatenow, modified: mdatenow, user: this.fbuser.id });
 
     //Call Promise
     promiseAddItem
       .then(_ => this.db.object('/degrees/' + this.fbuser.id + '/' + _.key)
         .update({ state: mstate, institution: minstitution, degreelevel: mdegreelevel, degreetype: mdegreetype, major: mmajor, minor: mminor, completed: mcompleted, awardedon: mawardedon, created: mdatenow, modified: mdatenow, user: this.fbuser.id }))
-      .then(_ => this.showadditem = false)
+      .then(_ => form.resetForm())
       .catch(err => console.log(err, 'Error Submitting Degree!'));
 
     //Increment Count
@@ -189,6 +198,7 @@ export class AcademicDegreesComponent implements OnInit {
 
   }
 
+  //Function - Update Item in DB
   onEdit(key): void {
 
     //Cast model to variable for formReset
@@ -208,13 +218,10 @@ export class AcademicDegreesComponent implements OnInit {
     this.db.object('/users/' + this.fbuser.id + '/degrees/' + key)
       .update({ state: mstate, institution: minstitution, degreelevel: mdegreelevel, degreetype: mdegreetype, major: mmajor, minor: mminor, completed: mcompleted, awardedon: mawardedon, modified: mdatenow, user: this.fbuser.id });
 
-    this.showedititem = false;
     this.cdkScrollable.scrollTo({ top: 0 });
-
-    console.log(key + ' edited');
   }
 
-
+  //Function - Delete Item in DB
   onDelete(key): void {
     this.db.object('/users/' + this.fbuser.id + '/degrees/' + key).remove();
     this.db.object('/degrees/' + this.fbuser.id + '/' + key).remove();
@@ -232,18 +239,21 @@ export class AcademicDegreesComponent implements OnInit {
 
   }
 
+  //Function - Cancel the Add or Edit Form
+  onCancelForm(form: NgForm): void {
+    form.resetForm();
+    this.viewState = 1;
+  }
 
-  //Calendar Change Event to set Model
   onDateChange(event: MatDatepickerInputEvent<any>, control: AbstractControl): void {
 
     this.model.awardedon = ((event.value.valueOf()).toString());
 
   }
 
-
   //Degree Completed Checkbox
   onCompletedChecked($event): void {
-    if ($event.checked === true) { this.gradDate = 'Date of Completion'; this.model.completed = true; }
+    if ($event.checked === true) { this.gradDate = 'Date Completed'; this.model.completed = true; }
     else { this.gradDate = 'Expected Graduation Date'; this.model.completed = false; }
   }
 
@@ -275,7 +285,6 @@ export class AcademicDegreesComponent implements OnInit {
 
   }
 
-
   //State Dropdown Change Event
   onStateChange(ob): void {
 
@@ -298,23 +307,32 @@ export class AcademicDegreesComponent implements OnInit {
 
   }
 
-
-  openConfirmationDialog(key): void {
-    //Open the dialog and save the reference of it
-    const dialogRef = this._fuseConfirmationService.open(this.dialogconfigForm.value);
-
-    //Subscribe to afterClosed from the dialog reference
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result === 'confirmed') {
-        this.onDelete(key);
-      }
-    });
-  }
-
-
   ngOnInit(): void {
 
-    this.items = this.db.list('/users/' + this.fbuser.id + '/degrees').snapshotChanges();
+    //Prepopulate Field of Study Autocomplete
+    this.fieldfilteredData = this.fieldoptions;
+
+    //Call the Firebase Database and get the initial data.
+    this.db.list('/users/' + this.fbuser.id + '/degrees').snapshotChanges().subscribe(
+      (results: object) => {
+
+        //Put the results of the DB call into an object.
+        this.items = results;
+
+        console.log(this.items);
+
+        //Check if the results object is empty
+        if (Object.keys(this.items).length === 0) {
+          //It's empty, so set the view state to "No Data" mode.
+          this.viewState = 2;
+        }
+        else {
+          //It's not empty, so set the view state to "Show Data" mode.
+          this.viewState = 1;
+        };
+
+      }
+    );
 
     //Formbuilder for Dialog Popup
     this.dialogconfigForm = this._formBuilder.group({
@@ -338,13 +356,6 @@ export class AcademicDegreesComponent implements OnInit {
       }),
       dismissible: false
     });
-
-    //Prepopulate Field of Study Autocomplete
-    this.fieldfilteredData = this.fieldoptions;
-
-    //Only need if prepopulating dropbox without filter
-    //this.schoolfilteredData = this.schooloptions;
-    //this.degreetypesfilteredData = this.degreetypes;
 
   }
 
@@ -371,4 +382,5 @@ export class Education {
   ) { }
 
 }
+
 

@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { CdkScrollable } from '@angular/cdk/scrolling';
 import { AngularFireDatabase, AngularFireList } from '@angular/fire/compat/database';
-import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, NgForm } from '@angular/forms';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { Observable } from 'rxjs';
@@ -13,13 +13,25 @@ import { Observable } from 'rxjs';
 })
 export class PositionsComponent implements OnInit {
 
-  //Initialize Varables
-  //-------------------
+  //Initialize Variables
+  //---------------------
 
   //Scroll element
   @ViewChild(CdkScrollable) cdkScrollable: CdkScrollable;
 
-  //Current User
+  //Page View State (Default is "Loading..")
+  viewState = 0;
+
+  //Form Mode State (Add vs. Edit Mode)
+  formMode = '';
+
+  //Container to hold a list of items
+  items: object;
+
+  //Container to hold a single item
+  item: Observable<any>;
+
+  //Container to hold Current User
   fbuser = JSON.parse(localStorage.getItem('fbuser'));
 
   //Confirmation Dialog
@@ -28,23 +40,13 @@ export class PositionsComponent implements OnInit {
   //Empty Model
   model = new Position();
 
-  //Table Control
-  displayedColumns = ['name', 'description', 'created', 'delete', 'edit'];
-
-  //Firebase Observables
-  item: Observable<any>;
-  items: Observable<any[]>;
-  listRef: AngularFireList<any>;
-
   //Form Visibility Modifiers
-  showadditem = false;
-  showedititem = false;
   positionfilled = false;
   showcompensation = false;
 
-  /**
-   * Constructor
-   */
+
+  //Constructor
+  //---------------------
   constructor(
     private _formBuilder: FormBuilder,
     private _fuseConfirmationService: FuseConfirmationService,
@@ -52,9 +54,55 @@ export class PositionsComponent implements OnInit {
   ) { }
 
 
-  onAdd(): void {
+  //Functions
+  //---------------------
 
-    this.listRef = this.db.list('/positions');
+  //Fuction - Show the Add Form
+  onShowAddForm(): void {
+
+    //Set the View State
+    this.viewState = 3;
+
+    //Set the Form Mode
+    this.formMode = 'add';
+  }
+
+  //Fuction - Show the Edit Form
+  onShowEditForm(key): void {
+
+    //Set the View State
+    this.viewState = 3;
+
+    //Set the Form Mode
+    this.formMode = 'edit';
+
+    //Define Observable
+    this.item = this.db.object('/positions/' + key).valueChanges();
+
+    //Subscribe to Observable
+    this.item.subscribe((item) => {
+      this.model = new Position(key, item.name, item.description, item.created, item.modified, item.user, item.reportsto, item.filled, item.heldby, item.compensation, item.complower, item.compupper);
+    });
+
+  }
+
+  //Function - Show the Delete Conf.
+  onShowDelete(key): void {
+
+    //Open the dialog and save the reference of it
+    const dialogRef = this._fuseConfirmationService.open(this.dialogconfigForm.value);
+
+    //Subscribe to afterClosed from the dialog reference
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result === 'confirmed') {
+        //Call Actual Delete
+        this.onDelete(key);
+      }
+    });
+  }
+
+  //Function - Add New Item to DB
+  onAdd(form: NgForm): void {
 
     //Cast model to variable for formReset
     const mname: string = this.model.name;
@@ -68,75 +116,46 @@ export class PositionsComponent implements OnInit {
     const mdatenow = Math.floor(Date.now());
 
     //Define Promise
-    const promiseAddItem = this.listRef
+    const promiseAddItem = this.db.list('/positions')
       .push({ name: mname, reportsto: mreportsto, description: mdescription, filled: mfilled, heldby: mheldby, compensation: mcompensation, complower: mcomplower, compupper: mcompupper, created: mdatenow, modified: mdatenow, user: this.fbuser.id });
 
     //Call Promise
     promiseAddItem
-      .then(_ => this.showadditem = false)
+      .then(_ => form.resetForm())
       .catch(err => console.log(err, 'Error Submitting Position!'));
 
     this.cdkScrollable.scrollTo({ top: 0 });
 
   }
 
+  //Function - Update Item in DB
   onEdit(key): void {
 
-    // //Cast model to variable for formReset
-    // const mname: string = this.model.name;
-    // const mdescription: string = this.model.description;
-    // const mawardedby: string = this.model.awardedby;
-    // const mawardedon: string = this.model.awardedon;
-    // const mdatenow = Math.floor(Date.now());
+    //Cast model to variable for formReset
+    const mname: string = this.model.name;
+    const mdescription: string = this.model.description;
+    const mdatenow = Math.floor(Date.now());
 
-    // this.db.object('/users/' + this.fbuser.id + '/training' + '/' + key)
-    //   .update({ name: mname, description: mdescription, modified: mdatenow, awardedby: mawardedby, awardedon: mawardedon });
-    // this.db.object('/training/' + this.fbuser.id + '/' + key)
-    //   .update({ name: mname, description: mdescription, modified: mdatenow, awardedby: mawardedby, awardedon: mawardedon });
-    // this.showedititem = false;
-    // this.cdkScrollable.scrollTo({ top: 0 });
-    console.log(key + ' edited');
+    this.db.object('/users/' + this.fbuser.id + '/talents/' + key)
+      .update({ name: mname, description: mdescription, modified: mdatenow });
+    this.db.object('/talents/' + this.fbuser.id + '/' + key)
+      .update({ name: mname, description: mdescription, modified: mdatenow });
+
+    this.cdkScrollable.scrollTo({ top: 0 });
+
   }
 
+  //Function - Delete Item in DB
   onDelete(key): void {
+
     this.db.object('/positions/' + key).remove();
 
-
-    console.log(key + ' deleted');
-
   }
 
-  onShowAddForm(): void {
-    this.showedititem = false;
-    this.showadditem = true;
-    this.cdkScrollable.scrollTo({ top: 0 });
-  }
-
-  onHideAddForm(): void {
-    this.showadditem = false;
-    this.cdkScrollable.scrollTo({ top: 0 });
-  }
-
-  onShowEditForm(key): void {
-    this.showadditem = false;
-    this.showedititem = true;
-    this.cdkScrollable.scrollTo({ top: 0 });
-
-    // //Define Observable
-    // this.item = this.db.object('/users/' + this.fbuser.id + '/training/' + key).valueChanges();
-
-    // //Subscribe to Observable
-    // this.item.subscribe((item) => {
-    //   this.model = new Training(key, item.name, item.description, item.created, item.modified, item.user, item.awardedby, item.awardedon);
-    // });
-
-    console.log(key + 'has been selected to edit');
-  }
-
-  onHideEditForm(): void {
-    this.showedititem = false;
-    //this.model = new Training();
-    this.cdkScrollable.scrollTo({ top: 0 });
+  //Function - Cancel the Add or Edit Form
+  onCancelForm(form: NgForm): void {
+    form.resetForm();
+    this.viewState = 1;
   }
 
   //Compensation Checkbox
@@ -151,22 +170,29 @@ export class PositionsComponent implements OnInit {
     else { this.showcompensation = false; }
   }
 
-  openConfirmationDialog(key): void {
-    //Open the dialog and save the reference of it
-    const dialogRef = this._fuseConfirmationService.open(this.dialogconfigForm.value);
-
-    //Subscribe to afterClosed from the dialog reference
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result === 'confirmed') {
-        //Call Actual Delete
-        this.onDelete(key);
-      }
-    });
-  }
-
   ngOnInit(): void {
 
-    this.items = this.db.list('/positions').snapshotChanges();
+    //Call the Firebase Database and get the initial data.
+    this.db.list('/positions').snapshotChanges().subscribe(
+      (results: object) => {
+
+        //Put the results of the DB call into an object.
+        this.items = results;
+
+        console.log(this.items);
+
+        //Check if the results object is empty
+        if (Object.keys(this.items).length === 0) {
+          //It's empty, so set the view state to "No Data" mode.
+          this.viewState = 2;
+        }
+        else {
+          //It's not empty, so set the view state to "Show Data" mode.
+          this.viewState = 1;
+        };
+
+      }
+    );
 
     //Formbuilder for Dialog Popup
     this.dialogconfigForm = this._formBuilder.group({
@@ -195,8 +221,7 @@ export class PositionsComponent implements OnInit {
 
 }
 
-
-// Empty Training class
+// Empty Position class
 export class Position {
 
   constructor(
@@ -207,7 +232,6 @@ export class Position {
     public modified: string = '',
     public user: string = '',
     public reportsto: string = '',
-    public awardedon: string = '',
     public filled: boolean = false,
     public heldby: string = '',
     public compensation: boolean = false,
