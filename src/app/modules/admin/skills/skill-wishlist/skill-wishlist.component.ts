@@ -1,22 +1,25 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { CdkScrollable } from '@angular/cdk/scrolling';
 import { AngularFireDatabase, AngularFireList } from '@angular/fire/compat/database';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
-import { Observable, combineLatest } from 'rxjs';
+import { Observable, Subject, combineLatest } from 'rxjs';
 
 @Component({
   selector: 'app-skill-wishlist',
   templateUrl: './skill-wishlist.component.html',
   styleUrls: ['./skill-wishlist.component.scss']
 })
-export class SkillWishlistComponent implements OnInit {
+export class SkillWishlistComponent implements OnInit, OnDestroy {
 
   //Initialize Varables
   //-------------------
 
   //Scroll element
   @ViewChild(CdkScrollable) cdkScrollable: CdkScrollable;
+
+  //Unscubscribe All
+  private _unsubscribeAll: Subject<any> = new Subject<any>();
 
   //Current User
   fbuser = JSON.parse(localStorage.getItem('fbuser'));
@@ -376,6 +379,13 @@ export class SkillWishlistComponent implements OnInit {
     });
   }
 
+  // -----------------------------------------------------------------------------------------------------
+  // @ Lifecycle hooks
+  // -----------------------------------------------------------------------------------------------------
+
+  /**
+   * On init
+   */
   ngOnInit(): void {
 
     //Populate Areas - Firebase List Object
@@ -430,7 +440,22 @@ export class SkillWishlistComponent implements OnInit {
 
   }
 
+  /**
+   * On destroy
+   */
+  ngOnDestroy(): void {
+    // Unsubscribe from all subscriptions
+    this._unsubscribeAll.next(null);
+    this._unsubscribeAll.complete();
+  }
+
 }
+
+// -----------------------------------------------------------------------------------------------------
+// @ Models
+// -----------------------------------------------------------------------------------------------------
+
+
 
 // Empty Wishlist class
 export class Wishlist {

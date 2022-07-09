@@ -120,6 +120,12 @@ export const appRoutes: Route[] = [
                     { path: 'positions', loadChildren: () => import('app/modules/admin/administration/positions/positions.module').then(m => m.PositionsModule) }
                 ]
             },
+            // Wishklist Areas
+            {
+
+                path: 'wishlist', loadChildren: () => import('app/modules/admin/wishlist/wishlist.module').then(m => m.WishlistModule),
+
+            },
         ]
     }
 ];

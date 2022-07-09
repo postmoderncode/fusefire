@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { CdkScrollable } from '@angular/cdk/scrolling';
 import { AngularFireDatabase } from '@angular/fire/compat/database';
 import { AbstractControl, FormBuilder, FormGroup, NgForm } from '@angular/forms';
@@ -7,12 +7,12 @@ import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { Observable, Subject } from 'rxjs';
 
 @Component({
-  selector: 'app-professional-training',
-  templateUrl: './professional-training.component.html',
-  styleUrls: ['./professional-training.component.scss']
+  selector: 'app-wishlist-training',
+  templateUrl: './wishlist-training.component.html',
+  styleUrls: ['./wishlist-training.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-
-export class ProfessionalTrainingComponent implements OnInit, OnDestroy {
+export class WishlistTrainingComponent implements OnInit, OnDestroy {
 
   //Initialize Variables
   //---------------------
@@ -210,6 +210,7 @@ export class ProfessionalTrainingComponent implements OnInit, OnDestroy {
           //It's not empty, so set the view state to "Show Data" mode.
           this.viewState = 1;
         };
+        console.log('view-state: ' + this.viewState);
 
       }
     );
