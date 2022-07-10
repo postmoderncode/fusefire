@@ -53,11 +53,11 @@ export const defaultNavigation: FuseNavigationItem[] = [
             //     link: 'skills/skill-wishlist'
             // },
             {
-                id: 'talents-hobbies',
+                id: 'talent-hobbies',
                 title: 'Talents & Hobbies',
                 type: 'basic',
                 icon: 'feather:heart',
-                link: 'skills/talents-hobbies'
+                link: 'skills/talent-hobbies'
             }
         ]
     },
@@ -368,11 +368,11 @@ export const futuristicNavigation: FuseNavigationItem[] = [
             //     link: 'skills/skill-wishlist'
             // },
             {
-                id: 'talents-hobbies',
+                id: 'talent-hobbies',
                 title: 'Talents & Hobbies',
                 type: 'basic',
                 icon: 'heroicons_outline:chart-pie',
-                link: 'skills/talents-hobbies'
+                link: 'skills/talent-hobbies'
             }
         ]
     },
@@ -523,11 +523,11 @@ export const horizontalNavigation: FuseNavigationItem[] = [
                 link: 'skills/skill-wishlist'
             },
             {
-                id: 'talents-hobbies',
+                id: 'talent-hobbies',
                 title: 'Talents & Hobbies',
                 type: 'basic',
                 icon: 'heroicons_outline:chart-pie',
-                link: 'skills/talents-hobbies'
+                link: 'skills/talent-hobbies'
             }
         ]
     },

@@ -10,7 +10,7 @@ import { Observable, Subject } from 'rxjs';
   selector: 'app-wishlist-training',
   templateUrl: './wishlist-training.component.html',
   styleUrls: ['./wishlist-training.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.Default
 })
 export class WishlistTrainingComponent implements OnInit, OnDestroy {
 

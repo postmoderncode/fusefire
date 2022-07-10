@@ -1,12 +1,17 @@
         <!-- CONTENT GOES HERE -->
         <div class="flex justify-center h-full">
 
+            <!-- Action Buttons -->
+            <div *ngIf="viewState !== 3">
+
+                <button (click)="onShowAddForm();" [disabled]="showadditem" mat-flat-button type="button"
+                    [color]="'primary'">
+                    Add Training
+                </button>
+            </div>
+
             <!-- Outer Flex Container - Ensures the content area does not flex too wide. -->
             <div class="flex-initial w-[1400px]">
-
-                <div *ngIf="viewState === 1">
-                            Bango
-                </div>
 
                 <!-- Switch Code to Control ViewState -->
                 <div [ngSwitch]="viewState">
