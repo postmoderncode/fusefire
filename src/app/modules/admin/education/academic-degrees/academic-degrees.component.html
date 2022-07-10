@@ -1,4 +1,4 @@
-\<div class="absolute inset-0 flex flex-col min-w-0 overflow-y-auto" cdkScrollable>
+<div class="absolute inset-0 flex flex-col min-w-0 overflow-y-auto" cdkScrollable>
 
     <!-- Header -->
     <div
@@ -15,8 +15,8 @@
 
         </div>
 
-        <!-- Right Side - Action Buttons -->
-        <div *ngIf="viewState !== 3" class="flex shrink-0 items-center mt-3">
+        <!-- Action Buttons -->
+        <div *ngIf="viewState !== 3">
 
             <button (click)="onShowAddForm();" [disabled]="showadditem" class="ml-4" mat-flat-button type="button"
                 [color]="'primary'">
@@ -159,12 +159,6 @@
 
                             </div>
 
-
-
-
-
-
-
                         </div>
 
                     </div>
@@ -258,6 +252,10 @@
                                           </mat-option>
                                         </mat-select>
                                       </mat-form-field>
+
+                                </div>
+
+                                <div class="form-group">
                                       <!-- Form Field - Degree Type -->
                                       <mat-form-field appearance="fill" class="w-100">
                                         <mat-label>Degree Type</mat-label>
