@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { AngularFireDatabase, AngularFireList } from '@angular/fire/compat/database';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { AngularFireDatabase } from '@angular/fire/compat/database';
+import { FormBuilder, FormGroup, NgForm } from '@angular/forms';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { Observable, Subject, combineLatest, map } from 'rxjs';
 
@@ -15,11 +15,27 @@ export class SkillCatalogComponent implements OnInit, OnDestroy {
   //Initialize Varables
   //-------------------
 
-  //Current User
-  fbuser = JSON.parse(localStorage.getItem('fbuser'));
-
   //Unscubscribe All
   private _unsubscribeAll: Subject<any> = new Subject<any>();
+
+  //Page View State (Default is "Loading..")
+  viewState = 1;
+
+  //Form Mode State (Add vs. Edit Mode)
+  formMode = '';
+
+  //Container to hold a list of items
+  items: object;
+
+  //Container to hold a single item
+  item: Observable<any>;
+
+  //Container to hold Current User
+  fbuser = JSON.parse(localStorage.getItem('fbuser'));
+
+  //Form Visibility Modifiers
+  showadditem = false;
+  showedititem = false;
 
   //Confirmation Dialog
   dialogconfigForm: FormGroup;
@@ -27,14 +43,6 @@ export class SkillCatalogComponent implements OnInit, OnDestroy {
   //Empty Model
   model = new CatItem();
   catmodel = new CatalogState();
-
-  //Firebase Observables
-  listRef: AngularFireList<any>;
-  item: Observable<any>;
-
-  //Form Visibility Modifiers
-  showadditem = false;
-  showedititem = false;
 
   //Object to Hold All Areas.
   areas;
@@ -49,14 +57,18 @@ export class SkillCatalogComponent implements OnInit, OnDestroy {
   selectedIndex = 0;
   tabTitle = 'Area';
 
-  /**
-   * Constructor
-   */
+
+  //Constructor
+  //---------------------
   constructor(
     private _formBuilder: FormBuilder,
     private _fuseConfirmationService: FuseConfirmationService,
     public db: AngularFireDatabase
   ) { }
+
+
+  //Functions
+  //---------------------
 
   //Function to Handle the Back Arrow
   goback(): void {
@@ -136,8 +148,6 @@ export class SkillCatalogComponent implements OnInit, OnDestroy {
   //Function to call when a category is selected
   onCategorySelect(categoryId): void {
 
-    console.log(categoryId);
-
     //Populate Skills - Firebase List w/ Sort&Filter Query
     const masters = this.db.list('/skillcatalog/skills/', ref => ref
       .orderByChild('category')
@@ -189,9 +199,6 @@ export class SkillCatalogComponent implements OnInit, OnDestroy {
       type = this.tabTitle.toLowerCase() + 's';
     }
 
-    //Set Firebase Path
-    this.listRef = this.db.list('/customs/' + type);
-
     //Define and call Promise to add Item with hierachial attributes
     if (this.tabTitle.toLowerCase() === 'area') {
 
@@ -199,9 +206,10 @@ export class SkillCatalogComponent implements OnInit, OnDestroy {
       const mname: string = this.model.name;
       const mdescription: string = this.model.description;
       const mvalue: string = this.onConvertName(this.model.name);
+      const mdatenow = Math.floor(Date.now());
 
       //Define Promise
-      const promiseAddItem = this.listRef.push({ name: mname, value: mvalue, description: mdescription, customtype: 'new' });
+      const promiseAddItem = this.db.list('/customs/' + type).push({ name: mname, value: mvalue, description: mdescription, customtype: 'new', created: mdatenow, modified: mdatenow, user: this.fbuser.id });
 
       //Call Promise
       promiseAddItem
@@ -215,9 +223,10 @@ export class SkillCatalogComponent implements OnInit, OnDestroy {
       const mdescription: string = this.model.description;
       const mvalue: string = this.onConvertName(this.model.name);
       const marea: string = this.catmodel.currentArea;
+      const mdatenow = Math.floor(Date.now());
 
       //Define Promise
-      const promiseAddItem = this.listRef.push({ area: marea, name: mname, value: mvalue, description: mdescription, customtype: 'new' });
+      const promiseAddItem = this.db.list('/customs/' + type).push({ area: marea, name: mname, value: mvalue, description: mdescription, customtype: 'new', created: mdatenow, modified: mdatenow, user: this.fbuser.id });
 
       //Call Promise
       promiseAddItem
@@ -231,9 +240,10 @@ export class SkillCatalogComponent implements OnInit, OnDestroy {
       const mdescription: string = this.model.description;
       const mvalue: string = this.onConvertName(this.model.name);
       const mcategory: string = this.catmodel.currentCategory;
+      const mdatenow = Math.floor(Date.now());
 
       //Define Promise
-      const promiseAddItem = this.listRef.push({ category: mcategory, name: mname, value: mvalue, description: mdescription, customtype: 'new' });
+      const promiseAddItem = this.db.list('/customs/' + type).push({ category: mcategory, name: mname, value: mvalue, description: mdescription, customtype: 'new', created: mdatenow, modified: mdatenow, user: this.fbuser.id });
 
       //Call Promise
       promiseAddItem
@@ -250,6 +260,7 @@ export class SkillCatalogComponent implements OnInit, OnDestroy {
     const mname: string = this.model.name;
     const mdescription: string = this.model.description;
     const mvalue: string = this.onConvertName(this.model.name);
+    const mdatenow = Math.floor(Date.now());
 
     //Define and call Promise to add Item
     if (this.tabTitle.toLowerCase() === 'area') {
@@ -258,13 +269,13 @@ export class SkillCatalogComponent implements OnInit, OnDestroy {
         if (ref === null) {
 
           this.db.object('/customs/areas/' + key)
-            .update({ name: mname, description: mdescription, value: mvalue });
+            .update({ name: mname, description: mdescription, value: mvalue, modified: mdatenow, user: this.fbuser.id });
 
 
         } else {
 
           this.db.object('/customs/areas/' + key)
-            .update({ name: mname, description: mdescription, value: mvalue, customtype: 'rename' });
+            .update({ name: mname, description: mdescription, value: mvalue, customtype: 'rename', modified: mdatenow, user: this.fbuser.id });
 
         }
       });
@@ -276,13 +287,13 @@ export class SkillCatalogComponent implements OnInit, OnDestroy {
         if (ref === null) {
 
           this.db.object('/customs/categories/' + key)
-            .update({ name: mname, description: mdescription, value: mvalue });
+            .update({ name: mname, description: mdescription, value: mvalue, modified: mdatenow, user: this.fbuser.id });
 
 
         } else {
 
           this.db.object('/customs/categories/' + key)
-            .update({ name: mname, description: mdescription, value: mvalue, customtype: 'rename' });
+            .update({ name: mname, description: mdescription, value: mvalue, customtype: 'rename', modified: mdatenow, user: this.fbuser.id });
 
         }
       });
@@ -295,13 +306,13 @@ export class SkillCatalogComponent implements OnInit, OnDestroy {
         if (ref === null) {
 
           this.db.object('/customs/skills/' + key)
-            .update({ name: mname, description: mdescription, value: mvalue });
+            .update({ name: mname, description: mdescription, value: mvalue, modified: mdatenow, user: this.fbuser.id });
 
 
         } else {
 
           this.db.object('/customs/skills/' + key)
-            .update({ name: mname, description: mdescription, value: mvalue, customtype: 'rename' });
+            .update({ name: mname, description: mdescription, value: mvalue, customtype: 'rename', modified: mdatenow, user: this.fbuser.id });
 
         }
       });
@@ -318,22 +329,34 @@ export class SkillCatalogComponent implements OnInit, OnDestroy {
 
   }
 
+
+
+
+
+  //Function - Cancel the Add or Edit Form
+  onCancelForm(form: NgForm): void {
+    form.resetForm();
+    this.viewState = 1;
+  }
+
   //Contextual Button based on tabTitle
   onShowAddForm(type: string): void {
-    this.showedititem = false;
-    this.showadditem = true;
+    //Set the View State
+    this.viewState = 3;
+
+    //Set the Form Mode
+    this.formMode = 'add';
 
   }
 
-  onHideAddForm(): void {
-    this.showadditem = false;
-
-  }
-
+  //Fuction - Show the Edit Form
   onShowEditForm(key: string, obj): void {
 
-    this.showadditem = false;
-    this.showedititem = true;
+    //Set the View State
+    this.viewState = 3;
+
+    //Set the Form Mode
+    this.formMode = 'edit';
 
     //Define and call Promise to add Item
     if (this.tabTitle.toLowerCase() === 'area') {
@@ -393,6 +416,22 @@ export class SkillCatalogComponent implements OnInit, OnDestroy {
 
   }
 
+  //Function - Show the Delete Conf.
+  onShowDelete(key): void {
+
+    //Open the dialog and save the reference of it
+    const dialogRef = this._fuseConfirmationService.open(this.dialogconfigForm.value);
+
+    //Subscribe to afterClosed from the dialog reference
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result === 'confirmed') {
+        //Call Actual Delete
+        this.onDelete(key);
+      }
+    });
+  }
+
+  //Function - Hide the selected item
   onHideItem(key: string): void {
 
     console.log('This ' + this.tabTitle + ' is hidden: ' + key);
@@ -426,17 +465,6 @@ export class SkillCatalogComponent implements OnInit, OnDestroy {
 
   }
 
-  openConfirmationDialog(key): void {
-    // Open the dialog and save the reference of it
-    const dialogRef = this._fuseConfirmationService.open(this.dialogconfigForm.value);
-
-    // Subscribe to afterClosed from the dialog reference
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result === 'confirmed') {
-        this.onDelete(key);
-      }
-    });
-  }
 
   // -----------------------------------------------------------------------------------------------------
   // @ Lifecycle hooks
@@ -472,7 +500,6 @@ export class SkillCatalogComponent implements OnInit, OnDestroy {
         (res) => {
           this.areas = res.filter(area => area.payload.val().name !== '' && area.payload.val().name !== null);
         });
-
 
     //Formbuilder for Dialog Popup
     this.dialogconfigForm = this._formBuilder.group({
@@ -540,6 +567,3 @@ export class CatalogState {
   ) { }
 
 }
-
-
-
