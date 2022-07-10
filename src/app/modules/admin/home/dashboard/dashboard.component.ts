@@ -1,17 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireDatabase } from '@angular/fire/compat/database';
 
-
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
-
 })
+
 export class DashboardComponent implements OnInit {
 
-  //Initialize Varables
-  //-------------------
+  //Initialize Variables
+  //---------------------
 
   //Current User
   fbuser = JSON.parse(localStorage.getItem('fbuser'));
@@ -19,14 +18,19 @@ export class DashboardComponent implements OnInit {
   //Firebase Observables
   counts;
 
+  //Total Wishlists
+  wishlistscount;
 
-  /**
-   * Constructor
-   */
+
+  //Constructor
+  //---------------------
   constructor(
     public db: AngularFireDatabase
   ) { }
 
+
+  //Functions
+  //---------------------
 
   ngOnInit(): void {
 
@@ -35,6 +39,13 @@ export class DashboardComponent implements OnInit {
         (results: any[]) => {
           console.log(results);
           this.counts = results;
+          this.wishlistscount = (this.counts.wishlists?.awards ?? 0) +
+            (this.counts.wishlists?.certificates ?? 0) +
+            (this.counts.wishlists?.degrees ?? 0) +
+            (this.counts.wishlists?.skills ?? 0) +
+            (this.counts.wishlists?.training ?? 0)
+
+
         }
 
       );
@@ -42,4 +53,3 @@ export class DashboardComponent implements OnInit {
   }
 
 }
-
