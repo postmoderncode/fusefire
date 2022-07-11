@@ -153,7 +153,6 @@ export class WishlistAwardsComponent implements OnInit, OnDestroy {
 
     this.cdkScrollable.scrollTo({ top: 0 });
 
-    console.log(key + ' edited');
   }
 
   //Function - Delete Item in DB

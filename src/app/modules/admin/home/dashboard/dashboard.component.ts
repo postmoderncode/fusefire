@@ -34,10 +34,11 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
 
+    this.wishlistscount = 0;
+
     this.db.object('/counts/' + this.fbuser.id)
       .valueChanges().subscribe(
         (results: any[]) => {
-          console.log(results);
           this.counts = results;
           this.wishlistscount = (this.counts.wishlists?.awards ?? 0) +
             (this.counts?.wishlists?.certificates ?? 0) +
