@@ -58,6 +58,10 @@ export class MySkillsComponent implements OnInit, OnDestroy {
   qresults2;
   qresults3;
 
+  //Rating Customizations
+  ratingtype = 0;
+  ratingsteps = 5;
+
 
 
   //Constructor
