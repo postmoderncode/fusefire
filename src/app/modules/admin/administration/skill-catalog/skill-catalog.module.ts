@@ -7,6 +7,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatSliderModule } from '@angular/material/slider';
 import { FuseAlertModule } from '@fuse/components/alert';
 import { FuseCardModule } from '@fuse/components/card';
 import { FuseConfirmationModule } from '@fuse/services/confirmation';
@@ -29,6 +30,7 @@ const skillcatalogRoutes: Route[] = [
     MatButtonModule,
     MatFormFieldModule,
     MatInputModule,
+    MatSliderModule,
     FuseAlertModule,
     FuseCardModule,
     FuseConfirmationModule,
