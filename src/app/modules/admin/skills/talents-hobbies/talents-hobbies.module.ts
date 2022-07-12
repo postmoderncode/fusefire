@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { SharedModule } from 'app/shared/shared.module';
-import { TalentHobbiesComponent } from './talent-hobbies.component';
+import { TalentsHobbiesComponent } from './talents-hobbies.component';
 import { Route, RouterModule } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -13,21 +13,24 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { FuseAlertModule } from '@fuse/components/alert';
 import { FuseCardModule } from '@fuse/components/card';
 import { FuseConfirmationModule } from '@fuse/services/confirmation';
 
 
-const talenthobbiesRoutes: Route[] = [
+const talentshobbiesRoutes: Route[] = [
   {
     path: '',
-    component: TalentHobbiesComponent
+    component: TalentsHobbiesComponent
   }
 ];
 
 @NgModule({
   declarations: [
-    TalentHobbiesComponent
+    TalentsHobbiesComponent
   ],
   imports: [
     MatButtonModule,
@@ -41,11 +44,14 @@ const talenthobbiesRoutes: Route[] = [
     MatTabsModule,
     MatTableModule,
     MatTooltipModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatAutocompleteModule,
     FuseAlertModule,
     FuseCardModule,
     FuseConfirmationModule,
     SharedModule,
-    RouterModule.forChild(talenthobbiesRoutes)
+    RouterModule.forChild(talentshobbiesRoutes)
   ]
 })
-export class TalentHobbiesModule { }
+export class TalentsHobbiesModule { }

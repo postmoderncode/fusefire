@@ -5,7 +5,6 @@ import { Route, RouterModule } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
@@ -18,7 +17,6 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatStepperModule } from '@angular/material/stepper';
 import { FuseAlertModule } from '@fuse/components/alert';
 import { FuseCardModule } from '@fuse/components/card';
 import { FuseConfirmationModule } from '@fuse/services/confirmation';
@@ -50,12 +48,9 @@ const academicdegreesRoutes: Route[] = [
     MatNativeDateModule,
     MatAutocompleteModule,
     MatCheckboxModule,
-    MatStepperModule,
     FuseAlertModule,
     FuseCardModule,
     FuseConfirmationModule,
-    ReactiveFormsModule,
-    FormsModule,
     SharedModule,
     RouterModule.forChild(academicdegreesRoutes)
   ]

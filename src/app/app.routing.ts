@@ -10,7 +10,9 @@ import { InitialDataResolver } from 'app/app.resolvers';
 export const appRoutes: Route[] = [
 
     // Redirect empty path to '/example'
+    // { path: '', pathMatch: 'full', redirectTo: 'home/dashboard' },
     { path: '', pathMatch: 'full', redirectTo: 'home/dashboard' },
+
 
     // Redirect signed in user to the '/example'
     //
@@ -18,6 +20,7 @@ export const appRoutes: Route[] = [
     // path. Below is another redirection for that path to redirect the user to the desired
     // location. This is a small convenience to keep all main routes together here on this file.
     { path: 'signed-in-redirect', pathMatch: 'full', redirectTo: 'home/dashboard' },
+    //{path: 'signed-in-redirect', pathMatch : 'full', redirectTo: 'skills/add-skills'},
 
     // Auth routes for guests
     {
@@ -33,7 +36,8 @@ export const appRoutes: Route[] = [
             { path: 'forgot-password', loadChildren: () => import('app/modules/auth/forgot-password/forgot-password.module').then(m => m.AuthForgotPasswordModule) },
             { path: 'reset-password', loadChildren: () => import('app/modules/auth/reset-password/reset-password.module').then(m => m.AuthResetPasswordModule) },
             { path: 'sign-in', loadChildren: () => import('app/modules/auth/sign-in/sign-in.module').then(m => m.AuthSignInModule) },
-            { path: 'sign-up', loadChildren: () => import('app/modules/auth/sign-up/sign-up.module').then(m => m.AuthSignUpModule) }
+            { path: 'sign-up', loadChildren: () => import('app/modules/auth/sign-up/sign-up.module').then(m => m.AuthSignUpModule) },
+
         ]
     },
 
@@ -75,6 +79,8 @@ export const appRoutes: Route[] = [
         },
         children: [
 
+
+
             // Home Areas
             {
                 path: 'home', children: [
@@ -88,8 +94,7 @@ export const appRoutes: Route[] = [
             {
                 path: 'skills', children: [
                     { path: 'my-skills', loadChildren: () => import('app/modules/admin/skills/my-skills/my-skills.module').then(m => m.MySkillsModule) },
-                    { path: 'skill-wishlist', loadChildren: () => import('app/modules/admin/skills/skill-wishlist/skill-wishlist.module').then(m => m.SkillWishlistModule) },
-                    { path: 'talent-hobbies', loadChildren: () => import('app/modules/admin/skills/talent-hobbies/talent-hobbies.module').then(m => m.TalentHobbiesModule) },
+                    { path: 'talents-hobbies', loadChildren: () => import('app/modules/admin/skills/talents-hobbies/talents-hobbies.module').then(m => m.TalentsHobbiesModule) },
                 ]
             },
 
@@ -126,6 +131,7 @@ export const appRoutes: Route[] = [
                 path: 'wishlist', loadChildren: () => import('app/modules/admin/wishlist/wishlist.module').then(m => m.WishlistModule),
 
             },
+            { path: '**', redirectTo: '/' },
         ]
     }
 ];

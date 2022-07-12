@@ -1,18 +1,17 @@
-import { Component, OnInit, OnDestroy, ViewChild, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { AngularFireDatabase } from '@angular/fire/compat/database';
 import { FormBuilder, NgForm } from '@angular/forms';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { Observable, Subject } from 'rxjs';
-import { serverTimestamp } from '@angular/fire/database'
 import { CdkScrollable } from '@angular/cdk/scrolling';
 
 @Component({
-  selector: 'app-wishlist-training',
-  templateUrl: './wishlist-training.component.html',
-  styleUrls: ['./wishlist-training.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Default
+  selector: 'app-talents-hobbies',
+  templateUrl: './talents-hobbies.component.html',
+  styleUrls: ['./talents-hobbies.component.scss']
 })
-export class WishlistTrainingComponent implements OnInit, OnDestroy {
+
+export class TalentsHobbiesComponent implements OnInit, OnDestroy {
 
   //Initialize Variables
   //---------------------
@@ -39,14 +38,13 @@ export class WishlistTrainingComponent implements OnInit, OnDestroy {
   fbuser = JSON.parse(localStorage.getItem('fbuser'));
 
   //Container for Strongly typed Model. 
-  model = new Training();
+  model = new Talent();
 
   //Container for Strongly typed From Date Info. 
   formDates = new FormDates();
 
   //Container to hold Current Active Item Key
   currentkey = "";
-
 
   //Constructor
   //---------------------
@@ -82,18 +80,13 @@ export class WishlistTrainingComponent implements OnInit, OnDestroy {
     this.formMode = 'edit';
 
     //Define Observable
-    this.item = this.db.object('/users/' + this.fbuser.id + '/wishlists/training/' + key).valueChanges();
+    this.item = this.db.object('/users/' + this.fbuser.id + '/talents/' + key).valueChanges();
 
     //Subscribe to Observable
     this.item.subscribe((response) => {
 
       //Populate the Item Model with the response date from the DB. 
       this.model = response;
-
-      //Populate the "Form Dates Model" with the Unix Epoch Dates (Converted to GMT)
-      if (this.model.awardedon != null) {
-        this.formDates.awardedonForm = new Date(this.model.awardedon);
-      };
 
     });
 
@@ -143,37 +136,28 @@ export class WishlistTrainingComponent implements OnInit, OnDestroy {
     //Add the User ID to the Model
     this.model.uid = this.fbuser.id;
 
-    //If the Date "Awarded On" on the Form is not Null, then add it to the item model (in Unix Epoch Time). 
-    if (this.formDates.awardedonForm != null) {
-      this.model.awardedon = this.formDates.awardedonForm.valueOf();
-    }
-
-    //Add Server Side Timestamp to the Model
-    this.model.created = serverTimestamp();
-    this.model.modified = serverTimestamp();
-
     //Begin Database Calls to add the New Item
     //----------------------------------------
 
     //Call the 1st Firebase PromiseObject (To add Item to User Node)
-    const addUserItem = this.db.list('/users/' + this.fbuser.id + '/wishlists/training').push(this.model).then(responseObject => {
+    const addUserItem = this.db.list('/users/' + this.fbuser.id + '/talents').push(this.model).then(responseObject => {
 
       //Log Success
       console.log('Item added to the User Node');
 
       //Call the 2nd Firebase PromiseObject (To add Item to the Item Node)
-      const addItem = this.db.list('/wishlists/training/').set(responseObject.key, this.model).then(responseObject => {
+      const addItem = this.db.list('/talents/').set(responseObject.key, this.model).then(responseObject => {
 
         console.log('Item added to the Item Node');
 
         //Increment Count
-        this.db.object('/counts/' + this.fbuser.id + '/wishlists/training').query.ref.transaction((likes) => {
+        this.db.object('/counts/' + this.fbuser.id + '/talents').query.ref.transaction((likes) => {
 
           //Log the Counter Success
           console.log("Counter Updated Succesfuly");
 
           //Reset the Models back to Zero (Which also Resets the Form)
-          this.model = new Training();
+          this.model = new Talent();
           this.formDates = new FormDates();
 
           //Set the Counts
@@ -202,31 +186,22 @@ export class WishlistTrainingComponent implements OnInit, OnDestroy {
   //Function - Update Item in DB
   onEdit(key): void {
 
-    //If the Date "Awarded On" on the Form is not Null, then add it to the item model (in Unix Epoch Time). 
-    if (this.formDates.awardedonForm != null) {
-      this.model.awardedon = this.formDates.awardedonForm.valueOf();
-    }
-
-    //Add Server Side Timestamp to the Model
-
-    this.model.modified = serverTimestamp();
-
     //Begin Database Calls to Update the Existing Item
     //----------------------------------------
 
     //Call the 1st Firebase PromiseObject (To add Item to User Node)
-    const editUserItem = this.db.object('/users/' + this.fbuser.id + '/wishlists/training/' + key + '/').update(this.model).then(responseObject => {
+    const editUserItem = this.db.object('/users/' + this.fbuser.id + '/talents/' + key + '/').update(this.model).then(responseObject => {
 
       //Log Success
       console.log('Item updated in the User Node');
 
       //Call the 2nd Firebase PromiseObject (To add Item to the Item Node)
-      const editItem = this.db.object('/wishlists/training/' + key + '/').update(this.model).then(responseObject => {
+      const editItem = this.db.object('/talents/' + key + '/').update(this.model).then(responseObject => {
 
         console.log('Item updated in the Item Node');
 
         //Reset the Models back to Zero (Which also Resets the Form)
-        this.model = new Training();
+        this.model = new Talent();
         this.formDates = new FormDates();
         this.currentkey = '';
 
@@ -248,19 +223,19 @@ export class WishlistTrainingComponent implements OnInit, OnDestroy {
   onDelete(key): void {
 
     //Delete Item from the Item Node. 
-    this.db.object('/wishlists/training/' + key).remove().then(responseObject => {
+    this.db.object('/talents/' + key).remove().then(responseObject => {
 
       //Log Sucess
       console.log("Remove Item from the Item Node Complete");
 
       //Delete Item from the User Node. 
-      this.db.object('/users/' + this.fbuser.id + '/wishlists/training/' + key).remove().then(responseObject => {
+      this.db.object('/users/' + this.fbuser.id + '/talents/' + key).remove().then(responseObject => {
 
         //Log Sucess
         console.log("Remove Item from the User Node Complete");
 
         //Decrement Count
-        this.db.object('/counts/' + this.fbuser.id + '/wishlists/training').query.ref.transaction((likes) => {
+        this.db.object('/counts/' + this.fbuser.id + '/talents').query.ref.transaction((likes) => {
           if (likes === null) {
             return likes = 0;
           } else {
@@ -287,7 +262,7 @@ export class WishlistTrainingComponent implements OnInit, OnDestroy {
 
   //Function - Cancel the Add or Edit Form
   onCancelForm(form: NgForm): void {
-    this.model = new Training();
+    this.model = new Talent();
     this.formDates = new FormDates();
     this.viewState = 1;
     //Scroll to top
@@ -304,7 +279,7 @@ export class WishlistTrainingComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
 
     //Call the Firebase Database and get the initial data.
-    this.db.list('/users/' + this.fbuser.id + '/wishlists/training').snapshotChanges().subscribe(
+    this.db.list('/users/' + this.fbuser.id + '/talents').snapshotChanges().subscribe(
       (results: object) => {
 
         //Put the results of the DB call into an object.
@@ -342,18 +317,16 @@ export class WishlistTrainingComponent implements OnInit, OnDestroy {
 // @ Models
 // -----------------------------------------------------------------------------------------------------
 
-// Empty Training class
-export class Training {
+// Empty Talent class
+export class Talent {
 
   constructor(
     public key: string = '',
     public name: string = '',
     public description: string = '',
-    public created: object = {},
-    public modified: object = {},
+    public created: string = '',
+    public modified: string = '',
     public uid: string = '',
-    public awardedby: string = '',
-    public awardedon: number = null,
 
   ) { }
 
@@ -366,4 +339,3 @@ export class FormDates {
     public expiresonForm: Date = null,
   ) { }
 }
-
