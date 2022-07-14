@@ -11,7 +11,9 @@
                     class="text-3xl md:text-3xl text-slate-700 font-extrabold tracking-tight leading-7 sm:leading-10 truncate">
                     Skill Catalog
                 </h2>
-                 <!-- Catalog_State: {{this.catmodel.currentArea}} | {{this.catmodel.currentCategory}} | {{this.catmodel.currentSkill}} -->
+
+                 Catalog_State: {{this.catmodel.currentArea}} | {{this.catmodel.currentCategory}} | {{this.catmodel.currentSkill}}
+
             </div>
 
         </div>
@@ -290,7 +292,7 @@
                                 <!-- Form Field Rating  -->
                                 <div *ngIf="tabTitle === 'Skill'" class="form-group mb-5 mt-10">
                                     <p>Set the number of 'ticks' in a rating slider of 0-100. ex. 20 would be 5, 25 is 4. </p>
-                                    <div class="mb-5">
+                                    <div class="mb-8">
                                         <mat-label class="mr-5 text-lg"><strong>Rating Ticks:</strong> {{model.ratingsteps}}</mat-label>
                                     </div>
                         
@@ -305,7 +307,7 @@
                                         style="min-width:300px;">
                                     </mat-slider>
 
-                                    <div class="mt-10 mb-5">
+                                    <div class="mt-10 mb-8">
                                         <mat-label>Example Slider with Custom Ticks:</mat-label>
                                     </div>
                                     <mat-slider
