@@ -1,9 +1,10 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { AngularFireDatabase } from '@angular/fire/compat/database';
 import { FormBuilder, NgForm } from '@angular/forms';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { Observable, Subject, combineLatest, map } from 'rxjs';
-
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-my-skills',
@@ -66,6 +67,10 @@ export class MySkillsComponent implements OnInit, OnDestroy {
   ratingtype = 0;
   ratingsteps = 5;
 
+  //Table Settings
+  displayedColumns: string[] = ['name', 'rating'];
+  //dataSource;
+
 
 
   //Constructor
@@ -75,6 +80,13 @@ export class MySkillsComponent implements OnInit, OnDestroy {
     private _fuseConfirmationService: FuseConfirmationService,
     public db: AngularFireDatabase
   ) { }
+
+
+  // @ViewChild(MatSort) sort: MatSort;
+
+  // @ViewChild(MatSort) set MatSort(sort: MatSort) {
+  //   this.dataSource.sort = this.sort;
+  // }
 
   //Functions
   //---------------------
@@ -280,7 +292,7 @@ export class MySkillsComponent implements OnInit, OnDestroy {
         console.log('Item added to the Item Node');
 
         //Increment Count
-        this.db.object('/counts/' + this.fbuser.id + '/skills').query.ref.transaction((likes) => {
+        this.db.object('/counts/' + this.fbuser.id + '/skills').query.ref.transaction((counts) => {
 
           //Log the Counter Success
           console.log("Counter Updated Succesfuly");
@@ -290,10 +302,10 @@ export class MySkillsComponent implements OnInit, OnDestroy {
           this.formDates = new FormDates();
 
           //Set the Counts
-          if (likes === null) {
-            return likes = 1;
+          if (counts === null) {
+            return counts = 1;
           } else {
-            return likes + 1;
+            return counts + 1;
           }
 
         });
@@ -360,11 +372,12 @@ export class MySkillsComponent implements OnInit, OnDestroy {
         console.log("Remove Item from the User Node Complete");
 
         //Decrement Count
-        this.db.object('/counts/' + this.fbuser.id + '/skills').query.ref.transaction((likes) => {
-          if (likes === null) {
-            return likes = 0;
+        this.db.object('/counts/' + this.fbuser.id + '/skills').query.ref.transaction((counts) => {
+          if (counts === null || counts <= 0) {
+
+            return counts = 0;
           } else {
-            return likes - 1;
+            return counts - 1;
           }
         });
 
@@ -403,6 +416,9 @@ export class MySkillsComponent implements OnInit, OnDestroy {
 
   //Fuction - Show the Edit Form
   onShowEditForm(key): void {
+
+    //Set the current key
+    this.currentkey = key;
 
     //Set the View State
     this.viewState = 3;
@@ -515,12 +531,13 @@ export class MySkillsComponent implements OnInit, OnDestroy {
 
     //Populate User Skills - Firebase List Object
     this.items = this.db.list('/users/' + this.fbuser.id + '/skills').snapshotChanges().subscribe(
-      (results: object) => {
+      (results) => {
 
         //Put the results of the DB call into an object.
         this.items = results;
 
-        console.log(this.items);
+
+        //  this.dataSource = new MatTableDataSource(Array(results));
 
         //Check if the results object is empty
         if (Object.keys(this.items).length === 0) {
@@ -534,7 +551,6 @@ export class MySkillsComponent implements OnInit, OnDestroy {
 
       }
     );
-
 
   }
 
