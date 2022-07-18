@@ -68,7 +68,7 @@ export class MySkillsComponent implements OnInit, OnDestroy {
   ratingsteps = 5;
 
   //Table Settings
-  displayedColumns: string[] = ['name', 'rating'];
+  displayedColumns: string[] = ['name', 'rating', 'delete', 'edit'];
   //dataSource;
 
 
