@@ -20,9 +20,6 @@ export class ProfessionalTrainingComponent implements OnInit, OnDestroy {
   //Scroll element
   @ViewChild(CdkScrollable) cdkScrollable: CdkScrollable;
 
-  //Unscubscribe All
-  private _unsubscribeAll: Subject<any> = new Subject<any>();
-
   //Page View State (Default is "Loading..")
   viewState = 0;
 
@@ -47,6 +44,8 @@ export class ProfessionalTrainingComponent implements OnInit, OnDestroy {
   //Container to hold Current Active Item Key
   currentkey = '';
 
+  //Unscubscribe All
+  private _unsubscribeAll: Subject<any> = new Subject<any>();
 
   //Constructor
   //---------------------
@@ -248,7 +247,7 @@ export class ProfessionalTrainingComponent implements OnInit, OnDestroy {
   //Function - Delete Item in DB
   onDelete(key): void {
 
-    //Delete Item from the Item Node.
+    //Container for Strongly //Delete Item from the Item Node.
     this.db.object('/training/' + key).remove().then((responseObject) => {
 
       //Log Sucess
