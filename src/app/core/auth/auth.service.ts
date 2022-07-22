@@ -211,15 +211,12 @@ export class AuthService {
                     //See if user exists and if they are flagged as Admin
                     firebase.database().ref('userlist/' + result.user.uid).once('value', function (snapshot) {
                         if (snapshot.exists() && snapshot.val().isadmin == true) {
-
                             fbuser.isadmin = true;
 
                         } else if (snapshot.exists() && snapshot.val().isadmin == false) {
-
                             fbuser.isadmin = false;
 
                         } else {
-
                             fbuser.isadmin = false;
                         }
 
