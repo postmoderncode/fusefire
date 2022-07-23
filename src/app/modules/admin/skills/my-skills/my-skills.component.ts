@@ -95,15 +95,14 @@ export class MySkillsComponent implements OnInit, OnDestroy {
       case 1: {
         this.tabTitle = 'Area';
         this.selectedIndex = 0;
-        this.catmodel.currentCategory = '';
-        this.catmodel.currentSkill = '';
-        this.catmodel.currentCategoryName = '';
-        this.catmodel.currentSkillName = '';
+        this.catmodel = new CatalogState();
         break;
       }
       case 2: {
         this.tabTitle = 'Category';
         this.selectedIndex = 1;
+        this.catmodel.currentCategory = '';
+        this.catmodel.currentCategoryName = '';
         this.catmodel.currentSkill = '';
         this.catmodel.currentSkillName = '';
         break;
@@ -210,7 +209,7 @@ export class MySkillsComponent implements OnInit, OnDestroy {
     //Set the tab to categories
     this.selectedIndex = 1;
 
-    //Set thte catalog state
+    //Set the catalog state
     this.catmodel.currentArea = areaId;
     this.catmodel.currentAreaName = area.payload.val().name;
 
@@ -256,7 +255,7 @@ export class MySkillsComponent implements OnInit, OnDestroy {
     //Set the tab to skills
     this.selectedIndex = 2;
 
-    //Set thte catalog state
+    //Set the catalog state
     this.catmodel.currentCategory = categoryId;
     this.catmodel.currentCategoryName = ' > ' + category.payload.val().name;
   }
@@ -278,7 +277,7 @@ export class MySkillsComponent implements OnInit, OnDestroy {
     //Set the Form Mode
     this.formMode = 'add';
 
-    //Set thte catalog state
+    //Set the catalog state
     this.catmodel.currentSkill = skillId;
     this.catmodel.currentSkillName = ' > ' + skill.payload.val().name;
 
