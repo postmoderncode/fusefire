@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Pipe, PipeTransform } from '@angular/core';
 import { AngularFireDatabase } from '@angular/fire/compat/database';
 import { FormBuilder } from '@angular/forms';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
@@ -21,6 +21,12 @@ export class MyReportsComponent implements OnInit, OnDestroy {
   //Container to hold a list of items
   items: object;
 
+  //Search Variables
+  searchresults: object;
+  searchTerm;
+  filteredItems;
+  itemsCopy;
+
   //Unscubscribe All
   private _unsubscribeAll: Subject<any> = new Subject<any>();
 
@@ -32,6 +38,13 @@ export class MyReportsComponent implements OnInit, OnDestroy {
     public db: AngularFireDatabase
   ) { }
 
+
+
+
+  //Function - 
+  onSearch(): void {
+
+  }
 
   // -----------------------------------------------------------------------------------------------------
   // @ Lifecycle hooks
@@ -48,6 +61,7 @@ export class MyReportsComponent implements OnInit, OnDestroy {
 
         //Put the results of the DB call into an object.
         this.items = results;
+        this.itemsCopy = results;
         console.log(this.items);
 
       }
