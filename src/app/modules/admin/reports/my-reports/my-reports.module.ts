@@ -16,6 +16,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
 import { FuseAlertModule } from '@fuse/components/alert';
 import { FuseCardModule } from '@fuse/components/card';
 import { FuseConfirmationModule } from '@fuse/services/confirmation';
@@ -46,6 +48,8 @@ const myreportsRoutes: Route[] = [
     MatDatepickerModule,
     MatNativeDateModule,
     MatAutocompleteModule,
+    MatPaginatorModule,
+    MatSortModule,
     FuseAlertModule,
     FuseCardModule,
     FuseConfirmationModule,
