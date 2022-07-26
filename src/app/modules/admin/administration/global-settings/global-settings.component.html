@@ -21,7 +21,7 @@
         <div class="justify-center h-full">
 
             <div class="max-w-160 mb=10">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                This is where you control application wide settings for your organization. Changes made here will be affect all users.
             </div>
 
             <br />
@@ -29,19 +29,60 @@
 
                 <div class="form-group">
                     <mat-slide-toggle
-                    [(ngModel)]="model.ratingscale"
+                    [(ngModel)]="model.rating"
                     #name="ngModel"
                     color="primary"
                     name="name"
+                    (change)="onToggleRating($event)"
                     class="mt-10 mb-10">
                     Assign Default Rating Scale
                     </mat-slide-toggle>
                 </div>
 
-                <div *ngIf="model.ratingscale === true">
+                <div *ngIf="model.rating === true">
                     
-                    <div class="h-80 m-0 sm:mr-5 mb-5 p-5 h-80 shadow-lg border-2 border-slate-200 bg-white">
-                        Rating Scale Area
+                    <div class="h-70 m-0 sm:mr-5 mb-5 p-5 h-70 shadow-lg border-2 border-slate-200 bg-white">
+
+
+                        
+                        <div class="text-xl">
+                            Rating Steps: {{model.ratingsteps}}
+                        </div>
+
+                        <div class="text-right float-right">
+                            <button 
+                                (click)="onSaveRatingSteps(model.ratingsteps);"
+                                class="flex-none mr-6" 
+                                mat-flat-button
+                                type="button" 
+                                [color]="'primary'">
+                                Save
+                            </button>
+                        </div>
+
+                        <mat-slider
+                            thumbLabel
+                            id ="ratingsteps"
+                            name="ratingsteps"
+                            [(ngModel)]="model.ratingsteps"
+                            #name="ngModel"
+                            min="1" max="50" 
+                            step="1"
+                            style="min-width:300px;">
+                        </mat-slider>
+
+                        <div class="mt-5 mb-8">
+                            <mat-label>Example Slider with Custom Ticks:</mat-label>
+                        </div>
+                        <mat-slider
+                            thumbLabel
+                            id ="example"
+                            name="example"
+                            min="0" max="100" 
+                            step={{model.ratingsteps}}
+                            style="min-width:300px;">
+                        </mat-slider>
+
                     </div>
                 
                 </div>
@@ -51,9 +92,19 @@
                     [(ngModel)]="model.usercustom"
                     #name="ngModel"
                     color="primary"
+                    (change)="onToggleUserCustom($event)"
                     class="mb-10">
                     Allow Users to Create Custom Items
                     </mat-slide-toggle>
+                </div>
+
+                <div *ngIf="model.usercustom === true">
+                    
+                    <div class="h-20 m-0 sm:mr-5 mb-5 p-5 h-20 shadow-lg border-2 border-slate-200 bg-white">
+                        All Users can CREATE and EDIT custom AREAS, CATEGORIES, and SKILLS
+
+                    </div>
+                
                 </div>
 
                 <div class="form-group">
@@ -61,9 +112,19 @@
                     [(ngModel)]="model.restrictdomain"
                     #name="ngModel"
                     color="primary"
+                    (change)="onToggleRestrictDomain($event)"
                     class="mb-10">
                     Open User Registration to Outside Email Domains
                     </mat-slide-toggle>
+                </div>
+
+                <div *ngIf="model.restrictdomain === true">
+                    
+                    <div class="h-40 m-0 sm:mr-5 mb-5 p-5 h-40 shadow-lg border-2 border-slate-200 bg-white">
+                        Restrict User Registration to the following domain: (ex: mycompany.com)
+
+                    </div>
+                
                 </div>
 
                 <div class="form-group">
@@ -71,6 +132,7 @@
                     [(ngModel)]="model.whitelist"
                     #name="ngModel"
                     color="primary"
+                    (change)="onToggleWhitelist($event)"
                     class="mb-10">
                     Restrict User Registration to Whitelist
                     </mat-slide-toggle>

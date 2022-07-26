@@ -34,6 +34,7 @@ export class MySkillsComponent implements OnInit, OnDestroy {
   //Container for Strongly typed Model.
   model = new UserSkill();
   catmodel = new CatalogState();
+  globals = new Global();
 
   //Container for Strongly typed From Date Info.
   formDates = new FormDates();
@@ -62,7 +63,7 @@ export class MySkillsComponent implements OnInit, OnDestroy {
 
   //Rating Customizations
   ratingtype = 0;
-  ratingsteps = 5;
+  ratingsteps;
 
   //Table Settings
   displayedColumns: string[] = ['name', 'rating', 'delete', 'edit'];
@@ -269,7 +270,7 @@ export class MySkillsComponent implements OnInit, OnDestroy {
     this.model.key = skill.key;
     this.model.name = skill.payload.val().name;
 
-    this.ratingsteps = skill.payload.val().ratingsteps ?? 5;
+    this.ratingsteps = skill.payload.val().ratingsteps ?? this.globals.ratingsteps;
 
     //Set the View State
     this.viewState = 3;
@@ -430,7 +431,7 @@ export class MySkillsComponent implements OnInit, OnDestroy {
 
     //Subscribe to Observable
     this.item.subscribe((item) => {
-      this.model = new UserSkill(key, item.name, item.rating, item.created, item.modified, item.user);
+      this.model = new UserSkill(key, item.name, item.rating, item.created, item.modified, item.user, item.ratingsteps);
     });
 
 
@@ -550,6 +551,21 @@ export class MySkillsComponent implements OnInit, OnDestroy {
       }
     );
 
+    //Call the Firebase Database and get the global data.
+    this.db.object('/globals/').valueChanges().subscribe(
+      (results: object) => {
+
+        this.globals = results;
+
+        if (this.globals.rating === true) {
+          this.model.ratingsteps = this.globals.ratingsteps;
+        } else {
+          this.model.ratingsteps = 5;
+        }
+      }
+    );
+
+
   }
 
   /**
@@ -577,6 +593,7 @@ export class UserSkill {
     public created: object = {},
     public modified: object = {},
     public uid: string = '',
+    public ratingsteps: number = 5
 
   ) { }
 
@@ -603,4 +620,19 @@ export class FormDates {
     public awardedonForm: Date = null,
     public expiresonForm: Date = null,
   ) { }
+}
+
+// Empty Catalog Item class
+export class Global {
+
+  constructor(
+    public rating?,
+    public ratingsteps?,
+    public usercustom?,
+    public restrictdomain?,
+    public domain?,
+    public whitelist?
+
+  ) { }
+
 }
