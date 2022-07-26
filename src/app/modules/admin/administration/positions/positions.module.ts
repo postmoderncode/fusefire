@@ -5,7 +5,6 @@ import { Route, RouterModule } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
@@ -56,8 +55,6 @@ const positionsRoutes: Route[] = [
     FuseAlertModule,
     FuseCardModule,
     FuseConfirmationModule,
-    ReactiveFormsModule,
-    FormsModule,
     SharedModule,
     RouterModule.forChild(positionsRoutes)
   ]
