@@ -1,6 +1,6 @@
 <div class="absolute inset-0 flex flex-col min-w-0 overflow-y-auto" cdkScrollable>
 
-            <!-- Header -->
+    <!-- Header -->
     <div class="flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between p-6 pb-22 sm:pt-3 sm:pb-20 sm:px-10 bg-default dark:bg-transparent">
         <div class="flex-1 min-w-0">
             
@@ -109,26 +109,6 @@
 
                 <div class="form-group">
                     <mat-slide-toggle
-                    [(ngModel)]="model.restrictdomain"
-                    #name="ngModel"
-                    color="primary"
-                    (change)="onToggleRestrictDomain($event)"
-                    class="mb-10">
-                    Open User Registration to Outside Email Domains
-                    </mat-slide-toggle>
-                </div>
-
-                <div *ngIf="model.restrictdomain === true">
-                    
-                    <div class="h-40 m-0 sm:mr-5 mb-5 p-5 h-40 shadow-lg border-2 border-slate-200 bg-white">
-                        Restrict User Registration to the following domain: (ex: mycompany.com)
-
-                    </div>
-                
-                </div>
-
-                <div class="form-group">
-                    <mat-slide-toggle
                     [(ngModel)]="model.whitelist"
                     #name="ngModel"
                     color="primary"
@@ -149,7 +129,7 @@
             </div>
 
         </div>
-        
+
 
 
     </div>
