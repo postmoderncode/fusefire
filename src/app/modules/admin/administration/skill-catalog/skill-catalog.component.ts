@@ -648,8 +648,7 @@ export class Global {
     public rating?,
     public ratingsteps?,
     public usercustom?,
-    public restrictdomain?,
-    public domain?,
+    public usercustomall?,
     public whitelist?
 
   ) { }
