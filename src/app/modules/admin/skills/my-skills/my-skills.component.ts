@@ -13,6 +13,9 @@ import { MatTableDataSource } from '@angular/material/table';
 })
 export class MySkillsComponent implements OnInit, OnDestroy, AfterViewInit {
 
+  //Initialize Variables
+  //---------------------
+
   @Input() dataSource;
 
   @ViewChild(MatSort, { static: false }) sort: MatSort;
@@ -21,10 +24,7 @@ export class MySkillsComponent implements OnInit, OnDestroy, AfterViewInit {
   //   this.dataSource.sort = sort;
   // }
 
-  //Initialize Variables
-  //---------------------
-
-  //Page View State (Default is "Loading..")
+  //Page View State (Default is "Datatable for Sorting")
   viewState = 1;
 
   //Form Mode State (Add vs. Edit Mode)
@@ -80,6 +80,7 @@ export class MySkillsComponent implements OnInit, OnDestroy, AfterViewInit {
   //Unscubscribe All
   private _unsubscribeAll: Subject<any> = new Subject<any>();
 
+
   //Constructor
   //---------------------
   constructor(
@@ -94,6 +95,7 @@ export class MySkillsComponent implements OnInit, OnDestroy, AfterViewInit {
   // @ViewChild(MatSort) set MatSort(sort: MatSort) {
   //   this.dataSource.sort = this.sort;
   // }
+
 
   //Functions
   //---------------------
@@ -219,7 +221,6 @@ export class MySkillsComponent implements OnInit, OnDestroy, AfterViewInit {
     this.catmodel.currentArea = areaId;
     this.catmodel.currentAreaName = area.payload.val().name;
 
-
   }
 
   //Function - Call when a category is selected
@@ -281,7 +282,6 @@ export class MySkillsComponent implements OnInit, OnDestroy, AfterViewInit {
       this.ratingsteps = skill.payload.val().ratingsteps ?? 5;
     }
 
-
     //Set the View State
     this.viewState = 3;
 
@@ -295,6 +295,7 @@ export class MySkillsComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
 
+  //Function - Add Custom item to Catalog
   onAddCustom(form: NgForm): void {
 
     let type: string;
@@ -367,7 +368,6 @@ export class MySkillsComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
   }
-
 
 
   //Function - Add New Item to DB
@@ -486,10 +486,20 @@ export class MySkillsComponent implements OnInit, OnDestroy, AfterViewInit {
     this.model = new UserSkill();
     this.formDates = new FormDates();
     this.viewState = 1;
+    this.ngAfterViewInit();
 
   }
 
-  //Fuction - Show the Add Form
+  //Function - Cancel the Add Catalog/Search
+  onCancelAdd(): void {
+    this.model = new UserSkill();
+    this.formDates = new FormDates();
+    this.viewState = 1;
+    this.ngAfterViewInit();
+
+  }
+
+  //Function - Show the Add Form
   onShowAddForm(): void {
 
     //Set the View State
@@ -499,7 +509,7 @@ export class MySkillsComponent implements OnInit, OnDestroy, AfterViewInit {
     this.formMode = 'add';
   }
 
-  //Fuction - Show the Add Form
+  //Function - Show the Custom Add Form
   onShowCustomAddForm(): void {
 
     //Set the View State
@@ -509,11 +519,9 @@ export class MySkillsComponent implements OnInit, OnDestroy, AfterViewInit {
     this.formMode = 'add';
   }
 
-  //Fuction - Show the Edit Form
+  //Function - Show the Edit Form
   onShowEditForm(key): void {
 
-    console.log(key);
-    console.log('editing' + key);
     //Set the current key
     this.currentkey = key;
 
@@ -526,11 +534,8 @@ export class MySkillsComponent implements OnInit, OnDestroy, AfterViewInit {
     //Define Observable
     this.item = this.db.object('/users/' + this.fbuser.id + '/skills/' + key).valueChanges();
 
-    console.log('/users/' + this.fbuser.id + '/skills/' + key);
-
     //Subscribe to Observable
     this.item.subscribe((item) => {
-      //console.log(item.name);
       this.model = new UserSkill(key, item.name, item.rating, item.created, item.modified, item.user, item.ratingsteps);
     });
 
@@ -603,16 +608,12 @@ export class MySkillsComponent implements OnInit, OnDestroy, AfterViewInit {
   ngOnInit(): void {
 
 
-
-
   }
 
   /**
    * On After View init
    */
   ngAfterViewInit() {
-
-
 
     //Populate Areas - Firebase List Object
     const masters = this.db.list('/skillcatalog/areas/', ref => ref
@@ -653,11 +654,11 @@ export class MySkillsComponent implements OnInit, OnDestroy, AfterViewInit {
         const itemList = [];
 
         results.forEach(element => {
+
           let json = element.payload.toJSON();
-          console.log(element.key)
           json["$key"] = element.key;
           itemList.push(json as UserSkill);
-          console.log(json);
+
         });
 
         this.dataSource = new MatTableDataSource(itemList);
@@ -672,6 +673,7 @@ export class MySkillsComponent implements OnInit, OnDestroy, AfterViewInit {
         else {
           //It's not empty, so set the view state to "Show Data" mode.
           this.viewState = 1;
+
         };
 
       }

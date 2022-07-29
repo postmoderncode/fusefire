@@ -67,7 +67,7 @@
 
             <span *ngIf="viewState === 4 || viewState === 5">
                 <button
-                    (click)="ngOnInit()"
+                    (click)="onCancelAdd()"
                     class="flex-none ml-4" 
                     mat-stroked-button 
                     type="button" 
@@ -76,12 +76,6 @@
                 </button>
             </span>
         </div>
-
-
-
-
-
-
 
     </div>
 
@@ -104,6 +98,7 @@
 
                     <!-- SHOW LIST VIEW STATE -->
                     <div *ngSwitchCase="1">
+                        <!-- <div> -->
 
                         <div class="min-h-screen shadow-md rounded-2xl bg-white">
                     
