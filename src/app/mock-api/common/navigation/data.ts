@@ -45,13 +45,6 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 icon: 'feather:send',
                 link: 'skills/my-skills'
             },
-            // {
-            //     id: 'skill-wishlist',
-            //     title: 'Skill Wishlist',
-            //     type: 'basic',
-            //     icon: 'heroicons_outline:sparkles',
-            //     link: 'skills/skill-wishlist'
-            // },
             {
                 id: 'talents-hobbies',
                 title: 'Talents & Hobbies',
@@ -125,6 +118,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
         id: 'administration',
         title: 'Administration',
         subtitle: 'SkillResults Administration Area',
+        admin: true,
         type: 'group',
         children: [
             {
@@ -320,123 +314,18 @@ export const compactNavigation: FuseNavigationItem[] = [
     },
 ];
 export const futuristicNavigation: FuseNavigationItem[] = [
-    {
-        id: 'home',
-        title: 'Home',
-        type: 'group',
-        children: [
-            {
-                id: 'dashboard',
-                title: 'Dashboard',
-                type: 'basic',
-                icon: 'heroicons_outline:chart-pie',
-                link: 'home/dashboard'
-            },
-            {
-                id: 'public-profile',
-                title: 'Public Profile',
-                type: 'basic',
-                icon: 'heroicons_outline:user-circle',
-                link: 'home/public-profile/self'
-            },
-            {
-                id: 'wishlist',
-                title: 'Wishlist',
-                type: 'basic',
-                icon: 'heroicons_outline:sparkles',
-                link: 'wishlist'
-            },
-        ]
-    },
-    {
-        id: 'skills',
-        title: 'skills',
-        type: 'group',
-        children: [
-            {
-                id: 'my-skills',
-                title: 'My Skills',
-                type: 'basic',
-                icon: 'heroicons_outline:chart-pie',
-                link: 'skills/my-skills'
-            },
-            {
-                id: 'talents-hobbies',
-                title: 'Talents & Hobbies',
-                type: 'basic',
-                icon: 'heroicons_outline:chart-pie',
-                link: 'skills/talents-hobbies'
-            }
-        ]
-    },
-    {
-        id: 'education',
-        title: 'Education',
-        type: 'group',
-        children: [
-            {
-                id: 'degrees',
-                title: 'Academic Degrees',
-                type: 'basic',
-                icon: 'heroicons_outline:chart-pie',
-                link: 'education/academic-degrees'
-            },
-            {
-                id: 'certifications-licenses',
-                title: 'Certifications & Licenses',
-                type: 'basic',
-                icon: 'heroicons_outline:chart-pie',
-                link: 'education/certifications-licenses'
-            },
-            {
-                id: 'professional-training',
-                title: 'Professional Training',
-                type: 'basic',
-                icon: 'heroicons_outline:chart-pie',
-                link: 'education/professional-training'
-            },
-            {
-                id: 'awards-accolades',
-                title: 'Awards & Accolades',
-                type: 'basic',
-                icon: 'heroicons_outline:chart-pie',
-                link: 'education/awards-accolades'
-            }
-        ]
-    },
-    {
-        id: 'reports',
-        title: 'Reports',
-        type: 'group',
-        children: [
-            {
-                id: 'my-reports',
-                title: 'People Browser',
-                type: 'basic',
-                icon: 'heroicons_outline:users',
-                link: 'reports/my-reports'
-            },
-            {
-                id: 'report-catalog',
-                title: 'Report Catalog',
-                type: 'basic',
-                icon: 'heroicons_outline:chart-square-bar',
-                link: 'reports/report-catalog'
-            },
 
-
-        ]
-    },
     {
         id: 'administration',
         title: 'Administration',
-        type: 'group',
+        admin: true,
+        type: 'aside',
         children: [
             {
                 id: 'skill-catalog',
                 title: 'Skill Catalog',
                 type: 'basic',
-                icon: 'heroicons_outline:chart-pie',
+                icon: 'heroicons_outline:pencil',
                 link: 'administration/skill-catalog'
             },
             {
@@ -459,6 +348,113 @@ export const futuristicNavigation: FuseNavigationItem[] = [
                 type: 'basic',
                 icon: 'feather:settings',
                 link: 'administration/global-settings'
+            },
+
+
+        ]
+    },
+    {
+        id: 'home',
+        title: 'Home',
+        type: 'group',
+        children: [
+            {
+                id: 'dashboard',
+                title: 'Dashboard',
+                type: 'basic',
+                icon: 'feather:grid',
+                link: 'home/dashboard'
+            },
+            {
+                id: 'public-profile',
+                title: 'Public Profile',
+                type: 'basic',
+                icon: 'feather:user',
+                link: 'home/public-profile/self'
+            },
+            {
+                id: 'wishlist',
+                title: 'Wishlist',
+                type: 'basic',
+                icon: 'heroicons_outline:sparkles',
+                link: 'wishlist'
+            },
+        ]
+    },
+    {
+        id: 'skills',
+        title: 'skills',
+        type: 'group',
+        children: [
+            {
+                id: 'my-skills',
+                title: 'My Skills',
+                type: 'basic',
+                icon: 'feather:send',
+                link: 'skills/my-skills'
+            },
+            {
+                id: 'talents-hobbies',
+                title: 'Talents & Hobbies',
+                type: 'basic',
+                icon: 'feather:heart',
+                link: 'skills/talents-hobbies'
+            }
+        ]
+    },
+    {
+        id: 'education',
+        title: 'Education',
+        type: 'group',
+        children: [
+            {
+                id: 'degrees',
+                title: 'Academic Degrees',
+                type: 'basic',
+                icon: 'heroicons_outline:academic-cap',
+                link: 'education/academic-degrees'
+            },
+            {
+                id: 'certifications-licenses',
+                title: 'Certifications & Licenses',
+                type: 'basic',
+                icon: 'heroicons_outline:document-text',
+                link: 'education/certifications-licenses'
+            },
+            {
+                id: 'professional-training',
+                title: 'Professional Training',
+                type: 'basic',
+                icon: 'heroicons_outline:book-open',
+                link: 'education/professional-training'
+            },
+            {
+                id: 'awards-accolades',
+                title: 'Awards & Accolades',
+                type: 'basic',
+                icon: 'feather:award',
+                link: 'education/awards-accolades'
+            }
+        ]
+    },
+    {
+        id: 'reports',
+        title: 'Reports',
+        type: 'group',
+        children: [
+            {
+                id: 'my-reports',
+                title: 'People Browser',
+                type: 'basic',
+                icon: 'heroicons_outline:users',
+                link: 'reports/my-reports'
+            },
+            {
+                id: 'report-catalog',
+                title: 'Report Catalog',
+                type: 'basic',
+                icon: 'feather:bar-chart-2',
+                link: 'reports/report-catalog'
             },
 
 
