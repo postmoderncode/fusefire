@@ -1,10 +1,9 @@
 import { Component, OnInit, AfterViewInit, OnDestroy, ViewChild, Input } from '@angular/core';
 import { AngularFireDatabase } from '@angular/fire/compat/database';
-import { FormBuilder } from '@angular/forms';
-import { FuseConfirmationService } from '@fuse/services/confirmation';
-import { Observable, Subject, combineLatest, map } from 'rxjs';
+import { Subject } from 'rxjs';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-public-reports',
@@ -19,6 +18,8 @@ export class PublicReportsComponent implements OnInit, AfterViewInit, OnDestroy 
   @Input() dataSource;
 
   @ViewChild(MatSort, { static: false }) sort: MatSort;
+
+  @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
 
   //Current User
   fbuser = JSON.parse(localStorage.getItem('fbuser'));
@@ -39,11 +40,18 @@ export class PublicReportsComponent implements OnInit, AfterViewInit, OnDestroy 
   //Constructor
   //---------------------
   constructor(
-    private _formBuilder: FormBuilder,
-    private _fuseConfirmationService: FuseConfirmationService,
     public db: AngularFireDatabase
   ) { }
 
+
+  //Functions
+  //---------------------
+
+  //Function - Filter Table Datasource
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
 
   // -----------------------------------------------------------------------------------------------------
   // @ Lifecycle hooks
@@ -66,7 +74,7 @@ export class PublicReportsComponent implements OnInit, AfterViewInit, OnDestroy 
       (results) => {
 
         //Put the results of the DB call into an object.
-        this.items = results;
+        //this.items = results;
 
         const itemList = [];
 
@@ -78,9 +86,10 @@ export class PublicReportsComponent implements OnInit, AfterViewInit, OnDestroy 
 
         });
 
+        this.items = itemList;
         this.dataSource = new MatTableDataSource(itemList);
         this.dataSource.sort = this.sort;
-        //this.dataSource.paginator = this.paginator;
+        this.dataSource.paginator = this.paginator;
 
       }
     );
