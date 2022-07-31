@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { SharedModule } from 'app/shared/shared.module';
-import { MyReportsComponent } from './my-reports.component';
+import { PeopleBrowserComponent } from './people-browser.component';
 import { Route, RouterModule } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -22,16 +22,17 @@ import { FuseAlertModule } from '@fuse/components/alert';
 import { FuseCardModule } from '@fuse/components/card';
 import { FuseConfirmationModule } from '@fuse/services/confirmation';
 
-const myreportsRoutes: Route[] = [
+const peoplebrowserRoutes: Route[] = [
   {
     path: '',
-    component: MyReportsComponent
+    component: PeopleBrowserComponent
   }
 ];
 
+
 @NgModule({
   declarations: [
-    MyReportsComponent
+    PeopleBrowserComponent
   ],
   imports: [
     MatButtonModule,
@@ -54,7 +55,7 @@ const myreportsRoutes: Route[] = [
     FuseCardModule,
     FuseConfirmationModule,
     SharedModule,
-    RouterModule.forChild(myreportsRoutes)
+    RouterModule.forChild(peoplebrowserRoutes)
   ]
 })
-export class MyReportsModule { }
+export class PeopleBrowserModule { }

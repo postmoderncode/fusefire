@@ -7,11 +7,11 @@ import { Subject } from 'rxjs';
 
 
 @Component({
-  selector: 'app-my-reports',
-  templateUrl: './my-reports.component.html',
-  styleUrls: ['./my-reports.component.scss']
+  selector: 'app-people-browser',
+  templateUrl: './people-browser.component.html',
+  styleUrls: ['./people-browser.component.scss']
 })
-export class MyReportsComponent implements OnInit, OnDestroy {
+export class PeopleBrowserComponent implements OnInit, OnDestroy {
 
 
   //Initialize Varables
