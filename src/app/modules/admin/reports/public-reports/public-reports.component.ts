@@ -18,15 +18,6 @@ export class PublicReportsComponent implements OnInit, AfterViewInit, OnDestroy 
   //Current User
   fbuser = JSON.parse(localStorage.getItem('fbuser'));
 
-<<<<<<< HEAD
-=======
-  //Container to hold a list of items
-  items;
-
-  //Table Settings
-  displayedColumns: string[] = ['name', 'rating', 'uid'];
-
->>>>>>> 8741945cb907d3e49aa6fc505bee55f07c0f8f6a
   //Unscubscribe All
   private _unsubscribeAll: Subject<any> = new Subject<any>();
 
