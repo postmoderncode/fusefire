@@ -12,6 +12,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
+import { MatTableExporterModule } from 'mat-table-exporter';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
@@ -44,6 +45,7 @@ const myskillsRoutes: Route[] = [
     MatTabsModule,
     MatTableModule,
     MatSortModule,
+    MatTableExporterModule,
     MatTooltipModule,
     MatDatepickerModule,
     MatNativeDateModule,
