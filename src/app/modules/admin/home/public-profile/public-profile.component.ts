@@ -43,9 +43,19 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
   //Functions
   //---------------------
 
-  onDownloadUser(): void {
+  //Function - Handles file download
+  onDownload(content, fileName, contentType) {
+    const a = document.createElement("a");
+    const file = new Blob([content], { type: contentType });
+    a.href = URL.createObjectURL(file);
+    a.download = fileName;
+    a.click();
+  }
 
-    console.log(this.user);
+  //Function - Called from template to download user object
+  onDownloadUser(): void {
+    this.onDownload(JSON.stringify(this.user), this.fbuser.email + ".json", "text/plain");
+
   }
 
   // -----------------------------------------------------------------------------------------------------

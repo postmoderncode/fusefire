@@ -45,7 +45,7 @@ const myskillsRoutes: Route[] = [
     MatTabsModule,
     MatTableModule,
     MatSortModule,
-    MatTableExporterModule,
+    MatTableExporterModule.forRoot({ xlsxLightWeight: true }),
     MatTooltipModule,
     MatDatepickerModule,
     MatNativeDateModule,
