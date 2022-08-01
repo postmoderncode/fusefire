@@ -40,6 +40,14 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
   ) { }
 
 
+  //Functions
+  //---------------------
+
+  onDownloadUser(): void {
+
+    console.log(this.user);
+  }
+
   // -----------------------------------------------------------------------------------------------------
   // @ Lifecycle hooks
   // -----------------------------------------------------------------------------------------------------
@@ -58,6 +66,7 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
     this.db.object('/users/' + this.id)
       .valueChanges().subscribe(
         (results: any[]) => {
+          console.log(results)
           this.user = results;
         }
 

@@ -4,11 +4,7 @@ import { Route, RouterModule } from '@angular/router';
 import { PublicProfileComponent } from './public-profile.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatRadioModule } from '@angular/material/radio';
-import { FuseCardModule } from '@fuse/components/card';
-
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 const publicprofileRoutes: Route[] = [
   {
@@ -23,12 +19,9 @@ const publicprofileRoutes: Route[] = [
   ],
   imports: [
     SharedModule,
-    MatButtonModule,
-    MatFormFieldModule,
     MatIconModule,
-    MatInputModule,
-    MatRadioModule,
-    FuseCardModule,
+    MatButtonModule,
+    MatTooltipModule,
     RouterModule.forChild(publicprofileRoutes)
   ]
 })
