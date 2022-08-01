@@ -43,6 +43,12 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
   //Functions
   //---------------------
 
+
+  //Function - Prints Current Page
+  printThisPage() {
+    window.print();
+  }
+
   //Function - Handles file download
   onDownload(content, fileName, contentType) {
     const a = document.createElement("a");
