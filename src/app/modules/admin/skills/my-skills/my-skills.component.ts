@@ -559,6 +559,28 @@ export class MySkillsComponent implements OnInit, OnDestroy, AfterViewInit {
 
   }
 
+  //Function - Show the Custom Edit Form
+  onShowCustomEditForm(key): void {
+
+    //Set the current key
+    this.currentkey = key;
+
+    //Set the View State
+    this.viewState = 3;
+
+    //Set the Form Mode
+    this.formMode = 'edit';
+
+    //Define Observable
+    this.item = this.db.object('/users/' + this.fbuser.id + '/skills/' + key).valueChanges();
+
+    //Subscribe to Observable
+    this.item.subscribe((item) => {
+      this.model = new UserSkill(key, item.name, item.rating, item.created, item.modified, item.user, item.ratingsteps);
+    });
+
+
+  }
   //Function - Show the Delete Conf.
   onShowDelete(key): void {
 
