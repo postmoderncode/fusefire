@@ -81,6 +81,16 @@ export class SkillBrowserComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     });
 
+
+    this.db.list('/skills', ref => ref
+      .orderByChild('key')
+      .equalTo(this.id))
+      .valueChanges().subscribe(
+        (results: object) => {
+          this.items = results;
+        }
+      );
+
   }
 
 
@@ -88,6 +98,7 @@ export class SkillBrowserComponent implements OnInit, OnDestroy, AfterViewInit {
    * On After View init
    */
   ngAfterViewInit(): void {
+
 
   }
 
