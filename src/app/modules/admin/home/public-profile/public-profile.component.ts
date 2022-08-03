@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { AngularFireDatabase } from '@angular/fire/compat/database';
 import { ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
@@ -9,7 +9,7 @@ import { Subject } from 'rxjs';
   templateUrl: './public-profile.component.html',
   styleUrls: ['./public-profile.component.scss']
 })
-export class PublicProfileComponent implements OnInit, OnDestroy {
+export class PublicProfileComponent implements OnInit, OnDestroy, AfterViewInit {
 
   //Initialize Varables
   //-------------------
@@ -22,9 +22,6 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
 
   //Firebase Observables
   counts;
-
-  //Total Wishlists
-  wishlistscount;
 
   //Incoming userid from route
   id;
@@ -87,21 +84,12 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
 
       );
 
-    this.wishlistscount = 0;
+  }
 
-    this.db.object('/counts/' + this.id)
-      .valueChanges().subscribe(
-        (results: any[]) => {
-          this.counts = results;
-          this.wishlistscount = (this.counts.wishlists?.awards ?? 0) +
-            (this.counts?.wishlists?.certifications ?? 0) +
-            (this.counts?.wishlists?.degrees ?? 0) +
-            (this.counts?.wishlists?.skills ?? 0) +
-            (this.counts?.wishlists?.training ?? 0);
-
-        }
-
-      );
+  /**
+   * On After View init
+   */
+  ngAfterViewInit(): void {
 
   }
 
