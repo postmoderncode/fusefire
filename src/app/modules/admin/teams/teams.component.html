@@ -14,6 +14,33 @@
         </div>
 
         <!-- Right Side - Action Buttons -->
+
+        <div *ngIf="viewState === 5" class="flex shrink-0 items-center mt-3 mr-3">
+
+            <button  
+                (click)="ngOnInit()"
+                class="ml-2"
+                mat-flat-button
+                type="button"
+                [color]="'primary'">
+                My Teams
+            </button>
+
+        </div>
+
+        <div *ngIf="viewState !== 5 && viewState !== 3" class="flex shrink-0 items-center mt-3 mr-3">
+
+            <button  
+                (click)="onShowTeams()"
+                class="ml-2"
+                mat-flat-button
+                type="button"
+                [color]="'primary'">
+                Browse Teams
+            </button>
+            
+        </div>
+
         <div *ngIf="viewState !== 3" class="flex shrink-0 items-center mt-3">
 
             <button 
@@ -71,7 +98,7 @@
                                 <div class="h-80 m-0 sm:mr-5 mb-5 p-5 shadow-lg border-2 border-slate-200 bg-white">
 
                                     <!-- Cert Card - inner border -->
-                                    <div class="flex flex-col h-full relative border-8 border-green-100">
+                                    <div class="flex flex-col h-full relative border-8 border-orange-100">
 
                                         <!-- Top Flex Row -->
                                         <div class="flex-none">
@@ -136,7 +163,7 @@
 
                                                 <!-- Cert Icon -->
                                                 <div class="flex-none">
-                                                    <img class="h-14 relative -bottom-4" src="assets/images/ui/training-icon.svg">
+                                                    <!-- <img class="h-14 relative -bottom-4" src="assets/images/ui/training-icon.svg"> -->
                                                 </div>
 
                                                 <!-- Edit Button -->
@@ -178,6 +205,7 @@
                             <span class="text-xl mt-10">
                                 You do not have any listed teams.<br/>Click on the "Add Team" button in the upper right corner to get started.
                             </span>
+
                         </div>
                     
                     </div>
@@ -290,6 +318,16 @@
                     <!-- CONFIRM DELETE VIEW STATE -->
                     <div *ngSwitchCase="4">
                         DELETE CONF
+                    </div>
+
+                    <!-- CONFIRM DELETE VIEW STATE -->
+                    <div *ngSwitchCase="5">
+
+                        <div class="text-xl font-semibold mb-5">
+                            Team List
+                        </div>
+
+                        
                     </div>
 
                 </div>
