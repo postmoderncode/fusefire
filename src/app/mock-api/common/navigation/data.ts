@@ -30,6 +30,13 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 icon: 'heroicons_outline:sparkles',
                 link: 'wishlist'
             },
+            {
+                id: 'teams',
+                title: 'Teams',
+                type: 'basic',
+                icon: 'heroicons_solid:user-group',
+                link: 'teams'
+            },
         ]
     },
     {
@@ -110,14 +117,6 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 icon: 'feather:bar-chart-2',
                 link: 'reports/report-catalog'
             },
-            {
-                id: 'teams',
-                title: 'Teams',
-                type: 'basic',
-                icon: 'heroicons_solid:user-group',
-                link: 'teams'
-            },
-
 
         ]
     },
@@ -146,7 +145,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 id: 'positions',
                 title: 'Positions',
                 type: 'basic',
-                icon: 'heroicons_solid:user-group',
+                icon: 'cases',
                 link: 'administration/positions'
             },
             {
@@ -277,13 +276,6 @@ export const compactNavigation: FuseNavigationItem[] = [
                 icon: 'heroicons_outline:chart-pie',
                 link: 'reports/report-catalog'
             },
-            {
-                id: 'teams',
-                title: 'Teams',
-                type: 'basic',
-                icon: 'heroicons_solid:user-group',
-                link: 'teams'
-            },
 
         ]
     },
@@ -311,7 +303,7 @@ export const compactNavigation: FuseNavigationItem[] = [
                 id: 'positions',
                 title: 'Positions',
                 type: 'basic',
-                icon: 'heroicons_solid:user-group',
+                icon: 'cases',
                 link: 'administration/positions'
             },
             {
@@ -357,6 +349,13 @@ export const futuristicNavigation: FuseNavigationItem[] = [
                 link: 'wishlist'
             },
             {
+                id: 'teams',
+                title: 'Teams',
+                type: 'basic',
+                icon: 'heroicons_solid:user-group',
+                link: 'teams'
+            },
+            {
                 id: 'administration',
                 title: 'Administration',
                 admin: true,
@@ -381,7 +380,7 @@ export const futuristicNavigation: FuseNavigationItem[] = [
                         id: 'positions',
                         title: 'Positions',
                         type: 'basic',
-                        icon: 'heroicons_solid:user-group',
+                        icon: 'cases',
                         link: 'administration/positions'
                     },
                     {
@@ -471,13 +470,6 @@ export const futuristicNavigation: FuseNavigationItem[] = [
                 type: 'basic',
                 icon: 'feather:bar-chart-2',
                 link: 'reports/report-catalog'
-            },
-            {
-                id: 'teams',
-                title: 'Teams',
-                type: 'basic',
-                icon: 'heroicons_solid:user-group',
-                link: 'teams'
             },
 
         ]
@@ -631,7 +623,7 @@ export const horizontalNavigation: FuseNavigationItem[] = [
                 id: 'positions',
                 title: 'Positions',
                 type: 'basic',
-                icon: 'heroicons_solid:user-group',
+                icon: 'cases',
                 link: 'administration/positions'
             },
             {
