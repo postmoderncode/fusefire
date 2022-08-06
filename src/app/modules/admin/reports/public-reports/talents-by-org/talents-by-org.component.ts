@@ -32,7 +32,7 @@ export class TalentsByOrgComponent implements OnInit, AfterViewInit, OnDestroy {
   itemsFiltered;
 
   //Table Settings
-  displayedColumns: string[] = ['name', 'description', 'uid'];
+  displayedColumns: string[] = ['name', 'description', 'email'];
 
   //Unscubscribe All
   private _unsubscribeAll: Subject<any> = new Subject<any>();

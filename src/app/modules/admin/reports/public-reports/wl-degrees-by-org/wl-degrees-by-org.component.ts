@@ -32,7 +32,7 @@ export class WlDegreesByOrgComponent implements OnInit, AfterViewInit, OnDestroy
   itemsFiltered;
 
   //Table Settings
-  displayedColumns: string[] = ['degreetype', 'major', 'minor', 'institution', 'awardedon', 'uid'];
+  displayedColumns: string[] = ['degreetype', 'major', 'minor', 'institution', 'awardedon', 'email'];
 
   //Unscubscribe All
   private _unsubscribeAll: Subject<any> = new Subject<any>();
