@@ -18,6 +18,7 @@ export class AuthService {
     private MSuserimage
     private _authenticated: boolean = false;
 
+
     /**
      * Constructor
      */
@@ -167,6 +168,21 @@ export class AuthService {
     //CUSTOM FUNCTIONS
     //---------------------------------------------
 
+    //Use outside API to Generate Random User
+    getRandomuser(): Observable<any> {
+
+        let reqHeader = new HttpHeaders({
+
+        })
+
+        //Make the Graph API Call
+        return this._httpClient.get('https://randomuser.me/api/?nat=us', {
+            responseType: 'json',
+            headers: reqHeader
+        });
+
+    }
+
     //Observable Function to Call MS Graph API and get User Picture.
     msuserinfo(token): Observable<any> {
         //Create a custom http header with the MS Authentication Token to add to the Graph API Call
@@ -194,6 +210,8 @@ export class AuthService {
     //Microsoft SSO Login with OAuth
     OAuthMicrosoft(): Observable<any> {
 
+
+
         const loginObservable = new Observable(observer => {
 
             //Sign in using a redirect to Microsoft. 
@@ -207,6 +225,18 @@ export class AuthService {
                     fbuser.name = result.user.displayName;
                     fbuser.email = result.user.email;
                     fbuser.lastlogged = lastlogged;
+
+                    // this.getRandomuser().subscribe(
+                    //     (response) => {
+                    //         fbuser.name = response.results[0].name.last + ', ' + response.results[0].name.first;
+                    //         fbuser.email = response.results[0].email;
+                    //     },
+
+                    //     (error) => {
+                    //         console.log(error);
+
+                    //     });
+
 
                     //See if user exists and if they are flagged as Admin
                     firebase.database().ref('userlist/' + result.user.uid).once('value', function (snapshot) {
@@ -239,6 +269,7 @@ export class AuthService {
 
                                 //store user in local storage
                                 localStorage.setItem('fbuser', JSON.stringify(fbuser));
+
 
                             })
                             .catch(err =>
@@ -288,6 +319,21 @@ export class AuthService {
 
                         (error) => {
                             console.log(error);
+
+                            //No Image Data 
+
+                            //Store the user on the user service
+                            const msuser: User = {
+                                id: result.user.uid,
+                                name: result.user.displayName,
+                                email: result.user.email,
+                            };
+
+                            //Send the User Object to the User Service (for the UI)
+                            this._userService.user = msuser;
+
+                            observer.next();
+
                         });
 
                     //Store the access token in the local storage (THIS MUST BE AFTER THE GRAPH CALL!!!)
